@@ -56,13 +56,15 @@ public class UserService {
     }
 
     // Authenticate a user (for login)
-    public boolean authenticateUser(User user) {
-        Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
+    public boolean authenticateUser(String username, String password) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
 
-        // Check if the user exists and the password matches
-        if (existingUser.isPresent()) {
-            return user.getPassword().equals(existingUser.get().getPassword());  // No password encoding, just plain comparison
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            // Compare the plain-text password
+            return user.getPassword().equals(password);
         }
+
         return false;
     }
 }

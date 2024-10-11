@@ -1,5 +1,6 @@
 package crm.oilwhere.controller;
 
+import crm.oilwhere.dto.LoginRequest;
 import crm.oilwhere.model.User;
 import crm.oilwhere.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -47,12 +48,13 @@ public class UserController {
 
     // Endpoint for user login
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody User user) {
-        boolean isAuthenticated = userService.authenticateUser(user);
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+        boolean isAuthenticated = userService.authenticateUser(loginRequest.getUsername(), loginRequest.getPassword());
+
         if (isAuthenticated) {
             return ResponseEntity.ok("Login successful");
         } else {
-            return ResponseEntity.status(401).body("Invalid credentials");
+            return ResponseEntity.status(401).body("Invalid username or password");
         }
     }
 }
