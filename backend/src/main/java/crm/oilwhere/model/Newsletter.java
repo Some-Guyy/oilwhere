@@ -1,9 +1,6 @@
-package crm.oilwhere.models.Newsletter;
-import java.util.ArrayList;
+package crm.oilwhere.model;
 import java.util.Date;
-import java.util.List;
 
-import crm.oilwhere.models.Customer.Customer;
 
 public class Newsletter {
     private Long newsletterId;
@@ -12,7 +9,6 @@ public class Newsletter {
     private String contentType;    
     private double offerValue;    
     private Date dateSent;         
-    private List<Customer> recipients = new ArrayList<>();    
 
     //constructors
     public Newsletter() {}
@@ -73,32 +69,5 @@ public class Newsletter {
 
     public void setDateSent(Date dateSent) {
         this.dateSent = dateSent;
-    }
-
-    //other methods
-    public void addRecipient(Customer customer) {
-        recipients.add(customer);
-    }
-
-    public void removeRecipient(Customer customer) {
-        recipients.remove(customer);
-    }
-
-    public void sendNewsLetter() {
-        for (Customer customer : recipients) {
-            // add other logic here i guess
-            System.out.println("Sending newsletter to: " + customer.getEmail());
-            System.out.println("Subject: " + subject);
-            System.out.println("Body: " + body);
-        }
-    }
-
-    //getters for recipients
-    public List<Customer> getRecipients() {
-        return recipients;
-    }
-
-    public void setRecipients(List<Customer> recipients) {
-        this.recipients = recipients;
     }
 }

@@ -1,12 +1,27 @@
-package crm.oilwhere.Users;
+package crm.oilwhere.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE) 
+@DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
+@Table(name = "users")
 public abstract class User {
-    protected Long userId;
-    protected String username;
-    protected String password;
-    protected String role;
 
-    //constructor
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long userId;
+
+    @Column(nullable = false, unique = true, length = 191)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(insertable=false, updatable=false)
+    private String role;
+
+    // Constructor
     public User(Long userId, String username, String password, String role) {
         this.userId = userId;
         this.username = username;
@@ -14,7 +29,9 @@ public abstract class User {
         this.role = role;
     }
 
-    //getters and setters
+    public User() {}
+
+    // Getters and Setters
     public Long getUserId() {
         return userId;
     }
@@ -49,6 +66,6 @@ public abstract class User {
 
     // Common Methods
     public void login() {
-        // idk what to put here yet
+        // This method can be implemented based on your logic
     }
 }
