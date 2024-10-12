@@ -21,12 +21,10 @@ CREATE TABLE IF NOT EXISTS `Purchase History` (
 
 DROP TABLE IF EXISTS `User`;
 CREATE TABLE IF NOT EXISTS `User` (
-  `Email` varchar(255) NOT NULL,
-  `Name`  varchar(32) NOT NULL,
+  `Username` varchar(255) NOT NULL,
   `Role` varchar(32) NOT NULL,
-  `Permissions` varchar(32) NOT NULL,
   `Password` varchar(32) NOT NULL,
-  PRIMARY KEY (`Email`)
+  PRIMARY KEY (`Username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `NewsLetter`;
@@ -43,10 +41,10 @@ INSERT INTO `Purchase History` (`PurchaseID`, `SaleDate`, `SaleType`, `Digital`,
 (4, '2020-05-22', 'Direct - B2C', 'Online - Website', 65, '101080', 'Standard Delivery', 'Truffle oil', 100, 1, 7.9, 6.32),
 (5, '2019-12-17', 'Direct - B2C', 'Online - Website', 36, '608531', 'Standard Delivery', 'Limited Edition Gift box 3x100ml', 2020, 2, 19.9, 39.8);
 
-INSERT INTO `User` (`Email`, `Name`, `Role`, `Permissions`, `Password`) VALUES
-('lee@gmail.com', 'Lee', 'Marketing', 'Marketing', '123'),
-('ng@gmail.com', 'ng', 'Sales', 'Sales', '123'),
-('tan@gmail.com', 'tan', 'System Administrator', 'System Administrator', '123');
+INSERT INTO `User` (`Username`, `Role`, `Password`) VALUES
+('marketing', 'MARKETING', '123'),
+('sales', 'SALES', '123'),
+('admin', 'ADMIN', '123');
 
 INSERT INTO `NewsLetter` (`DesignID`, `Content`) VALUES
 (1, 'marketingStuff.txt'),
