@@ -1,4 +1,4 @@
-package crm.oilwhere.models.Purchase;
+package crm.oilwhere.model;
 
 import java.time.LocalDate;
 
