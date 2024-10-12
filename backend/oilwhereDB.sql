@@ -41,10 +41,11 @@ CREATE TABLE IF NOT EXISTS `PurchaseHistoryTemp` (
 -- Creation of user table
 DROP TABLE IF EXISTS `User`;
 CREATE TABLE IF NOT EXISTS `User` (
+  `UserID` INT NOT NULL AUTO_INCREMENT,
   `Username` varchar(255) NOT NULL,
   `Role` varchar(32) NOT NULL,
   `Password` varchar(32) NOT NULL,
-  PRIMARY KEY (`Username`)
+  PRIMARY KEY (`UserID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Creation of NewsLetter table
