@@ -4,24 +4,25 @@ import jakarta.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE) 
-@DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
-@Table(name = "users")
+@DiscriminatorColumn(name = "Role", discriminatorType = DiscriminatorType.STRING)
+@Table(name = "user")
 public abstract class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="UserID")
     private Long userId;
 
-    @Column(nullable = false, unique = true, length = 191)
+    @Column(name="Username", nullable = false, unique = true, length = 191)
     private String username;
 
-    @Column(nullable = false)
+    @Column(name="Password", nullable = false)
     private String password;
 
-    @Column(insertable=false, updatable=false)
+    @Column(name="Role", insertable=false, updatable=false)
     private String role;
 
-    // Constructor
+    //constructors
     public User(Long userId, String username, String password, String role) {
         this.userId = userId;
         this.username = username;
@@ -31,7 +32,7 @@ public abstract class User {
 
     public User() {}
 
-    // Getters and Setters
+    //getters and setters
     public Long getUserId() {
         return userId;
     }
@@ -62,10 +63,5 @@ public abstract class User {
 
     public void setRole(String role) {
         this.role = role;
-    }
-
-    // Common Methods
-    public void login() {
-        // This method can be implemented based on your logic
     }
 }
