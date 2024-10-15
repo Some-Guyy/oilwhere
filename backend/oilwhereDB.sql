@@ -64,10 +64,10 @@ LINES TERMINATED BY '\n'
 IGNORE 1 ROWS
 (@discard, sale_date, @vsale_type, @vdigital, customer_id, @vzipcode, @vshipping_method, @vproduct, variant, quantity, price, product_price)
 SET
-sale_type = NULLIF(@vsale_type, '')
-digital = NULLIF(@vdigital, '')
-zipcode = NULLIF(@vzipcode, '')
-shipping_method = NULLIF(@vshipping_method, '')
+sale_type = NULLIF(@vsale_type, ''),
+digital = NULLIF(@vdigital, ''),
+zipcode = NULLIF(@vzipcode, ''),
+shipping_method = NULLIF(@vshipping_method, ''),
 product = NULLIF(@vproduct, '')
 ;
 
