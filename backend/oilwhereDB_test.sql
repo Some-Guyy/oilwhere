@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `User` (
   PRIMARY KEY (`UserID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `NewsLetter`;
+DROP TABLE IF EXISTS `Newsletter`;
 CREATE TABLE IF NOT EXISTS `Newsletter` (
   `DesignID` INT NOT NULL AUTO_INCREMENT,
   `Content` text NOT NULL,
@@ -47,7 +47,7 @@ INSERT INTO `User` (`Username`, `Role`, `Password`) VALUES
 ('sales', 'SALES', '123'),
 ('admin', 'ADMIN', '123');
 
-INSERT INTO `NewsLetter` (`DesignID`, `Content`) VALUES
+INSERT INTO `Newsletter` (`DesignID`, `Content`) VALUES
 (1, 'marketingStuff.txt'),
 (2, 'uglyDesign.txt');
 

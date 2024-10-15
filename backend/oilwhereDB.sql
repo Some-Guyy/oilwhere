@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `User` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Creation of NewsLetter table
-DROP TABLE IF EXISTS `NewsLetter`;
+DROP TABLE IF EXISTS `Newsletter`;
 CREATE TABLE IF NOT EXISTS `Newsletter` (
   `DesignID` INT NOT NULL AUTO_INCREMENT,
   `Content` text NOT NULL,
@@ -82,7 +82,7 @@ INSERT INTO `User` (`Username`, `Role`, `Password`) VALUES
 ('admin', 'ADMIN', '123');
 
 -- Manually inserting to newsletter table
-INSERT INTO `NewsLetter` (`DesignID`, `Content`) VALUES
+INSERT INTO `Newsletter` (`DesignID`, `Content`) VALUES
 (1, 'marketingStuff.txt'),
 (2, 'uglyDesign.txt');
 
