@@ -2,87 +2,91 @@ DROP DATABASE IF EXISTS `oilwhereDB`;
 CREATE DATABASE IF NOT EXISTS `oilwhereDB` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `oilwhereDB`;
 
--- Creation of purchase history table
-DROP TABLE IF EXISTS `Purchase History`;
-CREATE TABLE IF NOT EXISTS `Purchase History` (
-  `PurchaseID` INT NOT NULL AUTO_INCREMENT,
-  `SaleDate` date NOT NULL,
-  `SaleType` varchar(32) NOT NULL,
-  `Digital`  varchar(32) NOT NULL,
-  `CustomerID` int NOT NULL,
-  `ZipCode` int(6) NOT NULL,
-  `ShippingMethod` varchar(32) NOT NULL,
-  `Product` varchar(32) NOT NULL,
-  `Variant` int NOT NULL,
-  `Quantity` int NOT NULL,
-  `Price` decimal(10,2) NOT NULL,
-  `ProductPrice` decimal(10,2) NOT NULL,
-  PRIMARY KEY (`PurchaseID`)
+-- Creation of purchase_history table
+DROP TABLE IF EXISTS `purchase_history`;
+CREATE TABLE IF NOT EXISTS `purchase_history` (
+  `purchase_id` INT NOT NULL AUTO_INCREMENT,
+  `sale_date` date NOT NULL,
+  `sale_type` varchar(255) NOT NULL,
+  `digital`  varchar(255) NOT NULL,
+  `customer_id` int NOT NULL,
+  `zipcode` int(6),
+  `shipping_method` varchar(255) NOT NULL,
+  `product` varchar(255) NOT NULL,
+  `variant` int NOT NULL,
+  `quantity` int NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `product_price` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`purchase_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Create a temporary table with SaleDate as VARCHAR
-DROP TABLE IF EXISTS `PurchaseHistoryTemp`;
-CREATE TABLE IF NOT EXISTS `PurchaseHistoryTemp` (
-  `PurchaseID` INT NOT NULL AUTO_INCREMENT,
-  `SaleDate` VARCHAR(10) NOT NULL,  -- Store date as VARCHAR first
-  `SaleType` VARCHAR(32) NOT NULL,
-  `Digital`  VARCHAR(32) NOT NULL,
-  `CustomerID` INT NOT NULL,
-  `ZipCode` INT(6) NOT NULL,
-  `ShippingMethod` VARCHAR(32) NOT NULL,
-  `Product` VARCHAR(32) NOT NULL,
-  `Variant` INT NOT NULL,
-  `Quantity` INT NOT NULL,
-  `Price` DECIMAL(10,2) NOT NULL,
-  `ProductPrice` DECIMAL(10,2) NOT NULL,
-  PRIMARY KEY (`PurchaseID`)
+-- Create a temporary table with sale_date as VARCHAR
+DROP TABLE IF EXISTS `purchase_history_temp`;
+CREATE TABLE IF NOT EXISTS `purchase_history_temp` (
+  `purchase_id` INT NOT NULL AUTO_INCREMENT,
+  `sale_date` VARCHAR(10) NOT NULL,  -- Store date as VARCHAR first
+  `sale_type` VARCHAR(255) NOT NULL,
+  `digital`  VARCHAR(255) NOT NULL,
+  `customer_id` INT NOT NULL,
+  `zipcode` INT(6),
+  `shipping_method` VARCHAR(255) NOT NULL,
+  `product` VARCHAR(255) NOT NULL,
+  `variant` INT NOT NULL,
+  `quantity` INT NOT NULL,
+  `price` DECIMAL(10,2) NOT NULL,
+  `product_price` DECIMAL(10,2) NOT NULL,
+  PRIMARY KEY (`purchase_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Creation of user table
-DROP TABLE IF EXISTS `User`;
-CREATE TABLE IF NOT EXISTS `User` (
-  `UserID` INT NOT NULL AUTO_INCREMENT,
-  `Username` varchar(255) NOT NULL,
-  `Role` varchar(32) NOT NULL,
-  `Password` varchar(32) NOT NULL,
-  PRIMARY KEY (`UserID`)
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE IF NOT EXISTS `user` (
+  `user_id` INT NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `role` varchar(32) NOT NULL,
+  `password` varchar(32) NOT NULL,
+  PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Creation of NewsLetter table
-DROP TABLE IF EXISTS `Newsletter`;
-CREATE TABLE IF NOT EXISTS `Newsletter` (
-  `DesignID` INT NOT NULL AUTO_INCREMENT,
-  `Content` text NOT NULL,
-  PRIMARY KEY (`DesignID`)
+DROP TABLE IF EXISTS `newsletter`;
+CREATE TABLE IF NOT EXISTS `newsletter` (
+  `design_id` INT NOT NULL AUTO_INCREMENT,
+  `content` text NOT NULL,
+  PRIMARY KEY (`design_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Loading csv data into purchase history
+-- Loading csv data into purchase_history
 LOAD DATA INFILE 'C:/wamp64/tmp/Sales_Data_updated_Sep 2023.csv'
-INTO TABLE `PurchaseHistoryTemp`
+INTO TABLE `purchase_history_temp`
 FIELDS TERMINATED BY ',' 
 LINES TERMINATED BY '\n'
-IGNORE 1 ROWS;
+IGNORE 1 ROWS
+(@discard, sale_date, sale_type, digital, customer_id, @vzipcode, shipping_method, product, variant, quantity, price, product_price)
+SET
+zipcode = NULLIF(@vzipcode, '')
+;
 
 -- Insert data into the final table with date conversion
-INSERT INTO `Purchase History` (
-  `SaleDate`, `SaleType`, `Digital`, `CustomerID`, `ZipCode`, `ShippingMethod`, `Product`, `Variant`, `Quantity`, `Price`, `ProductPrice`
+INSERT INTO `purchase_history` (
+  `sale_date`, `sale_type`, `digital`, `customer_id`, `zipcode`, `shipping_method`, `product`, `variant`, `quantity`, `price`, `product_price`
 )
 SELECT 
-  STR_TO_DATE(`SaleDate`, '%d/%m/%Y'),  -- Convert from DD/MM/YYYY to YYYY-MM-DD
-  `SaleType`, `Digital`, `CustomerID`, `ZipCode`, `ShippingMethod`, `Product`, `Variant`, `Quantity`, `Price`, `ProductPrice`
-FROM `PurchaseHistoryTemp`;
+  STR_TO_DATE(`sale_date`, '%d/%m/%Y'),  -- Convert from DD/MM/YYYY to YYYY-MM-DD
+  `sale_type`, `digital`, `customer_id`, `zipcode`, `shipping_method`, `product`, `variant`, `quantity`, `price`, `product_price`
+FROM `purchase_history_temp`;
 
 -- Drop the temporary table
-DROP TABLE IF EXISTS `PurchaseHistoryTemp`;
+DROP TABLE IF EXISTS `purchase_history_temp`;
 
 -- Manually inserting user details into user table
-INSERT INTO `User` (`Username`, `Role`, `Password`) VALUES
+INSERT INTO `user` (`username`, `role`, `password`) VALUES
 ('marketing', 'MARKETING', '123'),
 ('sales', 'SALES', '123'),
 ('admin', 'ADMIN', '123');
 
 -- Manually inserting to newsletter table
-INSERT INTO `Newsletter` (`DesignID`, `Content`) VALUES
+INSERT INTO `newsletter` (`design_id`, `content`) VALUES
 (1, 'marketingStuff.txt'),
 (2, 'uglyDesign.txt');
 
