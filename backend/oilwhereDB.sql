@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `newsletter` (
   `design_id` INT NOT NULL AUTO_INCREMENT,
   `content` text NOT NULL,
   PRIMARY KEY (`design_id`)
-) ENGINE=InnoDB DEFAULTs CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Loading csv data into purchase_history
 LOAD DATA INFILE 'C:/wamp64/tmp/Sales_Data_updated_Sep 2023.csv'
