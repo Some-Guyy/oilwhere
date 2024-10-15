@@ -4,22 +4,22 @@ import jakarta.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE) 
-@DiscriminatorColumn(name = "Role", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "user")
 public abstract class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="UserID")
+    @Column(name="user_id")
     private Long userId;
 
-    @Column(name="Username", nullable = false, unique = true, length = 191)
+    @Column(name="username", nullable = false, unique = true, length = 191)
     private String username;
 
-    @Column(name="Password", nullable = false)
+    @Column(name="password", nullable = false)
     private String password;
 
-    @Column(name="Role", insertable=false, updatable=false)
+    @Column(name="role", insertable=false, updatable=false)
     private String role;
 
     //constructors
