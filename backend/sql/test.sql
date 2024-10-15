@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS `oilwhereDB_test`;
-CREATE DATABASE IF NOT EXISTS `oilwhereDB_test` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `oilwhereDB_test`;
+DROP DATABASE IF EXISTS `oilwhere_test`;
+CREATE DATABASE IF NOT EXISTS `oilwhere_test` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `oilwhere_test`;
 
 -- Creation of purchase_history table
 DROP TABLE IF EXISTS `purchase_history`;
