@@ -4,9 +4,11 @@ import axios from 'axios'
 
 
 export const getLeadsContent = createAsyncThunk('/leads/content', async () => {
-	const response = await axios.get('/api/users?page=2', {})
+	const response = await axios.get('http://localhost:8080/api/admin/users', {})
+    console.log(response.data)
 	return response.data;
-})
+}
+);
 
 export const leadsSlice = createSlice({
     name: 'leads',
@@ -33,7 +35,7 @@ export const leadsSlice = createSlice({
 			state.isLoading = true
 		},
 		[getLeadsContent.fulfilled]: (state, action) => {
-			state.leads = action.payload.data
+			state.leads = action.payload
 			state.isLoading = false
 		},
 		[getLeadsContent.rejected]: state => {

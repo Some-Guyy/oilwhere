@@ -6,9 +6,9 @@ import { showNotification } from "../../common/headerSlice"
 import { addNewLead } from "../leadSlice"
 
 const INITIAL_LEAD_OBJ = {
-    first_name : "",
-    last_name : "",
-    email : ""
+    username : "",
+    password : "",
+    role : ""
 }
 
 function AddLeadModalBody({closeModal}){
@@ -19,18 +19,11 @@ function AddLeadModalBody({closeModal}){
 
 
     const saveNewLead = () => {
-        if(leadObj.first_name.trim() === "")return setErrorMessage("First Name is required!")
-        else if(leadObj.email.trim() === "")return setErrorMessage("Email id is required!")
+        if(leadObj.username.trim() === "")return setErrorMessage("username is required!")
+        else if(leadObj.password.trim() === "")return setErrorMessage("password is required!")
+        else if(leadObj.role.trim() === "")return setErrorMessage("role is required!")
         else{
-            let newLeadObj = {
-                "id": 7,
-                "email": leadObj.email,
-                "first_name": leadObj.first_name,
-                "last_name": leadObj.last_name,
-                "avatar": "https://reqres.in/img/faces/1-image.jpg"
-            }
-            dispatch(addNewLead({newLeadObj}))
-            dispatch(showNotification({message : "New Lead Added!", status : 1}))
+            CreateUser()
             closeModal()
         }
     }
@@ -40,14 +33,48 @@ function AddLeadModalBody({closeModal}){
         setLeadObj({...leadObj, [updateType] : value})
     }
 
+    const CreateUser = async () => {
+        const apiUrl =  "http://localhost:8080/api/admin/users"
+        console.log(leadObj.username)
+              try{
+                const res = await fetch(apiUrl,{
+                    method: 'POST',
+                    headers:{
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "role": leadObj.role.toUpperCase(),
+                        "username": leadObj.username,
+                        "password": leadObj.password,
+                    })
+                });
+                const data = await res.json();
+                let newLeadObj = {
+                    "role": leadObj.role.toUpperCase(),
+                    "username": leadObj.username,
+                    "password": leadObj.password,
+                    "userId" : data.userId
+                }
+                dispatch(addNewLead({newLeadObj}))
+                console.log("hello9")
+                console.log(data)
+                dispatch(showNotification({message : "New Lead Added!", status : 1}))
+              } catch(error) {
+                  console.log("Error creating User", error);
+        
+              } finally {
+                  console.log("We fetched EmployeeInfo");
+              }
+      };
+
     return(
         <>
 
-            <InputText type="text" defaultValue={leadObj.first_name} updateType="first_name" containerStyle="mt-4" labelTitle="First Name" updateFormValue={updateFormValue}/>
+            <InputText type="text" defaultValue={leadObj.username} updateType="username" containerStyle="mt-4" labelTitle="username" updateFormValue={updateFormValue}/>
 
-            <InputText type="text" defaultValue={leadObj.last_name} updateType="last_name" containerStyle="mt-4" labelTitle="Last Name" updateFormValue={updateFormValue}/>
+            <InputText type="text" defaultValue={leadObj.password} updateType="password" containerStyle="mt-4" labelTitle="password" updateFormValue={updateFormValue}/>
 
-            <InputText type="email" defaultValue={leadObj.email} updateType="email" containerStyle="mt-4" labelTitle="Email Id" updateFormValue={updateFormValue}/>
+            <InputText type="text" defaultValue={leadObj.role} updateType="role" containerStyle="mt-4" labelTitle="role" updateFormValue={updateFormValue}/>
 
 
             <ErrorText styleClass="mt-16">{errorMessage}</ErrorText>
