@@ -15,18 +15,49 @@ function Login(){
     const [errorMessage, setErrorMessage] = useState("")
     const [loginObj, setLoginObj] = useState(INITIAL_LOGIN_OBJ)
 
-    const submitForm = (e) =>{
+    const submitForm = async (e) =>{
         e.preventDefault()
         setErrorMessage("")
 
         if(loginObj.emailId.trim() === "")return setErrorMessage("Email Id is required! (use any value)")
         if(loginObj.password.trim() === "")return setErrorMessage("Password is required! (use any value)")
         else{
-            setLoading(true)        
-            // Call API to check user credentials and save token in localstorage
-            localStorage.setItem("token", "DumyTokenHere")
-            setLoading(false)
-            window.location.href = '/app/welcome'
+            // call http://localhost:8080/api/users/login with loginObj
+
+            setLoading(true)
+
+        try {
+            // Making the API call
+            const response = await fetch("/api/users/login", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: loginObj.emailId, // Passing emailId as username
+                    password: loginObj.password
+                })
+            })
+
+            const data = await response.json();
+
+            console.log(data);
+
+            if (!data.role || !data.username) {
+                throw new Error(data.message || "Login failed!");
+            }
+
+            // Assuming the API returns a token
+            localStorage.setItem("token", data.token || "DummyTokenHere");
+            setLoading(false);
+
+            // Redirect to welcome page after successful login
+            window.location.href = '/app/welcome';
+
+        } catch (error) {
+            setLoading(false);
+            setErrorMessage(error.message || "An unexpected error occurred");
+        }
         }
     }
 

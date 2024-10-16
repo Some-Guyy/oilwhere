@@ -1,12 +1,14 @@
 package crm.oilwhere.dto;
 
+import crm.oilwhere.model.Role;
+
 public class LoginResponseDTO {
     private String username;
-    private String role;
+    private Role role;
     private String message;
 
     // constructor
-    public LoginResponseDTO(String username, String role, String message) {
+    public LoginResponseDTO(String username, Role role, String message) {
         this.username = username;
         this.role = role;
         this.message = message;
@@ -21,11 +23,11 @@ public class LoginResponseDTO {
         this.username = username;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 

@@ -1,9 +1,7 @@
 package crm.oilwhere.service;
 
 import crm.oilwhere.dto.UserDTO;
-import crm.oilwhere.model.MarketingTeam;
-import crm.oilwhere.model.SalesTeam;
-import crm.oilwhere.model.SystemAdministrator;
+import crm.oilwhere.model.Role;
 import crm.oilwhere.model.User;
 import crm.oilwhere.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -34,57 +32,61 @@ public class UserService {
 
     // create new user
     public User createUser(UserDTO userDTO) {
-        User newUser;
-        
-        // Determine the user type based on the role
-        switch (userDTO.getRole()) {
-            case "MARKETING":
-                newUser = new MarketingTeam();
-                break;
-            case "SALES":
-                newUser = new SalesTeam();
-                break;
-            case "ADMIN":
-                newUser = new SystemAdministrator();
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid role");
+        // Parse the role from the input and ensure it's valid
+        Role role;
+        try {
+            role = Role.valueOf(userDTO.getRole().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid role: " + userDTO.getRole());
         }
-
-        // Set common fields
+    
+        // Create a new User instance
+        User newUser = new User();
         newUser.setUsername(userDTO.getUsername());
         newUser.setPassword(userDTO.getPassword());
-        newUser.setRole(userDTO.getRole());
-
-        // Save the user
+        newUser.setRole(role);
+    
+        // Save the new user to the database
         return userRepository.save(newUser);
     }
+    
+// update user details (change username, password, or role except for admins)
+public User updateUser(Long id, UserDTO userDTO) {
+    Optional<User> optionalUser = userRepository.findById(id);
 
-    // update user details (change username, password or role except for admins)
-    public User updateUser(Long id, UserDTO userDTO) {
-        Optional<User> optionalUser = userRepository.findById(id);
+    if (optionalUser.isPresent()) {
+        User existingUser = optionalUser.get();
 
-        if (optionalUser.isPresent()) {
-            User existingUser = optionalUser.get();
+        // Prevent ADMIN users from updating other ADMIN users
+        if (existingUser.getRole() == Role.ADMIN && userDTO.getRole().equalsIgnoreCase("ADMIN")) {
+            throw new RuntimeException("ADMIN users cannot update other ADMIN users.");
+        }
 
-            // Prevent ADMIN users from updating other ADMIN users
-            if ("ADMIN".equals(existingUser.getRole()) && "ADMIN".equals(userDTO.getRole())) {
-                throw new RuntimeException("ADMIN users cannot update other ADMIN users.");
+        // Update the username and password
+        existingUser.setUsername(userDTO.getUsername());
+        existingUser.setPassword(userDTO.getPassword());
+
+        // Update the role if it's changing
+        if (!existingUser.getRole().toString().equalsIgnoreCase(userDTO.getRole())) {
+            // Parse the new role from the input
+            Role newRole;
+            try {
+                newRole = Role.valueOf(userDTO.getRole().toUpperCase());
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Invalid role: " + userDTO.getRole());
             }
 
-            // Update common fields (username, password)
-            existingUser.setUsername(userDTO.getUsername());
-            existingUser.setPassword(userDTO.getPassword());
-
-            // Update the role without deleting the old user
-            existingUser.setRole(userDTO.getRole());
-
-            // Save the updated user
-            return userRepository.save(existingUser);
-        } else {
-            throw new RuntimeException("User not found");
+            // Set the new role
+            existingUser.setRole(newRole);
         }
+
+        // Save the updated user
+        return userRepository.save(existingUser);
+    } else {
+        throw new RuntimeException("User not found");
     }
+}
+
 
     // delete user
     public String deleteUser(Long id) {
