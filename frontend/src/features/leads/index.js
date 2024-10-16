@@ -31,11 +31,12 @@ function Leads(){
         dispatch(getLeadsContent())
     }, [])
 
-    console.log(leads)
+    // console.log(leads)
 
-    const deleteCurrentLead = (index) => {
-        dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
-        extraObject : { message : `Are you sure you want to delete this lead?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.LEAD_DELETE, index}}))
+    const EditCurrentUSer = (data,index) => {
+        dispatch(openModal({title : "Edit User", bodyType : MODAL_BODY_TYPES.EDIT_USER,
+        extraObject : {data,index}
+        }))
     }
 
     return(
@@ -68,7 +69,7 @@ function Leads(){
                                     </td>
                                     <td>{l.username}</td>
                                     <td>{l.role}</td>
-                                    <td><button className="btn btn-square btn-ghost" onClick={() => deleteCurrentLead(k)}><PencilIcon className="h-6 w-6 text-gray-500" /></button></td>
+                                    <td><button className="btn btn-square btn-ghost" onClick={() => EditCurrentUSer(l,k)}><PencilIcon className="h-6 w-6 text-gray-500" /></button></td>
                                     </tr>
                                 )
                             })

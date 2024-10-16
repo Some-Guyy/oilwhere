@@ -4,8 +4,7 @@ import axios from 'axios'
 
 
 export const getLeadsContent = createAsyncThunk('/leads/content', async () => {
-	const response = await axios.get('http://localhost:8080/api/admin/users', {})
-    console.log(response.data)
+	const response = await axios.get('http://localhost:8080/api/users/get-all', {})
 	return response.data;
 }
 );
@@ -27,6 +26,13 @@ export const leadsSlice = createSlice({
         deleteLead: (state, action) => {
             let {index} = action.payload
             state.leads.splice(index, 1)
+        },
+        updateLead: (state, action) => {
+            const { userId, updatedLeadObj } = action.payload;
+            const index = state.leads.findIndex(lead => lead.userId === userId); // Assuming each lead has a userId
+            if (index !== -1) {
+                state.leads[index] = updatedLeadObj; // Update the lead at the found index
+            }
         }
     },
 
@@ -44,6 +50,6 @@ export const leadsSlice = createSlice({
     }
 })
 
-export const { addNewLead, deleteLead } = leadsSlice.actions
+export const { addNewLead, deleteLead,updateLead } = leadsSlice.actions
 
 export default leadsSlice.reducer

@@ -34,7 +34,7 @@ function AddLeadModalBody({closeModal}){
     }
 
     const CreateUser = async () => {
-        const apiUrl =  "http://localhost:8080/api/admin/users"
+        const apiUrl =  "http://localhost:8080/api/users/create"
         console.log(leadObj.username)
               try{
                 const res = await fetch(apiUrl,{
@@ -56,8 +56,6 @@ function AddLeadModalBody({closeModal}){
                     "userId" : data.userId
                 }
                 dispatch(addNewLead({newLeadObj}))
-                console.log("hello9")
-                console.log(data)
                 dispatch(showNotification({message : "New Lead Added!", status : 1}))
               } catch(error) {
                   console.log("Error creating User", error);

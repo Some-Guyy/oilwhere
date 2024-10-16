@@ -8,14 +8,33 @@ function ConfirmationModalBody({ extraObject, closeModal}){
 
     const dispatch = useDispatch()
 
-    const { message, type, _id, index} = extraObject
+    const { message, type, index, userId} = extraObject
 
+    const DeleteUser = async () => {
+        const apiUrl =  `http://localhost:8080/api/users/delete/${userId}`
+              try{
+                const res = await fetch(apiUrl,{
+                    method: 'DELETE',
+                    headers:{
+                        'Content-Type': 'application/json'
+                    },
+                });
+                if (res.ok){
+                    dispatch(deleteLead({index}))
+                    dispatch(showNotification({message : "User Deleted!", status : 1}))
+                }
+              } catch(error) {
+                  console.log("Error Deleting User", error);
+        
+              } finally {
+                  console.log("We Deleted User");
+              }
+      };
 
     const proceedWithYes = async() => {
         if(type === CONFIRMATION_MODAL_CLOSE_TYPES.LEAD_DELETE){
             // positive response, call api or dispatch redux function
-            dispatch(deleteLead({index}))
-            dispatch(showNotification({message : "Lead Deleted!", status : 1}))
+            DeleteUser()
         }
         closeModal()
     }
