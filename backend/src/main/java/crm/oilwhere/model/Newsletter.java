@@ -1,73 +1,52 @@
 package crm.oilwhere.model;
-import java.util.Date;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "newsletter")
 public class Newsletter {
-    private Long newsletterId;
-    private String subject;
-    private String body;
-    private String contentType;    
-    private double offerValue;    
-    private Date dateSent;         
+    @Id
+    @Column(name="design_id")
+    private Long designId;
 
-    //constructors
+    @Lob
+    @Column(name="content", columnDefinition = "TEXT")
+    private String content;
+
+    // constructors
     public Newsletter() {}
 
-    public Newsletter(Long newsletterId, String subject, String body, String contentType, double offerValue, Date dateSent) {
-        this.newsletterId = newsletterId;
-        this.subject = subject;
-        this.body = body;
-        this.contentType = contentType;
-        this.offerValue = offerValue;
-        this.dateSent = dateSent;
+    public Newsletter(Long designId, String content) {
+        this.designId = designId;
+        this.content = content;
     }
 
-    // Getters and Setters
-    public Long getNewsletterId() {
-        return newsletterId;
+    // getters and Setters
+    public Long getDesignId() {
+        return designId;
     }
 
-    public void setNewsletterId(Long newsletterId) {
-        this.newsletterId = newsletterId;
+    public void setDesignId(Long designId) { //dont really think we need this method but still put cause "best practices"
+        this.designId = designId;
     }
 
-    public String getSubject() {
-        return subject;
+    public String getContent() {
+        return content;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    public String getContentType() {
-        return contentType;
-    }
-
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
-    }
-
-    public double getOfferValue() {
-        return offerValue;
-    }
-
-    public void setOfferValue(double offerValue) {
-        this.offerValue = offerValue;
-    }
-
-    public Date getDateSent() {
-        return dateSent;
-    }
-
-    public void setDateSent(Date dateSent) {
-        this.dateSent = dateSent;
+    @Override
+    public String toString() {
+        return "Newsletter{" +
+                "designId=" + designId +
+                ", content='" + content + '\'' +
+                '}';
     }
 }
