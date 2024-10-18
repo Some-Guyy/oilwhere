@@ -20,6 +20,14 @@ CREATE TABLE IF NOT EXISTS `purchase_history` (
   PRIMARY KEY (`purchase_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- Create a new table to store the customer by total spending
+DROP TABLE IF EXISTS `customer_spending_ranked`;
+CREATE TABLE IF NOT EXISTS `customer_spending_ranked` (
+  `customer_id` INT NOT NULL,
+  `total_spending` DECIMAL(10, 2) NOT NULL,
+  PRIMARY KEY (`customer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 -- Create a temporary table with sale_date as VARCHAR
 DROP TABLE IF EXISTS `purchase_history_temp`;
 CREATE TABLE IF NOT EXISTS `purchase_history_temp` (
@@ -82,6 +90,11 @@ FROM `purchase_history_temp`;
 
 -- Drop the temporary table
 DROP TABLE IF EXISTS `purchase_history_temp`;
+
+INSERT INTO `customer_spending_ranked` (`customer_id`, `total_spending`)
+SELECT `customer_id`, SUM(`product_price`) AS `total_spending`
+FROM `purchase_history`
+GROUP BY `customer_id`;
 
 -- Manually inserting user details into user table
 INSERT INTO `user` (`username`, `role`, `password`) VALUES
