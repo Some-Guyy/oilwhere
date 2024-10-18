@@ -1,2 +1,2 @@
 #!/bin/bash
-java -jar target/oilwhere-0.0.1-SNAPSHOT.jar
+java -jar ./target/oilwhere-0.0.1-SNAPSHOT.jar
