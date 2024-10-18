@@ -25,7 +25,7 @@ A web application for Timperio to manage and analyse their customer data, as wel
 
     For Windows users, execute the `package.bat` file or run it in cmd.exe
 
-1. Run the backend Spring Boot application via Java jar.
+1. Run the backend Spring Boot application via Java jar. It will be on http://localhost:8080 by default.
 
     `~/oilwhere/backend$ source run.sh`
 
