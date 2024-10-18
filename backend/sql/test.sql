@@ -38,12 +38,32 @@ CREATE TABLE IF NOT EXISTS `newsletter` (
   PRIMARY KEY (`design_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- Create a new table to store the customer by total spending
+DROP TABLE IF EXISTS `customer_spending_ranked`;
+CREATE TABLE IF NOT EXISTS `customer_spending_ranked` (
+  `customer_id` INT NOT NULL,
+  `total_spending` DECIMAL(10, 2) NOT NULL,
+  PRIMARY KEY (`customer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 INSERT INTO `purchase_history` (`purchase_id`, `sale_date`, `sale_type`, `digital`, `customer_id`, `zipcode`, `shipping_method`, `product`, `variant`, `quantity`, `price`, `product_price`) VALUES
 (1, '2019-11-22', 'Direct - B2B', 'Online - Website', 1, '437050', 'Standard Delivery', 'Chili oil', 100, 3, 5.9, 17.7),
 (2, '2019-11-22', 'Consignment', 'Online - Website', 2, '126793', 'Standard Delivery', 'Organic Bio/Olio', 500, 2, 16.9, 33.8),
 (3, '2019-11-22', 'Marketing', 'Online - Website', 2, '126793', 'Standard Delivery', 'Basil oil', 100, 1, 5.9, 5.9),
 (4, '2020-05-22', 'Direct - B2C', 'Online - Website', 65, '101080', 'Standard Delivery', 'Truffle oil', 100, 1, 7.9, 6.32),
-(5, '2019-12-17', 'Direct - B2C', 'Online - Website', 36, '608531', 'Standard Delivery', 'Limited Edition Gift box 3x100ml', 2020, 2, 19.9, 39.8);
+(5, '2019-12-17', 'Direct - B2C', 'Online - Website', 36, '608531', 'Standard Delivery', 'Limited Edition Gift box 3x100ml', 2020, 2, 19.9, 39.8),
+(6, '2019-12-17', 'Direct - B2C', 'Online - Website', 3, '608531', 'Standard Delivery', 'Limited Edition Gift box 3x100ml', 2020, 2, 19.9, 39.8),
+(7, '2019-12-17', 'Direct - B2C', 'Online - Website', 4, '608531', 'Standard Delivery', 'Limited Edition Gift box 3x100ml', 2020, 2, 19.9, 39.8),
+(8, '2019-12-17', 'Direct - B2C', 'Online - Website', 5, '608531', 'Standard Delivery', 'Limited Edition Gift box 3x100ml', 2020, 2, 19.9, 39.8),
+(9, '2019-12-17', 'Direct - B2C', 'Online - Website', 6, '608531', 'Standard Delivery', 'Limited Edition Gift box 3x100ml', 2020, 2, 19.9, 39.8),
+(10, '2019-12-17', 'Direct - B2C', 'Online - Website', 7, '608531', 'Standard Delivery', 'Limited Edition Gift box 3x100ml', 2020, 2, 19.9, 39.8),
+(11, '2019-12-17', 'Direct - B2C', 'Online - Website', 8, '608531', 'Standard Delivery', 'Limited Edition Gift box 3x100ml', 2020, 2, 19.9, 39.8);
+
+INSERT INTO `customer_spending_ranked` (`customer_id`, `total_spending`)
+SELECT `customer_id`, SUM(`product_price`) AS `total_spending`
+FROM `purchase_history`
+GROUP BY `customer_id`;
+
 
 INSERT INTO `user` (`username`, `role`, `password`) VALUES
 ('marketing', 'MARKETING', '123'),
