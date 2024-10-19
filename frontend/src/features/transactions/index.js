@@ -7,6 +7,7 @@ import { RECENT_TRANSACTIONS } from "../../utils/dummyData"
 import FunnelIcon from '@heroicons/react/24/outline/FunnelIcon'
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon'
 import SearchBar from "../../components/Input/SearchBar"
+import { getTransactionsContent } from "./transactionsSlice"
 
 const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
 
@@ -37,9 +38,9 @@ const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
         <div className="inline-block float-right">
             <SearchBar searchText={searchText} styleClass="mr-4" setSearchText={setSearchText}/>
             {filterParam != "" && <button onClick={() => removeAppliedFilter()} className="btn btn-xs mr-2 btn-active btn-ghost normal-case">{filterParam}<XMarkIcon className="w-4 ml-2"/></button>}
-            <div className="dropdown dropdown-bottom dropdown-end z-50">
+            <div className="dropdown dropdown-bottom dropdown-end">
                 <label tabIndex={0} className="btn btn-sm btn-outline"><FunnelIcon className="w-5 mr-2"/>Filter</label>
-                <ul tabIndex={0} className="dropdown-content menu p-2 text-sm shadow bg-base-100 rounded-box w-52">
+                <ul tabIndex={0} className="dropdown-content menu p-2 text-sm shadow bg-base-100 rounded-box w-52 z-10">
                     {
                         locationFilters.map((l, k) => {
                             return  <li key={k}><a onClick={() => showFiltersAndApply(l)}>{l}</a></li>
@@ -54,13 +55,21 @@ const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
 }
 
 
+
+
 function Transactions(){
+    const {transactions } = useSelector(state => state.transaction)
+    const dispatch = useDispatch()
 
+    useEffect(() => {
+        dispatch(getTransactionsContent())
+    }, [])
+    console.log(transactions)
 
-    const [trans, setTrans] = useState(RECENT_TRANSACTIONS)
+    const [trans, setTrans] = useState(transactions)
 
     const removeFilter = () => {
-        setTrans(RECENT_TRANSACTIONS)
+        setTrans(transactions)
     }
 
     const applyFilter = (params) => {
@@ -84,11 +93,18 @@ function Transactions(){
                 <table className="table w-full">
                     <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Email Id</th>
-                        <th>Location</th>
-                        <th>Amount</th>
-                        <th>Transaction Date</th>
+                        <th>Purchase Id</th>
+                        <th>Sale Date</th>
+                        <th>Sale Type</th>
+                        <th>Digital</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Prodcut Price</th>
+                        <th>Customer Id</th>
+                        <th>Zipcode</th>
+                        <th>shipping Method</th>
+                        <th>Variant</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -96,22 +112,18 @@ function Transactions(){
                             trans.map((l, k) => {
                                 return(
                                     <tr key={k}>
-                                    <td>
-                                        <div className="flex items-center space-x-3">
-                                            <div className="avatar">
-                                                <div className="mask mask-circle w-12 h-12">
-                                                    <img src={l.avatar} alt="Avatar" />
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div className="font-bold">{l.name}</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>{l.email}</td>
-                                    <td>{l.location}</td>
-                                    <td>${l.amount}</td>
-                                    <td>{moment(l.date).format("D MMM")}</td>
+                                    <td>{l.purchaseId}</td>
+                                    <td>{l.saleDate}</td>
+                                    <td>{l.saleType}</td>
+                                    <td>{l.digital}</td>
+                                    <td>{l.product}</td>
+                                    <td>{l.quantity}</td>
+                                    <td>${l.price}</td>
+                                    <td>${l.productPrice}</td>
+                                    <td>{l.customerId}</td>
+                                    <td>{l.zipcode}</td>
+                                    <td>{l.shippingMethod}</td>
+                                    <td>{l.variant}</td>
                                     </tr>
                                 )
                             })

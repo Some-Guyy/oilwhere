@@ -29,9 +29,9 @@ export const leadsSlice = createSlice({
         },
         updateLead: (state, action) => {
             const { userId, updatedLeadObj } = action.payload;
-            const index = state.leads.findIndex(lead => lead.userId === userId); // Assuming each lead has a userId
+            const index = state.leads.findIndex(lead => lead.userId === userId); 
             if (index !== -1) {
-                state.leads[index] = updatedLeadObj; // Update the lead at the found index
+                state.leads[index] = updatedLeadObj; 
             }
         }
     },
