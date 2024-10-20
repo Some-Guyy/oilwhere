@@ -53,7 +53,7 @@ function DashboardTopBar({updateDashboardPeriod}){
                 containerStyle="w-72"
                 labelStyle="hidden"
                 defaultValue="TODAY"
-                updateFormValue={updateSelectBoxValue}
+                // updateFormValue={updateSelectBoxValue}
             /> */}
             </div>
             <div className="text-right ">

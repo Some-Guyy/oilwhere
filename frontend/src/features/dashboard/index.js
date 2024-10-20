@@ -10,10 +10,12 @@ import UserChannels from './components/UserChannels'
 import LineChart from './components/LineChart'
 import BarChart from './components/BarChart'
 import DashboardTopBar from './components/DashboardTopBar'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from "react-redux"
 import {showNotification} from '../common/headerSlice'
 import DoughnutChart from './components/DoughnutChart'
-import { useState } from 'react'
+import { useEffect, useState } from "react"
+import { getTransactionsContent } from '../transactions/transactionsSlice'
+
 
 const statsData = [
     {title : "New Users", value : "34.7k", icon : <UserGroupIcon className='w-8 h-8'/>, description : "↗︎ 2300 (22%)"},
@@ -26,7 +28,15 @@ const statsData = [
 
 function Dashboard(){
 
+    const {transactions } = useSelector(state => state.transaction)
+
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        if(transactions.length == 0){
+        dispatch(getTransactionsContent())
+        }
+    }, [])
  
 
     const updateDashboardPeriod = (newRange) => {
