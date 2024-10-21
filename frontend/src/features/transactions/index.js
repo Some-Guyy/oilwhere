@@ -16,6 +16,8 @@ const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
     const [searchText, setSearchText] = useState("")
     const SaleTypefilters = ["Consignment", "Direct - B2B", "Direct - B2C", "Marketing", "Wholesaler","null"]
     const [isMounted, setIsMounted] = useState(false);
+    const [Above,setAbove] = useState("")
+    const [Below,setBelow] = useState("")
     // const [formatedDateValue,setformatedDateValue] = useState({ 
     //     startDate: null, 
     //     endDate: null 
@@ -26,7 +28,7 @@ const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
     }); 
     
     const handleDatePickerValueChange = (newValue) => {
-        console.log("newValue:", newValue); 
+        // console.log("newValue:", newValue); 
         setDateValue(newValue); 
         // const formattedStartDate = newValue.startDate.getFullYear() + '-' + String(newValue.startDate.getMonth() + 1).padStart(2, '0') + '-' + String(newValue.startDate.getDate()).padStart(2, '0');
         // const formattedEndDate = newValue.endDate.getFullYear() + '-' + String(newValue.endDate.getMonth() + 1).padStart(2, '0') + '-' + String(newValue.endDate.getDate()).padStart(2, '0');
@@ -35,6 +37,14 @@ const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
         //     endDate: formattedEndDate,
         // });
     } 
+
+    const updateAboveInput = (num) => {
+        setAbove(num)
+    }
+
+    const updateBelowInput = (num) => {
+        setBelow(num)
+    }
 
     const showFiltersAndApply = (params) => {
         if (filterParam.includes(params)){
@@ -47,11 +57,11 @@ const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
 
     useEffect(() => {
         if (isMounted) {
-            applyFilter(filterParam,searchText,dateValue);
+            applyFilter(filterParam,searchText,dateValue,Above,Below);
         } else {
             setIsMounted(true);
         }
-    }, [filterParam,searchText,dateValue]);
+    }, [filterParam,searchText,dateValue,Above,Below]);
 
     const removeAppliedFilter = () => {
         removeFilter()
@@ -80,7 +90,7 @@ const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
             </div>
             <SearchBar searchText={searchText} styleClass="mr-4" setSearchText={setSearchText} placeholderText="Search CId"/>
             {/* {filterParam.length>0 && <button onClick={() => removeAppliedFilter()} className="btn btn-xs mr-2 btn-active btn-ghost normal-case">{filterParam}<XMarkIcon className="w-4 ml-2"/></button>} */}
-            <div className="dropdown dropdown-bottom dropdown-end">
+            <div className="dropdown dropdown-bottom dropdown-end mr-4">
                 <label tabIndex={0} className="btn btn-sm btn-outline "><FunnelIcon className="w-5 mr-2"/>SaleType</label>
                 <ul tabIndex={0} className="dropdown-content menu p-2 text-sm shadow bg-base-100 rounded-box w-40 z-10">
                     {
@@ -90,6 +100,30 @@ const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
                     }
                     <div className="divider mt-0 mb-0"></div>
                     <li><a onClick={() => removeAppliedFilter()}>Remove Filter</a></li>
+                </ul>
+            </div>
+            <div className="dropdown dropdown-bottom dropdown-end">
+                <label tabIndex={0} className="btn btn-sm btn-outline "><FunnelIcon className="w-5 mr-2"/>Value</label>
+                <ul tabIndex={0} className="dropdown-content menu p-2 text-sm shadow bg-base-100 rounded-box w-40 z-10">
+                            {/* First Input Field */}
+                    <li className="mt-4">
+                        <input 
+                            type="number" 
+                            placeholder="Above" 
+                            className="input input-sm input-bordered w-full mb-2 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                            onChange={(e) => updateAboveInput(e.target.value)} 
+                        />
+                    </li>
+                    
+                    {/* Second Input Field */}
+                    <li className="mt-2">
+                        <input 
+                            type="number" 
+                            placeholder="Below" 
+                            className="input input-sm input-bordered w-full mb-2 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
+                            onChange={(e) => updateBelowInput(e.target.value)}
+                        />
+                    </li>
                 </ul>
             </div>
         </div>
@@ -116,10 +150,9 @@ function Transactions(){
         setTrans(transactions)
     }
 
-    const applyFilter = (params,Id,date) => {
-        console.log(date)
+    const applyFilter = (params,Id,date,Above,Below) => {
         let filteredTransactions = transactions
-        if (params.length == 0 || Id == "" || date.startDate == null){
+        if (params.length == 0 || Id == "" || date.startDate == null || Above == "" || Below == ""){
             setTrans(transactions)
         }
         if(Id != ""){
@@ -132,8 +165,19 @@ function Transactions(){
             filteredTransactions = filteredTransactions.filter((t) => {
                 const transactionDate = new Date(t.saleDate);
                 return transactionDate >= date.startDate && transactionDate <= date.endDate 
-            });
-            
+            });  
+        }
+        if (Above != ""){
+            filteredTransactions = filteredTransactions.filter((t) => {
+                const transactionPrice = t.productPrice;
+                return transactionPrice >= parseInt(Above)
+            });  
+        }
+        if (Below != ""){
+            filteredTransactions = filteredTransactions.filter((t) => {
+                const transactionPrice = t.productPrice;
+                return transactionPrice <= parseInt(Below)
+            });  
         }
         setTrans(filteredTransactions)
     }
