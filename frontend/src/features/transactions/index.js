@@ -71,10 +71,13 @@ const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
                 startDate: null,
                 endDate: null,
             });
+        setAbove("")
+        setBelow("")
     }
 
     return(
         <div className="inline-block float-right">
+            <button onClick={() => removeAppliedFilter()} className="btn btn-xs mr-2 btn-active btn-ghost normal-case">Reser filters<XMarkIcon className="w-4 ml-2"/></button>
             <div className="inline-block" >
                 <Datepicker 
                     containerClassName="w" 
@@ -99,7 +102,6 @@ const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
                         })
                     }
                     <div className="divider mt-0 mb-0"></div>
-                    <li><a onClick={() => removeAppliedFilter()}>Remove Filter</a></li>
                 </ul>
             </div>
             <div className="dropdown dropdown-bottom dropdown-end">
@@ -109,7 +111,8 @@ const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
                     <li className="mt-4">
                         <input 
                             type="number" 
-                            placeholder="Above" 
+                            placeholder="Above"
+                            value={Above} 
                             className="input input-sm input-bordered w-full mb-2 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                             onChange={(e) => updateAboveInput(e.target.value)} 
                         />
@@ -120,6 +123,7 @@ const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
                         <input 
                             type="number" 
                             placeholder="Below" 
+                            value={Below}
                             className="input input-sm input-bordered w-full mb-2 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
                             onChange={(e) => updateBelowInput(e.target.value)}
                         />
@@ -179,22 +183,92 @@ function Transactions(){
                 return transactionPrice <= parseInt(Below)
             });  
         }
+        firstPage()
         setTrans(filteredTransactions)
     }
 
-    // Search according to name
-    // const applySearch = (value) => {
-    //     console.log(value)
-    //     let filteredTransactions = transactions.filter((t) => {return t.customerId == value})
-    //     setTrans(filteredTransactions)
-    // }
+    const [itemsPerPage,setitemsPerPage] = useState(10);
+    const [lowerlimit,setlowerlimit] = useState(1)
+    const [upperlimit,setupperlimit] = useState(5)
+    const [currentpage,setcurrentPage] = useState(1)
+
+    const totalPages = Math.ceil(trans.length / itemsPerPage);
+
+    const handlePageChange = (value) => {
+        if (value > totalPages || value < 1){
+            return
+        }
+        if (lowerlimit > 2 && upperlimit-2 < trans.length){
+            setlowerlimit(value-2)
+            setupperlimit(value+2)
+        }
+        setcurrentPage(value)
+    }
+
+    const firstPage = () => {
+        setcurrentPage(1)
+        setlowerlimit(1)
+        setupperlimit(5)
+    }
+
+    const lastpage = () => {
+        setcurrentPage(totalPages)
+        setupperlimit(totalPages)
+        if(totalPages-5 > 1){
+            setlowerlimit(totalPages-5)
+        }
+        else{
+            setlowerlimit(1)
+        }
+    }
 
     return(
         <>
             
             <TitleCard title="Recent Transactions" topMargin="mt-2" TopSideButtons={<TopSideButtons  applyFilter={applyFilter} removeFilter={removeFilter}/>}>
+            <div className="flex justify-center space-x-1 text-white mb-2">
+
+                <button title="First" type="button" className="inline-flex items-center justify-center w-8 h-8 py-0 border rounded-md shadow-md dark:border-gray-600 dark:border-gray-100" onClick={(e)=>firstPage()}>
+                    <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-4">
+                        <polyline points="13 18 9 12 13 6"></polyline>  
+                        <polyline points="19 18 15 12 19 6"></polyline> 
+                    </svg>
+                </button>
+                <button title="previous" type="button" className="inline-flex items-center justify-center w-8 h-8 py-0 border rounded-md shadow-md dark:border-gray-600 dark:border-gray-100" onClick={(e)=>handlePageChange(currentpage-1)}>
+                    <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-4">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+                {Array.from({ length: totalPages > 5 ? 5: totalPages }, (_, index) => {
+                    const buttonNumber = index + lowerlimit;
+                    return (
+                    <button
+                        key={buttonNumber}
+                        data-value={buttonNumber}
+                        onClick={(e)=>handlePageChange(e.currentTarget.dataset.value)}
+                        className={currentpage==buttonNumber?"inline-flex items-center justify-center w-8 h-8 text-sm font-semibold border rounded shadow-md dark:border-gray-600  dark:border-violet-600":"inline-flex items-center justify-center w-8 h-8 text-sm font-semibold border rounded shadow-md dark:border-gray-600 "}
+                    >
+                        {buttonNumber}
+                    </button> 
+                    );
+                })}
+
+                <button title="next" type="button" className="inline-flex items-center justify-center w-8 h-8 py-0 border rounded-md shadow-md dark:border-gray-600 dark:border-gray-100" onClick={(e)=>handlePageChange(currentpage+1)}>
+                    <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-4">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+                <button title="last" type="button" className="inline-flex items-center justify-center w-8 h-8 py-0 border rounded-md shadow-md dark:border-gray-600 dark:border-gray-100" onClick={(e)=>lastpage()}>
+                    <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-4">
+                        <polyline points="11 6 15 12 11 18"></polyline> 
+                        <polyline points="5 6 9 12 5 18"></polyline>  
+                    </svg>
+                </button>
+
+            </div>
 
                 {/* Team Member list in table format loaded constant */}
+            {trans.length == 0?<span className="flex justify-center text-xl">no applicable transaction</span>:
             <div className="overflow-x-auto w-full">
                 <table className="table w-full">
                     <thead>
@@ -215,7 +289,7 @@ function Transactions(){
                     </thead>
                     <tbody>
                         {
-                            trans.map((l, k) => {
+                            trans.slice(itemsPerPage*(currentpage-1),itemsPerPage*currentpage).map((l, k) => {
                                 return(
                                     <tr key={k}>
                                     <td>{l.purchaseId}</td>
@@ -238,6 +312,47 @@ function Transactions(){
                         }
                     </tbody>
                 </table>
+            </div>
+            }
+            <div className="flex justify-center space-x-1 text-white mt-2">
+
+                <button title="First" type="button" className="inline-flex items-center justify-center w-8 h-8 py-0 border rounded-md shadow-md dark:border-gray-600 dark:border-gray-100" onClick={(e)=>firstPage()}>
+                    <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-4">
+                        <polyline points="13 18 9 12 13 6"></polyline>  
+                        <polyline points="19 18 15 12 19 6"></polyline> 
+                    </svg>
+                </button>
+                <button title="previous" type="button" className="inline-flex items-center justify-center w-8 h-8 py-0 border rounded-md shadow-md dark:border-gray-600 dark:border-gray-100" onClick={(e)=>handlePageChange(currentpage-1)}>
+                    <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-4">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+                {Array.from({ length: totalPages > 5 ? 5: totalPages }, (_, index) => {
+                    const buttonNumber = index + lowerlimit;
+                    return (
+                    <button
+                        key={buttonNumber}
+                        data-value={buttonNumber}
+                        onClick={(e)=>handlePageChange(e.currentTarget.dataset.value)}
+                        className={currentpage==buttonNumber?"inline-flex items-center justify-center w-8 h-8 text-sm font-semibold border rounded shadow-md dark:border-gray-600  dark:border-violet-600":"inline-flex items-center justify-center w-8 h-8 text-sm font-semibold border rounded shadow-md dark:border-gray-600 "}
+                    >
+                        {buttonNumber}
+                    </button> 
+                    );
+                })}
+
+                <button title="next" type="button" className="inline-flex items-center justify-center w-8 h-8 py-0 border rounded-md shadow-md dark:border-gray-600 dark:border-gray-100" onClick={(e)=>handlePageChange(currentpage+1)}>
+                    <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-4">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+                <button title="last" type="button" className="inline-flex items-center justify-center w-8 h-8 py-0 border rounded-md shadow-md dark:border-gray-600 dark:border-gray-100" onClick={(e)=>lastpage()}>
+                    <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-4">
+                        <polyline points="11 6 15 12 11 18"></polyline> 
+                        <polyline points="5 6 9 12 5 18"></polyline>  
+                    </svg>
+                </button>
+
             </div>
             </TitleCard>
         </>
