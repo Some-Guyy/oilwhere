@@ -69,7 +69,7 @@ function Leads(){
                                     </td>
                                     <td>{l.username}</td>
                                     <td>{l.role}</td>
-                                    <td><button className="btn btn-square btn-ghost" onClick={() => EditCurrentUSer(l,k)}><PencilIcon className="h-6 w-6 text-gray-500" /></button></td>
+                                    {l.role!="ADMIN"?<td><button className="btn btn-square btn-ghost" onClick={() => EditCurrentUSer(l,k)}><PencilIcon className="h-6 w-6 text-gray-500" /></button></td>:<td></td>}
                                     </tr>
                                 )
                             })

@@ -5,7 +5,7 @@ import axios from 'axios'
 
 export const getTransactionsContent = createAsyncThunk('/transactions/content', async () => {
 	const response = await axios.get('http://localhost:8080/api/purchase/get-all', {})
-	return response.data;
+	return response.data.reverse();
 }
 );
 

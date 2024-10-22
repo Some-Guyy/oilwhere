@@ -77,7 +77,7 @@ const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
 
     return(
         <div className="inline-block float-right">
-            <button onClick={() => removeAppliedFilter()} className="btn btn-xs mr-2 btn-active btn-ghost normal-case">Reser filters<XMarkIcon className="w-4 ml-2"/></button>
+            <button onClick={() => removeAppliedFilter()} className="btn btn-xs mr-2 btn-active btn-ghost normal-case">Reset filters<XMarkIcon className="w-4 ml-2"/></button>
             <div className="inline-block" >
                 <Datepicker 
                     containerClassName="w" 
@@ -226,8 +226,8 @@ function Transactions(){
         <>
             
             <TitleCard title="Recent Transactions" topMargin="mt-2" TopSideButtons={<TopSideButtons  applyFilter={applyFilter} removeFilter={removeFilter}/>}>
+            <div className="flex justify-center text-sm mb-1">page {currentpage} of {totalPages}</div>
             <div className="flex justify-center space-x-1 text-white mb-2">
-
                 <button title="First" type="button" className="inline-flex items-center justify-center w-8 h-8 py-0 border rounded-md shadow-md dark:border-gray-600 dark:border-gray-100" onClick={(e)=>firstPage()}>
                     <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-4">
                         <polyline points="13 18 9 12 13 6"></polyline>  
@@ -354,6 +354,7 @@ function Transactions(){
                 </button>
 
             </div>
+            <div className="flex justify-center text-sm mt-1">page {currentpage} of {totalPages}</div>
             </TitleCard>
         </>
     )
