@@ -9,8 +9,11 @@ import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon'
 import SearchBar from "../../components/Input/SearchBar"
 import { getTransactionsContent } from "./transactionsSlice"
 import Datepicker from "react-tailwindcss-datepicker"; 
+import { current } from "@reduxjs/toolkit"
+import { CSVLink } from "react-csv"
+import { ArrowUpOnSquareIcon } from "@heroicons/react/24/outline"
 
-const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
+const TopSideButtons = ({removeFilter, applyFilter}) => {
 
     const [filterParam, setFilterParam] = useState([])
     const [searchText, setSearchText] = useState("")
@@ -195,14 +198,30 @@ function Transactions(){
     const totalPages = Math.ceil(trans.length / itemsPerPage);
 
     const handlePageChange = (value) => {
-        if (value > totalPages || value < 1){
+        if(value == 1 || value == 2 || value == 0 ){
+            setlowerlimit(1)
+            setupperlimit(5)
+        }
+        else if(value == totalPages-1 || value == totalPages-2 || value == totalPages){
+            if(totalPages<5){
+                setlowerlimit(1)
+                setupperlimit(5)
+            }
+            else{
+            setlowerlimit(totalPages-4)
+            setupperlimit(totalPages)
+            }
+        }
+        else if (value > totalPages || value < 1){
             return
         }
-        if (lowerlimit > 2 && upperlimit-2 < trans.length){
+        else if (value - 3 >= 0 && upperlimit-2 < totalPages){
             setlowerlimit(value-2)
             setupperlimit(value+2)
         }
-        setcurrentPage(value)
+        if(value != 0){
+            setcurrentPage(value)
+        }
     }
 
     const firstPage = () => {
@@ -214,8 +233,8 @@ function Transactions(){
     const lastpage = () => {
         setcurrentPage(totalPages)
         setupperlimit(totalPages)
-        if(totalPages-5 > 1){
-            setlowerlimit(totalPages-5)
+        if(totalPages-4 > 1){
+            setlowerlimit(totalPages-4)
         }
         else{
             setlowerlimit(1)
@@ -224,48 +243,59 @@ function Transactions(){
 
     return(
         <>
-            
             <TitleCard title="Recent Transactions" topMargin="mt-2" TopSideButtons={<TopSideButtons  applyFilter={applyFilter} removeFilter={removeFilter}/>}>
             <div className="flex justify-center text-sm mb-1">page {currentpage} of {totalPages}</div>
-            <div className="flex justify-center space-x-1 text-white mb-2">
-                <button title="First" type="button" className="inline-flex items-center justify-center w-8 h-8 py-0 border rounded-md shadow-md dark:border-gray-600 dark:border-gray-100" onClick={(e)=>firstPage()}>
-                    <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-4">
-                        <polyline points="13 18 9 12 13 6"></polyline>  
-                        <polyline points="19 18 15 12 19 6"></polyline> 
-                    </svg>
-                </button>
-                <button title="previous" type="button" className="inline-flex items-center justify-center w-8 h-8 py-0 border rounded-md shadow-md dark:border-gray-600 dark:border-gray-100" onClick={(e)=>handlePageChange(currentpage-1)}>
-                    <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-4">
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                </button>
-                {Array.from({ length: totalPages > 5 ? 5: totalPages }, (_, index) => {
-                    const buttonNumber = index + lowerlimit;
-                    return (
-                    <button
-                        key={buttonNumber}
-                        data-value={buttonNumber}
-                        onClick={(e)=>handlePageChange(e.currentTarget.dataset.value)}
-                        className={currentpage==buttonNumber?"inline-flex items-center justify-center w-8 h-8 text-sm font-semibold border rounded shadow-md dark:border-gray-600  dark:border-violet-600":"inline-flex items-center justify-center w-8 h-8 text-sm font-semibold border rounded shadow-md dark:border-gray-600 "}
-                    >
-                        {buttonNumber}
-                    </button> 
-                    );
-                })}
+            <div className="relative flex justify-center items-center mb-2">
+                <div className="flex justify-center space-x-1 text-white mb-2">
+                    <button title="First" type="button" className="inline-flex items-center justify-center w-8 h-8 py-0 border rounded-md shadow-md dark:border-gray-600 dark:border-gray-100" onClick={(e)=>firstPage()}>
+                        <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-4">
+                            <polyline points="13 18 9 12 13 6"></polyline>  
+                            <polyline points="19 18 15 12 19 6"></polyline> 
+                        </svg>
+                    </button>
+                    <button title="previous" type="button" className="inline-flex items-center justify-center w-8 h-8 py-0 border rounded-md shadow-md dark:border-gray-600 dark:border-gray-100" onClick={(e)=>handlePageChange(currentpage-1)}>
+                        <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-4">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                    </button>
+                    {Array.from({ length: totalPages > 5 ? 5: totalPages }, (_, index) => {
+                        const buttonNumber = index + lowerlimit;
+                        return (
+                        <button
+                            key={buttonNumber}
+                            data-value={buttonNumber}
+                            onClick={(e)=>handlePageChange(e.currentTarget.dataset.value)}
+                            className={currentpage==buttonNumber?"inline-flex items-center justify-center w-8 h-8 text-sm font-semibold border rounded shadow-md dark:border-gray-600  dark:border-violet-600":"inline-flex items-center justify-center w-8 h-8 text-sm font-semibold border rounded shadow-md dark:border-gray-600 "}
+                        >
+                            {buttonNumber}
+                        </button> 
+                        );
+                    })}
 
-                <button title="next" type="button" className="inline-flex items-center justify-center w-8 h-8 py-0 border rounded-md shadow-md dark:border-gray-600 dark:border-gray-100" onClick={(e)=>handlePageChange(currentpage+1)}>
-                    <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-4">
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                </button>
-                <button title="last" type="button" className="inline-flex items-center justify-center w-8 h-8 py-0 border rounded-md shadow-md dark:border-gray-600 dark:border-gray-100" onClick={(e)=>lastpage()}>
-                    <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-4">
-                        <polyline points="11 6 15 12 11 18"></polyline> 
-                        <polyline points="5 6 9 12 5 18"></polyline>  
-                    </svg>
-                </button>
+                    <button title="next" type="button" className="inline-flex items-center justify-center w-8 h-8 py-0 border rounded-md shadow-md dark:border-gray-600 dark:border-gray-100" onClick={(e)=>handlePageChange(currentpage+1)}>
+                        <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-4">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                    <button title="last" type="button" className="inline-flex items-center justify-center w-8 h-8 py-0 border rounded-md shadow-md dark:border-gray-600 dark:border-gray-100" onClick={(e)=>lastpage()}>
+                        <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-4">
+                            <polyline points="11 6 15 12 11 18"></polyline> 
+                            <polyline points="5 6 9 12 5 18"></polyline>  
+                        </svg>
+                    </button>
 
+                </div>
+                <div className="absolute right-0 mb-2">
+                    <CSVLink
+                        data={trans}
+                        filename="Export_transactions.csv"
+                        className="flex items-center space-x-1 px-4 py-2 bg-gray-600 text-white font-semibold rounded-lg shadow hover:bg-gray-700 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition duration-300">
+                        <span>Export</span>
+                        <ArrowUpOnSquareIcon width={20} height={20} />
+                    </CSVLink>
+                    </div>
             </div>
+            
 
                 {/* Team Member list in table format loaded constant */}
             {trans.length == 0?<span className="flex justify-center text-xl">no applicable transaction</span>:
