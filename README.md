@@ -8,15 +8,20 @@ A web application for Timperio to manage and analyse their customer data, as wel
 - A running [MySQL](https://dev.mysql.com/doc/mysql-installation-excerpt/5.7/en/) server
   - or alternatively, [WAMP](https://wampserver.aviatechno.net/)
   - or alternatively, [MAMP](https://www.mamp.info/en/windows/)
-- .env file in the `backend` directory to store MySQL credentials. Here are the default values for WAMP users:
-  ```
-  MYSQL_HOST=localhost
-  MYSQL_PORT=3306
-  MYSQL_DB=oilwhere_test
-  MYSQL_USERNAME=root
-  MYSQL_PASSWORD=
-  ```
-  MAMP users will have MYSQL_PASSWORD=root
+- A Google account setup with an [app password](https://support.google.com/mail/answer/185833?hl=en)
+- .env file in the `backend` directory to store MySQL credentials. Here are the default values for WAMP users (_replace the values in `<>` to with your own credentials_):
+    ```
+    MYSQL_HOST=localhost
+    MYSQL_PORT=3306
+    MYSQL_DB=oilwhere_test
+    MYSQL_USERNAME=root
+    MYSQL_PASSWORD=
+    SMTP_HOST=smtp.gmail.com
+    SMTP_PORT=587
+    SMTP_USERNAME=<your Gmail address>
+    SMTP_PASSWORD=<your app password>
+    ```
+    MAMP users will have MYSQL_PASSWORD=root
 
 ### Running the app:
 1. Package the backend Spring Boot application.
