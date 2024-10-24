@@ -1,7 +1,10 @@
 package crm.oilwhere.service;
 
 import crm.oilwhere.dto.NewsletterDTO;
+import crm.oilwhere.dto.UserDTO;
 import crm.oilwhere.model.Newsletter;
+import crm.oilwhere.model.Role;
+import crm.oilwhere.model.User;
 import crm.oilwhere.repository.NewsletterRepository;
 import crm.oilwhere.util.EmailBuilderUtil;
 
@@ -29,10 +32,9 @@ public class NewsletterService {
         this.emailBuilderUtil = emailBuilderUtil;
     }
 
-    // get newsletter by id
-    public Newsletter getById(Long id) {
-        return newsletterRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    // get all templates
+    public List<Newsletter> getAll() {
+        return newsletterRepository.findAll();
     }
 
     // update templates
@@ -50,6 +52,28 @@ public class NewsletterService {
 
     }
 
+    //create newsletter template
+    public Newsletter createNewsletter(NewsletterDTO newsletterDTO) {
+
+        // new template instance
+        Newsletter newTemplate = new Newsletter();
+        newTemplate.setName(newsletterDTO.getName());
+        newTemplate.setContent(newsletterDTO.getContent());
+    
+        // Save the new user to the database
+        return newsletterRepository.save(newTemplate);
+    }
+
+    //delete newsletter template
+    public String deleteTemplate(Long id) {
+        if (newsletterRepository.existsById(id)) {
+            newsletterRepository.deleteById(id);
+            return "Template deleted";
+        } else {
+            throw new RuntimeException("Template not found");
+        }
+    }
+
     public void sendMail(String custName, String custEmail, String subject, String body) {
         try {
             String fromName = "Timperio";
@@ -61,5 +85,7 @@ public class NewsletterService {
             e.printStackTrace();
         }
     }
+
+    
 
 }

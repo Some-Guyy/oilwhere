@@ -2,6 +2,8 @@ package crm.oilwhere.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
@@ -10,8 +12,12 @@ import jakarta.persistence.Table;
 @Table(name = "newsletter")
 public class Newsletter {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="design_id")
     private Long designId;
+
+    @Column(name="name")
+    private String name;
 
     @Lob
     @Column(name="content", columnDefinition = "TEXT")
@@ -20,8 +26,9 @@ public class Newsletter {
     // constructors
     public Newsletter() {}
 
-    public Newsletter(Long designId, String content) {
+    public Newsletter(Long designId, String name, String content) {
         this.designId = designId;
+        this.name = name;
         this.content = content;
     }
 
@@ -32,6 +39,14 @@ public class Newsletter {
 
     public void setDesignId(Long designId) { //dont really think we need this method but still put cause "best practices"
         this.designId = designId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getContent() {

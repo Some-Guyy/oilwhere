@@ -2,6 +2,7 @@ package crm.oilwhere.dto;
 
 public class NewsletterDTO {
     private Long designId;
+    private String name;
     private String content;
 
     // getters and setters
@@ -11,6 +12,14 @@ public class NewsletterDTO {
 
     public void setId(Long designId) {
         this.designId = designId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getContent() {
