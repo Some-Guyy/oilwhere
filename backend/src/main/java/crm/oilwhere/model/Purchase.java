@@ -82,6 +82,9 @@ public class Purchase {
     }
 
     public String getSaleType() {
+        if (saleType == null) {
+            return "null";
+        }
         return saleType;
     }
 

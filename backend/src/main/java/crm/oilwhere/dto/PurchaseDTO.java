@@ -27,6 +27,9 @@ public class PurchaseDTO {
     }
 
     public String getSaleType() {
+        if (saleType == null) {
+            return "null";
+        }
         return saleType;
     }
 
