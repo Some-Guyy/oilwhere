@@ -15,6 +15,8 @@ function EditUserModalBody({extraObject,closeModal}){
     const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
     const {data,index} = extraObject
+    const roles = ["ADMIN","SALES","MARKETING"]
+    const [isOpen, setIsOpen] = useState(false);
 
     const INITIAL_LEAD_OBJ = {
         username : data.username,
@@ -42,6 +44,17 @@ function EditUserModalBody({extraObject,closeModal}){
         setErrorMessage("")
         setLeadObj({...leadObj, [updateType] : value})
     }
+
+    const updateRole = (value) => {
+        setIsOpen(false); 
+        setErrorMessage("")
+        setLeadObj({...leadObj, role : value})
+    }
+
+    const toggleDropdown = () => {
+        setIsOpen(!isOpen);
+      };
+
 
     const UpdateUser = async () => {
         const apiUrl =  `http://localhost:8080/api/users/${data.userId}`
@@ -80,8 +93,23 @@ function EditUserModalBody({extraObject,closeModal}){
 
             <InputText type="text" defaultValue={leadObj.username} updateType="username" containerStyle="mt-4" labelTitle="username" updateFormValue={updateFormValue}/>
 
-            <InputText type="text" defaultValue={leadObj.role} updateType="role" containerStyle="mt-4" labelTitle="role" updateFormValue={updateFormValue}/>
+            {/* <InputText type="text" defaultValue={leadObj.role} updateType="role" containerStyle="mt-4" labelTitle="role" updateFormValue={updateFormValue}/> */}
 
+            <div className="dropdown dropdown-bottom dropdown-end mr-4 mt-4 form-control w-full">
+            <label className="label">
+                <span className="label-text text-base-content ">role</span>
+            </label>
+            <label tabIndex="0" className="btn m-1" onClick={toggleDropdown}>{leadObj.role}</label>
+            {isOpen ? 
+            <ul tabIndex="0" className="dropdown-content menu p-2 text-sm shadow bg-base-100 rounded-box w-full z-10">
+                {
+                    roles.map((role,i) =>{
+                        return <li key={i}><a onClick={()=>updateRole(role)}>{role}</a></li>
+                    })
+                }
+            </ul>
+            :null}
+            </div>
 
             <ErrorText styleClass="mt-16">{errorMessage}</ErrorText>
             <div className="modal-action flex justify-between items-center">
