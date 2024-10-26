@@ -1,10 +1,7 @@
 package crm.oilwhere.service;
 
 import crm.oilwhere.dto.NewsletterDTO;
-import crm.oilwhere.dto.UserDTO;
 import crm.oilwhere.model.Newsletter;
-import crm.oilwhere.model.Role;
-import crm.oilwhere.model.User;
 import crm.oilwhere.repository.NewsletterRepository;
 import crm.oilwhere.util.EmailBuilderUtil;
 
@@ -43,6 +40,7 @@ public class NewsletterService {
 
         if (optionalNewsletter.isPresent()) {
             Newsletter existingTemplate = optionalNewsletter.get();
+            existingTemplate.setName(newsletterDTO.getName());
             existingTemplate.setContent(newsletterDTO.getContent());
 
             return newsletterRepository.save(existingTemplate);
