@@ -17,7 +17,8 @@ const ProfileSettings = lazy(() => import('../pages/protected/ProfileSettings'))
 const GettingStarted = lazy(() => import('../pages/GettingStarted'))
 const DocFeatures = lazy(() => import('../pages/DocFeatures'))
 const DocComponents = lazy(() => import('../pages/DocComponents'))
-const Email = lazy(() => import('../pages/protected/Email'))
+const Newsletter = lazy(() => import('../pages/protected/Newsletter'))
+const NewsletterList = lazy(() => import('../pages/protected/NewsletterList'))
 
 
 const routes = [
@@ -82,8 +83,12 @@ const routes = [
     component: Blank,
   },
   {
-    path: '/email',
-    component: Email,
+    path: '/newsletter',
+    component: Newsletter,
+  },
+  {
+    path: '/newsletter-list',
+    component: NewsletterList,
   },
 ]
 
