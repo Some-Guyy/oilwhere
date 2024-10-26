@@ -14,6 +14,7 @@ const Container = styled.div`
 
 const Newsletter = () => {
   const [emailAddresses, setEmailAddresses] = useState("");
+  const [newsletterName, setNewsletterName] = useState("");
 
   const [isEditing, setIsEditing] = useState(false);
   const [templateData, setTemplateData] = useState(null);
@@ -22,14 +23,21 @@ const Newsletter = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Get state from location
     const { state } = location;
 
     if (state?.mode === "edit" && state?.templateData) {
+      console.log(state);
       setTemplateData(state.templateData);
       setIsEditing(true);
+      // Fix the typo in templateName and add null checking
+      setNewsletterName(state.templateName || '');
     }
   }, [location]);
+
+   // Add handle change function
+   const handleNameChange = (e) => {
+    setNewsletterName(e.target.value);
+  };
 
   const saveDesign = async () => {
     // const unlayer = emailEditorRef.current?.editor;
@@ -54,6 +62,7 @@ const Newsletter = () => {
         method: isEditing ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          name: newsletterName,
           content: htmlData,
         }),
       });
@@ -180,25 +189,35 @@ const Newsletter = () => {
       </dialog>
 
       <Container>
-        <div className="flex flex-row-reverse gap-3 pb-5">
-          <button
-            className="btn btn-primary"
-            onClick={() => document.getElementById("my_modal_1").showModal()}
-          >
-            Send Email
-          </button>
-          <button
-            className="btn btn-outline btn-secondary"
-            onClick={() => saveDesign()}
-          >
-            {isEditing ? "Update Template" : "Save Template"}
-          </button>
-          <button
-            className="btn btn-outline"
-            onClick={() => navigate("/app/newsletter-list")}
-          >
-            Cancel
-          </button>
+        <div class="flex justify-between">
+          <input
+            type="text"
+            placeholder="Enter newsletter name"
+            className="input input-bordered w-full max-w-xs"
+            value={newsletterName}
+            onChange={handleNameChange}
+            required
+          />
+          <div className="flex flex-row-reverse gap-3 pb-5">
+            <button
+              className="btn btn-primary"
+              onClick={() => document.getElementById("my_modal_1").showModal()}
+            >
+              Send Email
+            </button>
+            <button
+              className="btn btn-outline btn-secondary"
+              onClick={() => saveDesign()}
+            >
+              {isEditing ? "Update Template" : "Save Template"}
+            </button>
+            <button
+              className="btn btn-outline"
+              onClick={() => navigate("/app/newsletter-list")}
+            >
+              Cancel
+            </button>
+          </div>
         </div>
 
         <EmailEditor

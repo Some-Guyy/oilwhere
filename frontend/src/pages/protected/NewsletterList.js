@@ -32,7 +32,7 @@ const NewsletterList = () => {
       state: {
         mode: "edit",
         templateId: template.designId,
-        tempalateName: template.name,
+        templateName: template.name,
         templateData: template,
       },
     });
@@ -58,7 +58,7 @@ const NewsletterList = () => {
         state: {
           mode: "edit",
           templateId: data.designId,
-          tempalateName: data.name,
+          templateName: data.name,
           templateData: data.content,
         },
       });
