@@ -12,6 +12,8 @@ import Datepicker from "react-tailwindcss-datepicker";
 import { current } from "@reduxjs/toolkit"
 import { CSVLink } from "react-csv"
 import { ArrowUpOnSquareIcon } from "@heroicons/react/24/outline"
+import SuspenseContent from '../../containers/SuspenseContent'
+
 
 const TopSideButtons = ({removeFilter, applyFilter}) => {
 
@@ -21,24 +23,14 @@ const TopSideButtons = ({removeFilter, applyFilter}) => {
     const [isMounted, setIsMounted] = useState(false);
     const [Above,setAbove] = useState("")
     const [Below,setBelow] = useState("")
-    // const [formatedDateValue,setformatedDateValue] = useState({ 
-    //     startDate: null, 
-    //     endDate: null 
-    // }); 
     const [dateValue, setDateValue] = useState({ 
         startDate: null, 
         endDate: null 
     }); 
     
     const handleDatePickerValueChange = (newValue) => {
-        // console.log("newValue:", newValue); 
         setDateValue(newValue); 
-        // const formattedStartDate = newValue.startDate.getFullYear() + '-' + String(newValue.startDate.getMonth() + 1).padStart(2, '0') + '-' + String(newValue.startDate.getDate()).padStart(2, '0');
-        // const formattedEndDate = newValue.endDate.getFullYear() + '-' + String(newValue.endDate.getMonth() + 1).padStart(2, '0') + '-' + String(newValue.endDate.getDate()).padStart(2, '0');
-        // setformatedDateValue({
-        //     startDate: formattedStartDate,
-        //     endDate: formattedEndDate,
-        // });
+
     } 
 
     const updateAboveInput = (num) => {
@@ -143,15 +135,19 @@ const TopSideButtons = ({removeFilter, applyFilter}) => {
 
 function Transactions(){
     const {transactions } = useSelector(state => state.transaction)
+    const isLoading = useSelector((state) => state.transaction.isLoading);
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        if(transactions.length == 0){
-        dispatch(getTransactionsContent())
-        }
-    }, [])
 
-    const [trans, setTrans] = useState(transactions)
+    const [trans, setTrans] = useState([]);
+    useEffect(() => {
+        if (transactions.length === 0) {
+            dispatch(getTransactionsContent());
+        } else {
+            setTrans(transactions);
+        }
+    }, [dispatch, transactions]);
+
 
     const removeFilter = () => {
         setTrans(transactions)
@@ -239,6 +235,10 @@ function Transactions(){
         else{
             setlowerlimit(1)
         }
+    }
+
+    if(isLoading){
+        return  <SuspenseContent />
     }
 
     return(

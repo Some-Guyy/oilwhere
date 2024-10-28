@@ -5,7 +5,8 @@ import EnvelopeIcon  from '@heroicons/react/24/outline/EnvelopeIcon'
 import EllipsisVerticalIcon  from '@heroicons/react/24/outline/EllipsisVerticalIcon'
 import ArrowPathIcon  from '@heroicons/react/24/outline/ArrowPathIcon'
 import { useState } from "react"
-import Datepicker from "react-tailwindcss-datepicker"; 
+import Datepicker from "react-tailwindcss-datepicker";
+import SearchBar from "../../../components/Input/SearchBar" 
 
 
 
@@ -18,7 +19,12 @@ const periodOptions = [
     {name : "Last Month", value : "LAST_MONTH"},
 ]
 
+
+
 function DashboardTopBar({updateDashboardPeriod}){
+
+        const [searchText, setSearchText] = useState("")
+
 
         const [dateValue, setDateValue] = useState({ 
             startDate: new Date(), 
@@ -33,7 +39,6 @@ function DashboardTopBar({updateDashboardPeriod}){
 
 
     return(
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="">
             <Datepicker 
                 containerClassName="w-72 " 
@@ -55,8 +60,9 @@ function DashboardTopBar({updateDashboardPeriod}){
                 defaultValue="TODAY"
                 // updateFormValue={updateSelectBoxValue}
             /> */}
-            </div>
-            <div className="text-right ">
+            {/* </div> */}
+
+            {/* <div className="text-right ">
                 <button className="btn btn-ghost btn-sm normal-case"><ArrowPathIcon className="w-4 mr-2"/>Refresh Data</button>
                 <button className="btn btn-ghost btn-sm normal-case  ml-2"><ShareIcon className="w-4 mr-2"/>Share</button>
 
@@ -67,8 +73,8 @@ function DashboardTopBar({updateDashboardPeriod}){
                         <li><a><ArrowDownTrayIcon className="w-4"/>Download</a></li>
                     </ul>
                 </div>
+            </div> */}
             </div>
-        </div>
     )
 }
 

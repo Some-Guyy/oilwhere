@@ -12,7 +12,7 @@ export const getTransactionsContent = createAsyncThunk('/transactions/content', 
 export const transactionsSlice = createSlice({
     name: 'transactions',
     initialState: {
-        isLoading: false,
+        isLoading: true,
         transactions : []
     },
     reducers: {

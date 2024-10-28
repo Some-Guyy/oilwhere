@@ -15,7 +15,7 @@ ChartJS.register(ArcElement, Tooltip, Legend,
     Filler,
     Legend);
 
-function DoughnutChart(){
+function DoughnutChart({hashmap}){
 
     const options = {
         responsive: true,
@@ -26,14 +26,14 @@ function DoughnutChart(){
         },
       };
       
-      const labels = ['Electronics', 'Home Applicances', 'Beauty', 'Furniture', 'Watches', 'Apparel'];
+      const labels = Object.keys(hashmap)
       
       const data = {
         labels,
         datasets: [
             {
                 label: '# of Orders',
-                data: [122, 219, 30, 51, 82, 13],
+                data: labels.map((j) =>  hashmap[j] ),
                 backgroundColor: [
                   'rgba(255, 99, 132, 0.8)',
                   'rgba(54, 162, 235, 0.8)',
@@ -56,7 +56,7 @@ function DoughnutChart(){
       };
 
     return(
-        <TitleCard title={"Orders by Category"}>
+        <TitleCard title={"Orders by SaleTypes"}>
                 <Doughnut options={options} data={data} />
         </TitleCard>
     )

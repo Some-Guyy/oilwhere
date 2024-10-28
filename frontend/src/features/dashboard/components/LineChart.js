@@ -23,7 +23,37 @@ ChartJS.register(
   Legend
 );
 
-function LineChart(){
+function LineChart(trans){
+
+  const firstDate = new Date(trans.data[trans.data.length-1].saleDate)
+  const lastDate = new Date(trans.data[0].saleDate)
+  // Calculate the difference in years and months
+  const startYear = firstDate.getFullYear()
+  const endYear = lastDate.getFullYear()
+  const yearDiff = endYear - startYear;
+  const monthDiff = lastDate.getMonth() - firstDate.getMonth();
+  // Total month difference
+  const totalMonths = yearDiff * 12 + monthDiff;
+  console.log(totalMonths)
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+];
+  const labels = []
+  if(totalMonths >12){
+    for (let year = startYear;year<endYear+1;year++){
+      labels.push(year)
+    }
+  }
+  else{
+    while (firstDate <= lastDate) {
+        const month = monthNames[firstDate.getMonth()];
+        const year = firstDate.getFullYear();
+        labels.push(`${month} ${year}`)
+        firstDate.setMonth(firstDate.getMonth() + 1);
+    }
+  }
+  console.log(labels)
 
   const options = {
     responsive: true,
@@ -35,7 +65,7 @@ function LineChart(){
   };
 
   
-  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  // const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
   const data = {
   labels,

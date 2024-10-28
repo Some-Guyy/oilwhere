@@ -8,29 +8,26 @@ const userSourceData = [
     {source : "Organic", count : "10,345", conversionPercent : 10.3},
 ]
 
-function UserChannels(){
+function UserChannels({hashmap}){
+    const labels = Object.keys(hashmap)
     return(
-        <TitleCard title={"User Signup Source"}>
+        <TitleCard title={"Products"}>
              {/** Table Data */}
-             <div className="overflow-x-auto">
+             <div className="overflow-x-auto max-h-96 overflow-y-auto">
                 <table className="table w-full">
                     <thead>
                     <tr>
-                        <th></th>
-                        <th className="normal-case">Source</th>
-                        <th className="normal-case">No of Users</th>
-                        <th className="normal-case">Conversion</th>
+                        <th>Product</th>
+                        <th className="normal-case">Quantity</th>
                     </tr>
                     </thead>
                     <tbody>
                         {
-                            userSourceData.map((u, k) => {
+                            labels.map((u, k) => {
                                 return(
                                     <tr key={k}>
-                                        <th>{k+1}</th>
-                                        <td>{u.source}</td>
-                                        <td>{u.count}</td>
-                                        <td>{`${u.conversionPercent}%`}</td>
+                                        <th>{u}</th>
+                                        <th>{hashmap[u]}</th>
                                     </tr>
                                 )
                             })

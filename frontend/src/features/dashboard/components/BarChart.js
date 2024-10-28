@@ -12,7 +12,7 @@ import TitleCard from '../../../components/Cards/TitleCard';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-function BarChart(){
+function BarChart({labels,dateMap,title,color}){
 
     const options = {
         responsive: true,
@@ -23,26 +23,21 @@ function BarChart(){
         },
       };
       
-      const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+      // const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
       
       const data = {
         labels,
         datasets: [
           {
-            label: 'Store 1',
-            data: labels.map(() => { return Math.random() * 1000 + 500 }),
-            backgroundColor: 'rgba(255, 99, 132, 1)',
-          },
-          {
-            label: 'Store 2',
-            data: labels.map(() => { return Math.random() * 1000 + 500 }),
-            backgroundColor: 'rgba(53, 162, 235, 1)',
+            label: title,
+            data: labels.map((j) =>  dateMap[j] ),
+            backgroundColor: color,
           },
         ],
       };
 
     return(
-      <TitleCard title={"Revenue"}>
+      <TitleCard title={title}>
             <Bar options={options} data={data} />
       </TitleCard>
 
