@@ -2,6 +2,15 @@ DROP DATABASE IF EXISTS `oilwhere_test`;
 CREATE DATABASE IF NOT EXISTS `oilwhere_test` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `oilwhere_test`;
 
+-- Creation of Customer table
+DROP TABLE IF EXISTS `customer`;
+CREATE TABLE IF NOT EXISTS `customer` (
+  `customer_id` INT NOT NULL AUTO_INCREMENT,
+  `name` varchar(32) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  PRIMARY KEY (`customer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 -- Creation of purchase_history table
 DROP TABLE IF EXISTS `purchase_history`;
 CREATE TABLE IF NOT EXISTS `purchase_history` (
@@ -17,7 +26,8 @@ CREATE TABLE IF NOT EXISTS `purchase_history` (
   `quantity` int NOT NULL,
   `price` decimal(10,2) NOT NULL,
   `product_price` decimal(10,2) NOT NULL,
-  PRIMARY KEY (`purchase_id`)
+  PRIMARY KEY (`purchase_id`),
+  FOREIGN KEY (`customer_id`) REFERENCES `customer`(`customer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Creation of user table
@@ -46,6 +56,18 @@ CREATE TABLE IF NOT EXISTS `customer_spending_ranked` (
   `total_spending` DECIMAL(10, 2) NOT NULL,
   PRIMARY KEY (`customer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `customer` (`customer_id`, `name`, `email`) VALUES
+(1, 'John', 'ryan.ng.2022@scis.smu.edu.sg'),
+(2, 'John', 'ryan.ng.2022@scis.smu.edu.sg'),
+(3, 'John', 'jonathantoh.2022@scis.smu.edu.sg'),
+(4, 'John', 'jjchong.2022@scis.smu.edu.sg'),
+(5, 'John', 'jjchong.2022@scis.smu.edu.sg'),
+(6, 'John', 'brandon.lim.2022@scis.smu.edu.sg'),
+(7, 'John', 'brandon.lim.2022@scis.smu.edu.sg'),
+(8, 'John', 'jonathantoh.2022@scis.smu.edu.sg'),
+(36, 'John', 'owen.tan.2022@scis.smu.edu.sg'),
+(65, 'John', 'owen.tan.2022@scis.smu.edu.sg');
 
 INSERT INTO `purchase_history` (`purchase_id`, `sale_date`, `sale_type`, `digital`, `customer_id`, `zipcode`, `shipping_method`, `product`, `variant`, `quantity`, `price`, `product_price`) VALUES
 (1, '2019-11-22', 'Direct - B2B', 'Online - Website', 1, '437050', 'Standard Delivery', 'Chili oil', 100, 3, 5.9, 17.7),
