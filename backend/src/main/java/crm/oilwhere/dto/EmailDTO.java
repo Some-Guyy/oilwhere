@@ -1,29 +1,22 @@
 package crm.oilwhere.dto;
 
 public class EmailDTO {
-    private String name;
-    private String email;
+
+    private String segment;
     private String subject;
     private String body;
 
-    public String getName() {
-        return this.name;
+    // getters and setters
+    public String getSegment() {
+        return segment;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return this.email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setSegment(String segment) {
+        this.segment = segment;
     }
 
     public String getSubject() {
-        return this.subject;
+        return subject;
     }
 
     public void setSubject(String subject) {
@@ -31,7 +24,7 @@ public class EmailDTO {
     }
 
     public String getBody() {
-        return this.body;
+        return body;
     }
 
     public void setBody(String body) {

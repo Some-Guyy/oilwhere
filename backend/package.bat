@@ -11,6 +11,7 @@ IF NOT EXIST %ENV_FILE% (
 REM Read the .env file line by line
 FOR /F "usebackq tokens=*" %%i IN (%ENV_FILE%) DO (
     REM Skip empty lines and lines starting with #
+    echo %%i
     IF NOT "%%i"=="" IF NOT "%%i:~0,1%"=="#" (
         CALL SET "%%i"
     )

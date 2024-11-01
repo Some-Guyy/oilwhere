@@ -30,7 +30,7 @@ public class CustomerService {
     // get name, email using customerId
     public Customer getCustomerById(Long customerId) {
         return customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
     }
 
     // create new customer

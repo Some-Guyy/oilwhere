@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import crm.oilwhere.dto.SendEmailToSegmentDTO;
+import crm.oilwhere.dto.EmailDTO;
 import crm.oilwhere.model.Customer;
 import crm.oilwhere.model.CustomerDTO;
 import crm.oilwhere.model.Filter;
@@ -40,9 +40,12 @@ public class CustomerController {
 
     // Send email to relevant segment
     @PostMapping("/send-email")
-    public ResponseEntity<List<Customer>> testRoute(@RequestBody SendEmailToSegmentDTO sendEmailToSegmentDTO) {
+    public ResponseEntity<List<Customer>> testRoute(@RequestBody EmailDTO emailDTO) {
         
-        String segment = sendEmailToSegmentDTO.getSegment();
+        String segment = emailDTO.getSegment();
+        String subject = emailDTO.getSubject();
+        String body = emailDTO.getBody();
+        
         List<Filter> filter = new ArrayList<>();
         List<Long> customerIds = new ArrayList<>();
         List<Customer> customerList = new ArrayList<>();
@@ -88,7 +91,23 @@ public class CustomerController {
                     
         }
 
+        // loop through customer list to send email to each customer
 
+        // create iterator for customer list
+        Iterator<Customer> customerDetailIter = customerList.iterator();
+        while (customerDetailIter.hasNext()) {
+            Customer customer = customerDetailIter.next();  
+            try{
+                String name = customer.getName();
+                String email = customer.getEmail();
+                newsletterService.sendMail(name, email, subject, body);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+                    
+        }
+        
+        // return list of customer objects to see which customers supposed to receive the email
         return ResponseEntity.ok(customerList);
         
     }
