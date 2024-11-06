@@ -13,8 +13,9 @@ const Container = styled.div`
 `;
 
 const Newsletter = () => {
-  const [emailAddresses, setEmailAddresses] = useState("");
   const [newsletterName, setNewsletterName] = useState("");
+  const [priority, setPriority] = useState("");
+  const [subject, setSubject] = useState("");
 
   const [isEditing, setIsEditing] = useState(false);
   const [templateData, setTemplateData] = useState(null);
@@ -30,12 +31,12 @@ const Newsletter = () => {
       setTemplateData(state.templateData);
       setIsEditing(true);
       // Fix the typo in templateName and add null checking
-      setNewsletterName(state.templateName || '');
+      setNewsletterName(state.templateName || "");
     }
   }, [location]);
 
-   // Add handle change function
-   const handleNameChange = (e) => {
+  // Add handle change function
+  const handleNameChange = (e) => {
     setNewsletterName(e.target.value);
   };
 
@@ -67,6 +68,8 @@ const Newsletter = () => {
         }),
       });
 
+      console.log(response);
+
       toast.success("Template saved successfully");
       // navigate("/app/newsletter-list"); // Navigate back to template list
     } catch (error) {
@@ -77,14 +80,8 @@ const Newsletter = () => {
 
   const sendEmail = async () => {
     try {
-      // Split and trim emails, filtering out invalid ones
-      const emails = emailAddresses
-        .split(",")
-        .map((email) => email.trim())
-        .filter((email) => validateEmail(email));
-
-      if (emails.length === 0) {
-        toast("Please enter at least one valid email.");
+      if (!priority) {
+        toast("Please select a priority level.");
         return;
       }
 
@@ -99,33 +96,26 @@ const Newsletter = () => {
         });
       });
 
-      // Send the email to each address individually
-      for (const email of emails) {
-        console.log(`Sending email to: ${email}`);
-        await fetch("/api/newsletter/email", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: "jonathantoh",
-            email: email,
-            subject: "That's a nice email",
-            body: htmlData,
-          }),
-        }).then((r) => r.json());
+      // Modify your API call to handle priority instead of email addresses
+      await fetch("/api/customer/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          segment: priority,
+          subject: subject,
+          body: htmlData,
+        }),
+      }).then((r) => r.json());
 
-        toast(`Email sent to ${email}`);
-      }
+      toast(`Email scheduled with ${priority} priority`);
+      setSubject("");
+      document.getElementById("my_modal_1").close();
     } catch (error) {
       console.error(error);
-      toast("Failed to export or send email.");
+      toast("Failed to schedule email.");
     }
-  };
-
-  const validateEmail = (email) => {
-    const re = /\S+@\S+\.\S+/;
-    return re.test(email);
   };
 
   const onLoad = (editor) => {
@@ -170,13 +160,38 @@ const Newsletter = () => {
 
       <dialog id="my_modal_1" className="modal">
         <div className="modal-box">
-          <h3 className="text-lg font-bold pb-3">Email to send to:</h3>
-          <textarea
-            className="textarea w-full"
-            placeholder="Input emails separated by commas"
-            value={emailAddresses}
-            onChange={(e) => setEmailAddresses(e.target.value)}
-          ></textarea>
+          <div className="space-y-6">
+            <div>
+              <label className="input-group input-group-vertical w-full">
+                <span className="font-semibold">Subject</span>
+                <input
+                  type="text"
+                  placeholder="Enter subject"
+                  className="input input-bordered w-full mt-1"
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                />
+              </label>
+            </div>
+
+            <div>
+              <label className="input-group input-group-vertical w-full">
+                <span className="font-semibold">Priority</span>
+                <select
+                  className="select select-bordered w-full mt-1"
+                  onChange={(e) => setPriority(e.target.value)}
+                >
+                  <option disabled selected>
+                    Select priority level
+                  </option>
+                  <option value="high">High</option>
+                  <option value="medium">Medium</option>
+                  <option value="low">Low</option>
+                </select>
+              </label>
+            </div>
+          </div>
+
           <div className="modal-action">
             <form method="dialog">
               <button className="btn btn-primary mr-2" onClick={sendEmail}>
