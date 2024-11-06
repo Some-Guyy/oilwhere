@@ -2,6 +2,63 @@ DROP DATABASE IF EXISTS `oilwhere`;
 CREATE DATABASE IF NOT EXISTS `oilwhere` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `oilwhere`;
 
+
+-- Creation of Customer table
+DROP TABLE IF EXISTS `customer`;
+CREATE TABLE IF NOT EXISTS `customer` (
+  `customer_id` INT NOT NULL AUTO_INCREMENT,
+  `name` varchar(32) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  PRIMARY KEY (`customer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Creation of temporary Customer table
+DROP TABLE IF EXISTS `customer_temp`;
+CREATE TABLE IF NOT EXISTS `customer_temp` (
+  `customer_id` INT NOT NULL AUTO_INCREMENT,
+  `name` varchar(32) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  PRIMARY KEY (`customer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Create a temporary table with sale_date as VARCHAR
+DROP TABLE IF EXISTS `purchase_history_temp`;
+CREATE TABLE IF NOT EXISTS `purchase_history_temp` (
+  `purchase_id` INT NOT NULL AUTO_INCREMENT,
+  `sale_date` VARCHAR(10) NOT NULL,  -- Store date as VARCHAR first
+  `sale_type` VARCHAR(255),
+  `digital`  VARCHAR(255),
+  `customer_id` INT NOT NULL,
+  `zipcode` INT(6),
+  `shipping_method` VARCHAR(255),
+  `product` VARCHAR(255),
+  `variant` INT NOT NULL,
+  `quantity` INT NOT NULL,
+  `price` DECIMAL(10,2) NOT NULL,
+  `product_price` DECIMAL(10,2) NOT NULL,
+  PRIMARY KEY (`purchase_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Loading csv data into purchase_history_temp
+LOAD DATA INFILE 'C:/wamp64/tmp/Sales_Data_updated_Sep 2023.csv'
+INTO TABLE `purchase_history_temp`
+FIELDS TERMINATED BY ',' 
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS
+(@discard, sale_date, @vsale_type, @vdigital, customer_id, @vzipcode, @vshipping_method, @vproduct, variant, quantity, price, product_price)
+SET
+sale_type = NULLIF(@vsale_type, ''),
+digital = NULLIF(@vdigital, ''),
+zipcode = NULLIF(@vzipcode, ''),
+shipping_method = NULLIF(@vshipping_method, ''),
+product = NULLIF(@vproduct, '')
+;
+
+-- load data from purchase_history_temp to customer table
+INSERT INTO `customer` (`customer_id`, `name`, `email`)
+SELECT DISTINCT `customer_id`, 'John' AS `name`, 'ryan.ng.2022@scis.smu.edu.sg' AS `email`
+FROM `purchase_history_temp`;
+
 -- Creation of purchase_history table
 DROP TABLE IF EXISTS `purchase_history`;
 CREATE TABLE IF NOT EXISTS `purchase_history` (
@@ -28,24 +85,6 @@ CREATE TABLE IF NOT EXISTS `customer_spending_ranked` (
   PRIMARY KEY (`customer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Create a temporary table with sale_date as VARCHAR
-DROP TABLE IF EXISTS `purchase_history_temp`;
-CREATE TABLE IF NOT EXISTS `purchase_history_temp` (
-  `purchase_id` INT NOT NULL AUTO_INCREMENT,
-  `sale_date` VARCHAR(10) NOT NULL,  -- Store date as VARCHAR first
-  `sale_type` VARCHAR(255),
-  `digital`  VARCHAR(255),
-  `customer_id` INT NOT NULL,
-  `zipcode` INT(6),
-  `shipping_method` VARCHAR(255),
-  `product` VARCHAR(255),
-  `variant` INT NOT NULL,
-  `quantity` INT NOT NULL,
-  `price` DECIMAL(10,2) NOT NULL,
-  `product_price` DECIMAL(10,2) NOT NULL,
-  PRIMARY KEY (`purchase_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 -- Creation of user table
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
@@ -65,21 +104,6 @@ CREATE TABLE IF NOT EXISTS `newsletter` (
   PRIMARY KEY (`design_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Loading csv data into purchase_history
-LOAD DATA INFILE 'C:/wamp64/tmp/Sales_Data_updated_Sep 2023.csv'
-INTO TABLE `purchase_history_temp`
-FIELDS TERMINATED BY ',' 
-LINES TERMINATED BY '\n'
-IGNORE 1 ROWS
-(@discard, sale_date, @vsale_type, @vdigital, customer_id, @vzipcode, @vshipping_method, @vproduct, variant, quantity, price, product_price)
-SET
-sale_type = NULLIF(@vsale_type, ''),
-digital = NULLIF(@vdigital, ''),
-zipcode = NULLIF(@vzipcode, ''),
-shipping_method = NULLIF(@vshipping_method, ''),
-product = NULLIF(@vproduct, '')
-;
-
 -- Insert data into the final table with date conversion
 INSERT INTO `purchase_history` (
   `sale_date`, `sale_type`, `digital`, `customer_id`, `zipcode`, `shipping_method`, `product`, `variant`, `quantity`, `price`, `product_price`
@@ -92,6 +116,7 @@ FROM `purchase_history_temp`;
 -- Drop the temporary table
 DROP TABLE IF EXISTS `purchase_history_temp`;
 
+-- Load the customer_spending_ranked table 
 INSERT INTO `customer_spending_ranked` (`customer_id`, `total_spending`)
 SELECT `customer_id`, SUM(`product_price`) AS `total_spending`
 FROM `purchase_history`

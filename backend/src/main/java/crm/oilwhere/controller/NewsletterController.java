@@ -1,6 +1,5 @@
 package crm.oilwhere.controller;
 
-import crm.oilwhere.dto.EmailDTO;
 import crm.oilwhere.dto.NewsletterDTO;
 import crm.oilwhere.dto.UserDTO;
 import crm.oilwhere.model.Newsletter;
@@ -51,10 +50,4 @@ public class NewsletterController {
         return ResponseEntity.ok(result);
     }
 
-    // send a single email
-    @PostMapping("/email")
-    public ResponseEntity<EmailDTO> testRoute(@RequestBody EmailDTO emailDTO) {
-        NewsletterService.sendMail(emailDTO.getName(), emailDTO.getEmail(), emailDTO.getSubject(), emailDTO.getBody());
-        return ResponseEntity.ok(emailDTO);
-    }
 }
