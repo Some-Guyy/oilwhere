@@ -18,6 +18,13 @@ import crm.oilwhere.model.Purchase;
 import java.util.List;
 import java.time.LocalDate;
 
+// The following is the endpoints used to access the purchase history table
+// It includes the following results
+// /get-all -- Obtain all purchase record in the purchase history table.
+// /{startDate}/{endDate} -- Obtain all purchase record in the purchase history table between the start and end date
+// /create -- Create a new purchase record and put it inside the purchase history table
+// /delete/{purchaseId} -- Delete specific purchase record by the purchaseId
+// /update/{purchaseId} -- Update specific purchase record by the purchaseId 
 
 @RestController
 @RequestMapping("/api/purchase")
@@ -31,13 +38,17 @@ public class PurchaseController {
     }
 
     // get all purchase history
+    // GET request
+    // Returns list of Purchase objects
     @GetMapping("/get-all")
     public ResponseEntity<List<Purchase>> getAllPurchases() {
         List<Purchase> purchases = purchaseService.getAllPurchases();
         return ResponseEntity.ok(purchases);
     }
 
-    // first filter layer: get all purchase history by date range
+    // Get all purchase history by date range
+    // GET request
+    // Returns list of Purchase objects with dates between start and end date
     @GetMapping("/{startDate}/{endDate}")
     public ResponseEntity<List<Purchase>> getPurchaseByDateRange(@PathVariable LocalDate startDate, @PathVariable LocalDate endDate) {
         List<Purchase> purchases = purchaseService.getPurchaseByDateRange(startDate, endDate);
@@ -45,20 +56,57 @@ public class PurchaseController {
     }
 
     // create purchase history
+    // POST request
+    // Takes in a PurchaseDTO object such as below
+    // {
+    //     "saleDate": "2023-08-15",
+    //     "saleType": "Wholesaler",
+    //     "digital": "Offline",
+    //     "customerId": 65,
+    //     "zipcode": 111100,
+    //     "shippingMethod": "Same Day Delivery",
+    //     "product": "Lemon oil",
+    //     "variant": 100,
+    //     "quantity": 6,
+    //     "price": 5.9,
+    //     "productPrice": 35.4
+    // }
+    // Returns the Purchase object that was created
     @PostMapping("/create")
     public ResponseEntity<Purchase> createPurchase(@RequestBody PurchaseDTO purchaseDTO) {
         Purchase createdPurchase = purchaseService.createPurchase(purchaseDTO);
         return ResponseEntity.ok(createdPurchase);
     }
 
-    // delete purchase history
+    // Delete purchase history
+    // DELETE request
+    // Takes in a purchaseId which is the numerical id of the purchase record
+    // Returns message "Purchase record successfully deleted" if success
+    // Returns error 500 if unsuccessful
     @DeleteMapping("/delete/{purchaseId}")
     public ResponseEntity<String> deletePurchase(@PathVariable Long purchaseId) {
         String result = purchaseService.deletePurchase(purchaseId);
         return ResponseEntity.ok(result);
     }
 
-    // update purchase history
+    // Update purchase history
+    // PUT request
+    // Takes in a purchaseId and a purchaseDTO object which overrides the records of the selected purchaseId with the purchaseDTO object. Example of purchaseDTO object as shown below
+    // {
+    //     "saleDate": "2023-08-10",
+    //     "saleType": "Wholesaler",
+    //     "digital": "Offline",
+    //     "customerId": 65,
+    //     "zipcode": 111100,
+    //     "shippingMethod": "Same Day Delivery",
+    //     "product": "Lemon oil",
+    //     "variant": 100,
+    //     "quantity": 6,
+    //     "price": 5.9,
+    //     "productPrice": 35.4
+    // }
+    // Returns newly updated purchase object if successful
+    // Returns error 500 if unsuccessful
     @PutMapping("/update/{purchaseId}")
     public ResponseEntity<Purchase> updatePurchase(@PathVariable Long purchaseId, @RequestBody PurchaseDTO purchaseDTO) {
         Purchase purchase = purchaseService.updatePurchase(purchaseId, purchaseDTO);

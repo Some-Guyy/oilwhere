@@ -2,8 +2,8 @@ package crm.oilwhere.service;
 
 import org.springframework.stereotype.Service;
 
+import crm.oilwhere.dto.CustomerDTO;
 import crm.oilwhere.model.Customer;
-import crm.oilwhere.model.CustomerDTO;
 import crm.oilwhere.repository.CustomerRepository;
 
 import java.util.List;

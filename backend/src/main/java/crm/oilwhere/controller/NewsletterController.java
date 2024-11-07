@@ -1,15 +1,12 @@
 package crm.oilwhere.controller;
 
 import crm.oilwhere.dto.NewsletterDTO;
-import crm.oilwhere.dto.UserDTO;
 import crm.oilwhere.model.Newsletter;
-import crm.oilwhere.model.User;
 import crm.oilwhere.service.NewsletterService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/newsletter")
