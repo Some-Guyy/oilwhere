@@ -2,6 +2,13 @@ package crm.oilwhere.model;
 
 import jakarta.persistence.*;
 
+// The following is the Customer object to hold each customer
+// The Customer object is for each record in the customer table
+// It contains the customer_id, name, email
+// customer_id: Id of each customer, it is the identifier
+// name: Name of each customer
+// email: Email address of each customer
+
 @Entity
 @Table(name = "customer")
 public class Customer {

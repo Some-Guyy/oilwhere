@@ -3,6 +3,22 @@ package crm.oilwhere.model;
 import java.time.LocalDate;
 import jakarta.persistence.*;
 
+// The following is the Purchase object to hold each purchase record
+// The Purchase object is for each record in the purchase_history table 
+// It contains the purchase_id, sale_date, sale_type, digital, customer_id, zipcode, shipping_method, product, variant, quantity, price, product_price
+// purchase_id: Id of each purchase record, it is the identifier
+// sale_date: Date of the purchase
+// sale_type: Type of sale
+// digital: Which channel was used to do the sale
+// customer_id: Id of the customer
+// zipcode: Zipcode of the customer's address
+// shipping_method: Method of shipping done
+// product: Product name
+// variant: Variation number of the product
+// quantity: Number of product bought
+// price: Price of individual product
+// product_price: Total price of the products in the purchase record 
+
 @Entity
 @Table(name = "purchase_history")
 public class Purchase {

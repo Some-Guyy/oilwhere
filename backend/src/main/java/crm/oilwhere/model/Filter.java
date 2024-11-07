@@ -2,6 +2,12 @@ package crm.oilwhere.model;
 
 import jakarta.persistence.*;
 
+// The following is the Filter object to hold each customer and their respective total spending
+// The Filter object is for each record in the filter customer_spending_ranked
+// It contains the customer_id, total_spending
+// customer_id: Id of each customer, it is the identifier
+// totalSpending: Total spending of each customer
+
 @Entity
 @Table(name = "customer_spending_ranked")
 public class Filter {

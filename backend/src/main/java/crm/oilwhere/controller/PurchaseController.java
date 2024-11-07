@@ -91,7 +91,7 @@ public class PurchaseController {
 
     // Update purchase history
     // PUT request
-    // Takes in a purchaseId and a purchaseDTO object which overrides the records of the selected purchaseId with the purchaseDTO object. Example of purchaseDTO object as shown below
+    // Takes in a purchaseId and a purchaseDTO object which overrides the record of the selected purchaseId with the PurchaseDTO object. Example of PurchaseDTO object as shown below
     // {
     //     "saleDate": "2023-08-10",
     //     "saleType": "Wholesaler",
