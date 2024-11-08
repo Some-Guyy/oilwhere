@@ -17,10 +17,10 @@ import java.util.Optional;
 // NewsletterService is the service layer connected to the NewsletterRepository. It contains all the business logic for Newsletter table. It utilises the JPA repository to query from the database.
 // consists of the following functions
 // getAll() -- retrieve all Newsletter records
-// updateTemplate(id, newsletterDTO) -- 
-// createNewsletter(newsletterDTO) -- 
-// deleteTemplate(id) -- 
-// sendMail(custName, custEmail, subject, body) -- 
+// updateTemplate(id, newsletterDTO) -- update the newsletter record with the specified id and replace with newsletterDTO object
+// createNewsletter(newsletterDTO) -- create a new newsletter record with the newsletterDTO object
+// deleteTemplate(id) -- delete the newsletter record with the specific id
+// sendMail(custName, custEmail, subject, body) -- Send email to relevant customer with custEmail
 
 @Service
 public class NewsletterService {
