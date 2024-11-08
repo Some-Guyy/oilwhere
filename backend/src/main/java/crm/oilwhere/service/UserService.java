@@ -9,86 +9,116 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service layer for managing user data and business logic related to user operations.
+ * Provides methods to retrieve, create, update, delete, and authenticate users.
+ */
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
 
-    // constructor
+    /**
+     * Constructs a new UserService with the specified UserRepository.
+     *
+     * @param userRepository the repository used to interact with user data in the database
+     */
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    // get all users service (admin only)
+    /**
+     * Retrieves all users from the database.
+     * Intended for administrative use.
+     *
+     * @return a list of all User records
+     */
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    // retrieve user by id (keep here for now, incase FE needs to get specific userid)
+    /**
+     * Retrieves a specific user by their ID.
+     *
+     * @param id the ID of the user to retrieve
+     * @return the User record with the specified ID
+     * @throws RuntimeException if the user with the specified ID is not found
+     */
     public User getUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    // create new user
+    /**
+     * Creates a new user based on the provided UserDTO.
+     *
+     * @param userDTO the data transfer object containing details of the new user
+     * @return the created User record
+     * @throws IllegalArgumentException if the specified role in userDTO is invalid
+     */
     public User createUser(UserDTO userDTO) {
-        // Parse the role from the input and ensure it's valid
         Role role;
         try {
             role = Role.valueOf(userDTO.getRole().toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Invalid role: " + userDTO.getRole());
         }
-    
-        // Create a new User instance
+
         User newUser = new User();
         newUser.setUsername(userDTO.getUsername());
         newUser.setPassword(userDTO.getPassword());
         newUser.setRole(role);
-    
-        // Save the new user to the database
+
         return userRepository.save(newUser);
     }
-    
-// update user details (change username, password, or role except for admins)
-public User updateUser(Long id, UserDTO userDTO) {
-    Optional<User> optionalUser = userRepository.findById(id);
 
-    if (optionalUser.isPresent()) {
-        User existingUser = optionalUser.get();
+    /**
+     * Updates an existing user's details, including username, password, and role.
+     * Prevents ADMIN users from updating other ADMIN users.
+     *
+     * @param id the ID of the user to update
+     * @param userDTO the data transfer object containing updated user details
+     * @return the updated User record
+     * @throws RuntimeException if the user with the specified ID is not found or if an ADMIN user tries to update another ADMIN
+     * @throws IllegalArgumentException if the specified role in userDTO is invalid
+     */
+    public User updateUser(Long id, UserDTO userDTO) {
+        Optional<User> optionalUser = userRepository.findById(id);
 
-        // Prevent ADMIN users from updating other ADMIN users
-        if (existingUser.getRole() == Role.ADMIN && userDTO.getRole().equalsIgnoreCase("ADMIN")) {
-            throw new RuntimeException("ADMIN users cannot update other ADMIN users.");
-        }
+        if (optionalUser.isPresent()) {
+            User existingUser = optionalUser.get();
 
-        // Update the username and password
-        existingUser.setUsername(userDTO.getUsername());
-        existingUser.setPassword(userDTO.getPassword());
-
-        // Update the role if it's changing
-        if (!existingUser.getRole().toString().equalsIgnoreCase(userDTO.getRole())) {
-            // Parse the new role from the input
-            Role newRole;
-            try {
-                newRole = Role.valueOf(userDTO.getRole().toUpperCase());
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("Invalid role: " + userDTO.getRole());
+            if (existingUser.getRole() == Role.ADMIN && userDTO.getRole().equalsIgnoreCase("ADMIN")) {
+                throw new RuntimeException("ADMIN users cannot update other ADMIN users.");
             }
 
-            // Set the new role
-            existingUser.setRole(newRole);
+            existingUser.setUsername(userDTO.getUsername());
+            existingUser.setPassword(userDTO.getPassword());
+
+            if (!existingUser.getRole().toString().equalsIgnoreCase(userDTO.getRole())) {
+                Role newRole;
+                try {
+                    newRole = Role.valueOf(userDTO.getRole().toUpperCase());
+                } catch (IllegalArgumentException e) {
+                    throw new IllegalArgumentException("Invalid role: " + userDTO.getRole());
+                }
+
+                existingUser.setRole(newRole);
+            }
+
+            return userRepository.save(existingUser);
+        } else {
+            throw new RuntimeException("User not found");
         }
-
-        // Save the updated user
-        return userRepository.save(existingUser);
-    } else {
-        throw new RuntimeException("User not found");
     }
-}
 
-
-    // delete user
+    /**
+     * Deletes a user from the database by their ID.
+     *
+     * @param id the ID of the user to delete
+     * @return a confirmation message if the deletion is successful
+     * @throws RuntimeException if the user with the specified ID is not found
+     */
     public String deleteUser(Long id) {
         if (userRepository.existsById(id)) {
             userRepository.deleteById(id);
@@ -98,19 +128,24 @@ public User updateUser(Long id, UserDTO userDTO) {
         }
     }
 
-    // login service
+    /**
+     * Authenticates a user by verifying their username and password.
+     *
+     * @param username the username of the user attempting to log in
+     * @param password the password of the user attempting to log in
+     * @return an Optional containing the authenticated User if successful, or an empty Optional if authentication fails
+     */
     public Optional<User> authenticateUser(String username, String password) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
 
-            // compare password
             if (user.getPassword().equals(password)) {
                 return Optional.of(user);
             }
         }
 
-        return Optional.empty(); //empty if auth fails
+        return Optional.empty();
     }
 }

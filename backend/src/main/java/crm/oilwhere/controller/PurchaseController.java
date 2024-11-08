@@ -18,14 +18,10 @@ import crm.oilwhere.model.Purchase;
 import java.util.List;
 import java.time.LocalDate;
 
-// The following is the endpoints used to access the purchase history table
-// It includes the following results
-// /get-all -- Obtain all purchase record in the purchase history table.
-// /{startDate}/{endDate} -- Obtain all purchase record in the purchase history table between the start and end date
-// /create -- Create a new purchase record and put it inside the purchase history table
-// /delete/{purchaseId} -- Delete specific purchase record by the purchaseId
-// /update/{purchaseId} -- Update specific purchase record by the purchaseId 
-
+/**
+ * Controller for managing purchase records in the purchase history table.
+ * Provides endpoints for CRUD operations on purchase records.
+ */
 @RestController
 @RequestMapping("/api/purchase")
 @CrossOrigin(origins = "http://localhost:3000")
@@ -33,80 +29,70 @@ public class PurchaseController {
     
     private final PurchaseService purchaseService;
 
+    /**
+     * Constructs a new PurchaseController with the specified PurchaseService.
+     *
+     * @param purchaseService the service used to manage purchase operations
+     */
     public PurchaseController(PurchaseService purchaseService) {
         this.purchaseService = purchaseService;
     }
 
-    // get all purchase history
-    // GET request
-    // Returns list of Purchase objects
+    /**
+     * Retrieves all purchase records from the purchase history.
+     *
+     * @return a ResponseEntity containing a list of all purchase records
+     */
     @GetMapping("/get-all")
     public ResponseEntity<List<Purchase>> getAllPurchases() {
         List<Purchase> purchases = purchaseService.getAllPurchases();
         return ResponseEntity.ok(purchases);
     }
 
-    // Get all purchase history by date range
-    // GET request
-    // Returns list of Purchase objects with dates between start and end date
+    /**
+     * Retrieves all purchase records within a specified date range.
+     *
+     * @param startDate the start date of the date range
+     * @param endDate the end date of the date range
+     * @return a ResponseEntity containing a list of purchase records within the date range
+     */
     @GetMapping("/{startDate}/{endDate}")
     public ResponseEntity<List<Purchase>> getPurchaseByDateRange(@PathVariable LocalDate startDate, @PathVariable LocalDate endDate) {
         List<Purchase> purchases = purchaseService.getPurchaseByDateRange(startDate, endDate);
         return ResponseEntity.ok(purchases);
     }
 
-    // create purchase history
-    // POST request
-    // Takes in a PurchaseDTO object such as below
-    // {
-    //     "saleDate": "2023-08-15",
-    //     "saleType": "Wholesaler",
-    //     "digital": "Offline",
-    //     "customerId": 65,
-    //     "zipcode": 111100,
-    //     "shippingMethod": "Same Day Delivery",
-    //     "product": "Lemon oil",
-    //     "variant": 100,
-    //     "quantity": 6,
-    //     "price": 5.9,
-    //     "productPrice": 35.4
-    // }
-    // Returns the Purchase object that was created
+    /**
+     * Creates a new purchase record and adds it to the purchase history.
+     *
+     * @param purchaseDTO the data transfer object containing purchase details
+     * @return a ResponseEntity containing the created Purchase object
+     */
     @PostMapping("/create")
     public ResponseEntity<Purchase> createPurchase(@RequestBody PurchaseDTO purchaseDTO) {
         Purchase createdPurchase = purchaseService.createPurchase(purchaseDTO);
         return ResponseEntity.ok(createdPurchase);
     }
 
-    // Delete purchase history
-    // DELETE request
-    // Takes in a purchaseId which is the numerical id of the purchase record
-    // Returns message "Purchase record successfully deleted" if success
-    // Returns error 500 if unsuccessful
+    /**
+     * Deletes a purchase record by its ID.
+     *
+     * @param purchaseId the ID of the purchase record to delete
+     * @return a ResponseEntity containing a message indicating the result of the deletion
+     */
     @DeleteMapping("/delete/{purchaseId}")
     public ResponseEntity<String> deletePurchase(@PathVariable Long purchaseId) {
         String result = purchaseService.deletePurchase(purchaseId);
         return ResponseEntity.ok(result);
     }
 
-    // Update purchase history
-    // PUT request
-    // Takes in a purchaseId and a purchaseDTO object which overrides the record of the selected purchaseId with the PurchaseDTO object. Example of PurchaseDTO object as shown below
-    // {
-    //     "saleDate": "2023-08-10",
-    //     "saleType": "Wholesaler",
-    //     "digital": "Offline",
-    //     "customerId": 65,
-    //     "zipcode": 111100,
-    //     "shippingMethod": "Same Day Delivery",
-    //     "product": "Lemon oil",
-    //     "variant": 100,
-    //     "quantity": 6,
-    //     "price": 5.9,
-    //     "productPrice": 35.4
-    // }
-    // Returns newly updated purchase object if successful
-    // Returns error 500 if unsuccessful
+    /**
+     * Updates an existing purchase record by its ID with the details provided in the PurchaseDTO.
+     *
+     * @param purchaseId the ID of the purchase record to update
+     * @param purchaseDTO the data transfer object containing the updated purchase details
+     * @return a ResponseEntity containing the updated Purchase object
+     */
     @PutMapping("/update/{purchaseId}")
     public ResponseEntity<Purchase> updatePurchase(@PathVariable Long purchaseId, @RequestBody PurchaseDTO purchaseDTO) {
         Purchase purchase = purchaseService.updatePurchase(purchaseId, purchaseDTO);
