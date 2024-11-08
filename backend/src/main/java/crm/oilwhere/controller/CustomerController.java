@@ -14,13 +14,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import crm.oilwhere.dto.CustomerDTO;
 import crm.oilwhere.dto.EmailDTO;
 import crm.oilwhere.model.Customer;
-import crm.oilwhere.model.CustomerDTO;
 import crm.oilwhere.model.Filter;
 import crm.oilwhere.service.CustomerService;
 import crm.oilwhere.service.FilterService;
 import crm.oilwhere.service.NewsletterService;
+
+// The following is the endpoints used to access the customer table
+// It includes the following results
+// /send-email -- Sends marketing email to the customer segment chosen(low, medium, high)
+// /get-all -- Obtain all customer record in the customer table.
+// /get/{customerId} -- Obtain specific customer record in the Customer table using the customers id
+// /create -- Create a new customer record and put it inside the customer table
+// /delete/{customerId} -- Delete specific customer record by the customerId
+// /update/{customerId} -- Update specific customer record by the customerId 
 
 @RestController
 @RequestMapping("/api/customer")
@@ -39,6 +48,16 @@ public class CustomerController {
     }
 
     // Send email to relevant segment
+    //POST request
+    // Takes in an EmailDTO object, then finds all customers whose spending fall in the segment specified, then sends an email to these customers address
+    // Example of EmailDTO object below
+    // {
+    //     "segment": "low",
+    //     "subject": "a subject",
+    //     "body": "<strong>Hot bod</strong><br>fokokokokokok"
+    // }
+    // Returns the Customer objects of the customers where email was sent
+    // Returns error 500 if unsuccessful
     @PostMapping("/send-email")
     public ResponseEntity<List<Customer>> testRoute(@RequestBody EmailDTO emailDTO) {
         
@@ -112,21 +131,34 @@ public class CustomerController {
         
     }
 
-    // get all
+    // get all customer records
+    // GET request
+    // Returns list of customer objects
     @GetMapping("/get-all")
     public ResponseEntity<List<Customer>> getAllCustomer() {
         List<Customer> customer = customerService.getAllCustomer();
         return ResponseEntity.ok(customer);
     }
 
-    // get customer by id
+    // get specific customer using customerId
+    // GET request
+    // Returns Customer object with specific customerId
     @GetMapping("/get/{customerId}")
     public ResponseEntity<Customer> getCustomerById(@PathVariable Long customerId) {
         Customer customer = customerService.getCustomerById(customerId);
         return ResponseEntity.ok(customer);
     }
 
-    // create new customer
+    // create a new customer
+    // POST request
+    // Takes in a CustomerDTO such as below
+    // {
+    //     "email": "ryan.ng.2022@scis.smu.edu.sg",
+    //     "name": "ryan",
+    //     "customerId": 11
+        
+    // }
+    // Returns the Customer object created
     @PostMapping("/create")
     public ResponseEntity<Customer> createCustomer(@RequestBody CustomerDTO customerDTO) {
         Customer createdCustomer = customerService.createCustomer(customerDTO);
@@ -134,6 +166,10 @@ public class CustomerController {
     }
 
     // delete customer by id
+    // DELETE request
+    // Takes in a customerId which is the numerical id of the customer record
+    // Returns messgae "Customer record successfully deleted" if success
+    // Returns error 500 if unsuccessful
     @DeleteMapping("/delete/{customerId}")
     public ResponseEntity<String> deleteCustomer(@PathVariable Long customerId) {
         String result = customerService.deleteCustomer(customerId);
@@ -141,6 +177,15 @@ public class CustomerController {
     }
 
     // update customer
+    // PUT request
+    // Takes in a customerId and a customerDTO object which overrides the record of the selected customerId with the CustomerDTO object. Example of the CustomerDTO object as shown below
+    //{
+    // "email": "NewEmail@gmail.com",
+    // "name": "New Name",
+    // "customerId": 65
+    // }
+    // Returns newly updated Customer object if successful
+    // Returns error 500 if unsuccessful
     @PutMapping("/update/{customerId}")
     public ResponseEntity<Customer> updateCustomer(@PathVariable Long customerId, @RequestBody CustomerDTO customerDTO) {
         Customer customer = customerService.updateCustomer(customerId, customerDTO);

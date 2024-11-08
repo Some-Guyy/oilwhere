@@ -1,4 +1,4 @@
-package crm.oilwhere.model;
+package crm.oilwhere.dto;
 
 public class CustomerDTO {
 

@@ -14,6 +14,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+// NewsletterService is the service layer connected to the NewsletterRepository. It contains all the business logic for Newsletter table. It utilises the JPA repository to query from the database.
+// consists of the following functions
+// getAll() -- retrieve all Newsletter records
+// updateTemplate(id, newsletterDTO) -- 
+// createNewsletter(newsletterDTO) -- 
+// deleteTemplate(id) -- 
+// sendMail(custName, custEmail, subject, body) -- 
+
 @Service
 public class NewsletterService {
 
@@ -30,11 +38,15 @@ public class NewsletterService {
     }
 
     // get all templates
+    // Uses JPA repository findAll function to retrieve all Newsletter records
     public List<Newsletter> getAll() {
         return newsletterRepository.findAll();
     }
 
     // update templates
+    // Used JPA repository's findById to find the record with specified id and isPresent to check if it exists
+    // Obtain the record'snewsletter object
+    // Set the name and content from the newsletterDTO object using getName, getContent on the DTO
     public Newsletter updateTemplate(Long id, NewsletterDTO newsletterDTO) {
         Optional<Newsletter> optionalNewsletter = newsletterRepository.findById(id);
 
@@ -51,6 +63,9 @@ public class NewsletterService {
     }
 
     //create newsletter template
+    // Create a new Newsletter object
+    // Set the name and content from the newsletterDTO object using getName, getContent
+    // Used JPA repository to save the record after creating the new template object
     public Newsletter createNewsletter(NewsletterDTO newsletterDTO) {
 
         // new template instance
@@ -62,7 +77,9 @@ public class NewsletterService {
         return newsletterRepository.save(newTemplate);
     }
 
-    //delete newsletter template
+    // delete newsletter template
+    // Used JPA repository's existsById to find if the record with specified customerId exists
+    // Used JPA repository's deleteById to delete the record with specified customerId exists
     public String deleteTemplate(Long id) {
         if (newsletterRepository.existsById(id)) {
             newsletterRepository.deleteById(id);
@@ -72,6 +89,10 @@ public class NewsletterService {
         }
     }
 
+    // Function to send email
+    // Set the senders name as Timperio
+    // Get the SMTP_USERNAME from the env file to set the from email address
+    // Build the email using the senders name, the senders email address, the customers name, customers email with the subject and the body
     public void sendMail(String custName, String custEmail, String subject, String body) {
         try {
             String fromName = "Timperio";

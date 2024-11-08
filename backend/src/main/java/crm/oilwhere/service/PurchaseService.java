@@ -11,27 +11,41 @@ import java.time.LocalDate;
 
 import java.util.Optional;
 
+// PurchaseService is the service layer connected to the PurchaseRepository. It contains all the business logic for purchase history table. It utilises the JPA repository to query from the database.
+// consists of the following functions
+// getAllPurchases() -- retrieve all purchase records
+// getPurchaseByDateRange(startDate, endDate) -- retrieve purchase record where date falls between a specified start and end date
+// createPurchase(purchaseDTO) -- create a new purchase record with the purchaseDTO object
+// deletePurchase(purchaseId) -- delete the purchase record with the specidic purchaseId
+// updatePurchase(purchaseId, purchaseDTO) -- update the purchase record with the specified purchaseId and replace with purchaseDTO object 
+
 @Service
 public class PurchaseService {
     
     private final PurchaseRepository purchaseRepository;
 
-    // constructor
+    // constructor to create PurchaseService object
     public PurchaseService(PurchaseRepository purchaseRepository) {
         this.purchaseRepository = purchaseRepository;
     }
 
     // get all purchase from purchase history
+    // Uses JPA repository findAll function to retrieve all customer records
     public List<Purchase> getAllPurchases() {
         return purchaseRepository.findAll();
     }
 
     // get all purchase within start date and end date from purchase history
+    // Uses custome query method from JPA repository, findBySaleDateBetween, to retrieve all purchase records that fall between the start and end date.
+    // Both start and end date uses LocalDate input format
     public List<Purchase> getPurchaseByDateRange(LocalDate startDate, LocalDate endDate) {
         return purchaseRepository.findBySaleDateBetween(startDate, endDate);
     }
 
     // create new purchase record
+    // Create a new purchase object
+    // Set the sale date, sale type, digital, customer id, zipcode, shipping method, product, variant, quantity, price, product price from the purchaseDTO object using the following methods
+    // Used JPA repository to save the record after creating the new customer object
     public Purchase createPurchase(PurchaseDTO purchaseDTO) {
     
         // Create a new Purchase instance
@@ -54,6 +68,8 @@ public class PurchaseService {
     }
 
     // Delete purchase record by id
+    // Used JPA repository's existsById to find if the record with specified purchaseId exists
+    // Used JPA repository's deleteById to delete the record with specified purchaseId exists
     public String deletePurchase(Long purchaseId) {
         if (purchaseRepository.existsById(purchaseId)) {
             purchaseRepository.deleteById(purchaseId);
@@ -64,6 +80,9 @@ public class PurchaseService {
     }
 
     // Update purchase record
+    // Used JPA repository's findById to find the record with specified customerId and isPresent to check if it exists
+    // obtain the records Purchase object 
+    // Set the sale date, sale type, digital, customer id, zipcode, shipping method, product, variant, quantity, price, product price from the purchaseDTO object using the following methods
     public Purchase updatePurchase(Long purchaseId, PurchaseDTO purchaseDTO) {
     Optional<Purchase> optionalPurchase = purchaseRepository.findById(purchaseId);
 

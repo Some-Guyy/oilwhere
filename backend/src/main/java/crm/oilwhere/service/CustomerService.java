@@ -2,38 +2,49 @@ package crm.oilwhere.service;
 
 import org.springframework.stereotype.Service;
 
+import crm.oilwhere.dto.CustomerDTO;
 import crm.oilwhere.model.Customer;
-import crm.oilwhere.model.CustomerDTO;
 import crm.oilwhere.repository.CustomerRepository;
 
 import java.util.List;
 
 import java.util.Optional;
 
-
+// CustomerService is the service layer connected to the CustomerRepository. It contains all the business logic for Customer table. It utilises the JPA repository to query from the database.
+// consists of the following functions
+// getAllCustomer() -- retrieve all customer records
+// getCustomerById(customerId) -- retrieve customer record that has specific customerId
+// createCustomer(customerDTO) -- create a new customer record with the customerDTO object
+// deleteCustomer(customerId) -- delete the customer record with the specidic customerId
+// updateCustomer(customerId, customerDTO) -- update the customer record with the specified customerId and replace with customerDTO object 
 
 @Service
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
 
-    // constructor
+    // constructor to create CustomerService object
     public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
 
-    // get all
+    // get all customer 
+    // Uses JPA repository findAll function to retrieve all customer records
     public List<Customer> getAllCustomer() {
         return customerRepository.findAll();
     }
 
     // get name, email using customerId
+    // Used JPA repository findById function to retrieve record that has specific customerId
     public Customer getCustomerById(Long customerId) {
         return customerRepository.findById(customerId)
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
     }
 
     // create new customer
+    // Create a new customer object
+    // Set the customerId, name and email from the customerDTO object using getCustomerId, getName, getEmail
+    // Used JPA repository to save the record after creating the new customer object
     public Customer createCustomer(CustomerDTO customerDTO) {
     
         // Create a new Customer instance
@@ -48,6 +59,8 @@ public class CustomerService {
     }
 
     // delete customer using customerId
+    // Used JPA repository's existsById to find if the record with specified customerId exists
+    // Used JPA repository's deleteById to delete the record with specified customerId exists
     public String deleteCustomer(Long customerId) {
         if (customerRepository.existsById(customerId)) {
             customerRepository.deleteById(customerId);
@@ -58,6 +71,9 @@ public class CustomerService {
     }
 
     // update customer using customerId
+    // Used JPA repository's findById to find the record with specified customerId and isPresent to check if it exists
+    // Obtain the record's customer object
+    // Set the customerId, name and email from the customerDTO object using getCustomerId, getName, getEmail on the DTO
     public Customer updateCustomer(Long customerId, CustomerDTO customerDTO) {
     Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
 
