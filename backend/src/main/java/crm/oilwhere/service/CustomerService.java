@@ -15,7 +15,7 @@ import java.util.Optional;
 // getAllCustomer() -- retrieve all customer records
 // getCustomerById(customerId) -- retrieve customer record that has specific customerId
 // createCustomer(customerDTO) -- create a new customer record with the customerDTO object
-// deleteCustomer(customerId) -- delete the customer record with the specidic customerId
+// deleteCustomer(customerId) -- delete the customer record with the specific customerId
 // updateCustomer(customerId, customerDTO) -- update the customer record with the specified customerId and replace with customerDTO object 
 
 @Service
