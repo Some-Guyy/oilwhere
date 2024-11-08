@@ -73,8 +73,7 @@ public class CustomerService {
     // update customer using customerId
     // Used JPA repository's findById to find the record with specified customerId and isPresent to check if it exists
     // Obtain the record's customer object
-    // Set the customerId, name and email from the customerDTO object using getCustomerId, getName, getEmail
-    // 
+    // Set the customerId, name and email from the customerDTO object using getCustomerId, getName, getEmail on the DTO
     public Customer updateCustomer(Long customerId, CustomerDTO customerDTO) {
     Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
 
