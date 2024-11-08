@@ -8,6 +8,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 
+// The following is the Newsletter object to hold each newsletter object
+// The newsletter object is for each record in the newsletter table
+// It contains the design_id, name and content
+// design_id: Id of each newsletter
+// name: Name of each customer
+// content: Content of the newsletter
+
 @Entity
 @Table(name = "newsletter")
 public class Newsletter {
