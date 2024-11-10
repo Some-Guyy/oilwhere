@@ -1,6 +1,9 @@
 # Timperio Customer Relationship Management (CRM)
 A web application for Timperio to manage and analyse their customer data, as well as manage marketing features for their customers.
 
+## Documentation
+To view documentations for this Java application, open the `documentation` folder and open `index.html` from a file explorer.
+
 ## Setup
 ### Prerequisites:
 - [Java](https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html) v21
