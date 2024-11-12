@@ -14,7 +14,7 @@ const Container = styled.div`
 
 const Newsletter = () => {
   const [newsletterName, setNewsletterName] = useState("");
-  const [priority, setPriority] = useState("");
+  const [segment, setSegment] = useState("");
   const [subject, setSubject] = useState("");
 
   const [isEditing, setIsEditing] = useState(false);
@@ -80,8 +80,8 @@ const Newsletter = () => {
 
   const sendEmail = async () => {
     try {
-      if (!priority) {
-        toast("Please select a priority level.");
+      if (!segment) {
+        toast("Please select a segment level.");
         return;
       }
 
@@ -103,13 +103,13 @@ const Newsletter = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          segment: priority,
+          segment: segment,
           subject: subject,
           body: htmlData,
         }),
       }).then((r) => r.json());
 
-      toast(`Email scheduled with ${priority} priority`);
+      toast(`Email scheduled with ${segment} segment`);
       setSubject("");
       document.getElementById("my_modal_1").close();
     } catch (error) {
@@ -179,7 +179,7 @@ const Newsletter = () => {
                 <span className="font-semibold">Priority</span>
                 <select
                   className="select select-bordered w-full mt-1"
-                  onChange={(e) => setPriority(e.target.value)}
+                  onChange={(e) => setSegment(e.target.value)}
                 >
                   <option disabled selected>
                     Select priority level
