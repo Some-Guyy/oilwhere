@@ -42,12 +42,12 @@ const Newsletter = () => {
 
   const saveDesign = async () => {
     // const unlayer = emailEditorRef.current?.editor;
-
+    
     // unlayer?.saveDesign(async (design) => {
-    try {
-      let htmlData = await new Promise((resolve, reject) => {
-        emailEditorRef.current?.exportHtml((data) => {
-          const { html } = data;
+      try {
+        let htmlData = await new Promise((resolve, reject) => {
+          emailEditorRef.current?.exportHtml((data) => {
+            const { html } = data;
           if (html) {
             resolve(html);
           } else {
@@ -58,6 +58,7 @@ const Newsletter = () => {
 
       // Add your save API call here
       const { state } = location;
+
 
       const response = await fetch(`/api/newsletter/${state.templateId}`, {
         method: isEditing ? "PUT" : "POST",
@@ -95,7 +96,7 @@ const Newsletter = () => {
           }
         });
       });
-      
+
       await fetch("/api/customer/send-email", {
         method: "POST",
         headers: {
@@ -108,12 +109,12 @@ const Newsletter = () => {
         }),
       }).then((r) => r.json());
 
-      toast(`Email scheduled with ${segment} segment`);
+      toast(`Email sent to ${segment} segment`);
       setSubject("");
       document.getElementById("my_modal_1").close();
     } catch (error) {
       console.error(error);
-      toast("Failed to schedule email.");
+      toast("Failed to send email.");
     }
   };
 
