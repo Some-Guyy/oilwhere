@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS `customer`;
 CREATE TABLE IF NOT EXISTS `customer` (
   `customer_id` INT NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL,
-  `email` varchar(255) NOT NULL,
+  `email` varchar(255),
   PRIMARY KEY (`customer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -60,16 +60,16 @@ CREATE TABLE IF NOT EXISTS `customer_spending_ranked` (
 -- Manually inserting customer details into customer table
 -- Please edit this to add or remove customer details
 INSERT INTO `customer` (`customer_id`, `name`, `email`) VALUES
-(1, 'John', 'ryan.ng.2022@scis.smu.edu.sg'),
-(2, 'John', 'ryan.ng.2022@scis.smu.edu.sg'),
-(3, 'John', 'jonathantoh.2022@scis.smu.edu.sg'),
-(4, 'John', 'jjchong.2022@scis.smu.edu.sg'),
-(5, 'John', 'jjchong.2022@scis.smu.edu.sg'),
-(6, 'John', 'brandon.lim.2022@scis.smu.edu.sg'),
-(7, 'John', 'brandon.lim.2022@scis.smu.edu.sg'),
-(8, 'John', 'jonathantoh.2022@scis.smu.edu.sg'),
-(36, 'John', 'owen.tan.2022@scis.smu.edu.sg'),
-(65, 'John', 'owen.tan.2022@scis.smu.edu.sg');
+(1, 'John', 'TemperioTesting@gmail.com'),
+(2, 'John', 'TemperioTesting@gmail.com'),
+(3, 'John', 'TemperioTesting@gmail.com'),
+(4, 'John', 'TemperioTesting@gmail.com'),
+(5, 'John', 'TemperioTesting@gmail.com'),
+(6, 'John', 'TemperioTesting@gmail.com'),
+(7, 'John', 'TemperioTesting@gmail.com'),
+(8, 'John', 'TemperioTesting@gmail.com'),
+(36, 'John', 'TemperioTesting@gmail.com'),
+(65, 'John', 'TemperioTesting@gmail.com');
 
 -- Manually inserting purchase history into purchase_history table
 -- Please edit this to add or remove purchase history details

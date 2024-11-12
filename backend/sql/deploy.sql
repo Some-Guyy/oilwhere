@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS `customer`;
 CREATE TABLE IF NOT EXISTS `customer` (
   `customer_id` INT NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL,
-  `email` varchar(255) NOT NULL,
+  `email` varchar(255),
   PRIMARY KEY (`customer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -46,9 +46,13 @@ product = NULLIF(@vproduct, '')
 ;
 
 -- load data from the temporary table, purchase_history_temp to customer table
+-- Note that 2 of each customer segment has an email field at TemperioTesting@gmail.com
 -- Please edit this to change the emails to the relevant email addresses
 INSERT INTO `customer` (`customer_id`, `name`, `email`)
-SELECT DISTINCT `customer_id`, 'John' AS `name`, 'ryan.ng.2022@scis.smu.edu.sg' AS `email`
+SELECT DISTINCT 
+    `customer_id`, 
+    'John' AS `name`, 
+    IF(`customer_id` IN (2, 219, 251, 281, 338, 477), 'TemperioTesting@gmail.com', NULL) AS `email`
 FROM `purchase_history_temp`;
 
 -- Creation of purchase_history table
