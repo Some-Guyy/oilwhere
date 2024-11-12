@@ -66,7 +66,8 @@ CREATE TABLE IF NOT EXISTS `purchase_history` (
   `quantity` int NOT NULL,
   `price` decimal(10,2) NOT NULL,
   `product_price` decimal(10,2) NOT NULL,
-  PRIMARY KEY (`purchase_id`)
+  PRIMARY KEY (`purchase_id`),
+  FOREIGN KEY (`customer_id`) REFERENCES `customer`(`customer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Create a new table to store the customer and their total total spending
