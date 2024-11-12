@@ -95,8 +95,7 @@ const Newsletter = () => {
           }
         });
       });
-
-      // Modify your API call to handle priority instead of email addresses
+      
       await fetch("/api/customer/send-email", {
         method: "POST",
         headers: {
@@ -176,13 +175,13 @@ const Newsletter = () => {
 
             <div>
               <label className="input-group input-group-vertical w-full">
-                <span className="font-semibold">Priority</span>
+                <span className="font-semibold">Segment</span>
                 <select
                   className="select select-bordered w-full mt-1"
                   onChange={(e) => setSegment(e.target.value)}
                 >
                   <option disabled selected>
-                    Select priority level
+                    Select Segment
                   </option>
                   <option value="high">High</option>
                   <option value="medium">Medium</option>
