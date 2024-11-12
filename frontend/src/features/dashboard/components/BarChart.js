@@ -16,9 +16,27 @@ function BarChart({labels,dateMap,title,color}){
 
     const options = {
         responsive: true,
+        scales: {
+          x: {
+            ticks: {
+              color: '#cfd4e2',  // Color for x-axis labels
+            }
+          },
+          y: {
+            ticks: {
+              color: '#cfd4e2',  // Color for y-axis labels
+            }
+          }
+        },
         plugins: {
+          tooltip: {
+            footerColor: 'white'
+          },
           legend: {
             position: 'top',
+            labels: {
+              color: '#cfd4e2',
+          },
           }
         },
       };
@@ -32,7 +50,8 @@ function BarChart({labels,dateMap,title,color}){
             label: title,
             data: labels.map((j) =>  dateMap[j] ),
             backgroundColor: color,
-          },
+            color: '#cfd4e2',
+         },
         ],
       };
 

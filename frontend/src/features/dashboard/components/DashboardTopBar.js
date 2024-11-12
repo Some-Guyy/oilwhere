@@ -21,15 +21,16 @@ const periodOptions = [
 
 
 
-function DashboardTopBar({updateDashboardPeriod}){
+function DashboardTopBar({updateDashboardPeriod,date}){
 
         const [searchText, setSearchText] = useState("")
 
 
         const [dateValue, setDateValue] = useState({ 
-            startDate: new Date(), 
-            endDate: new Date() 
+            startDate: null, 
+            endDate: null 
         }); 
+
         
         const handleDatePickerValueChange = (newValue) => {
             console.log("newValue:", newValue); 

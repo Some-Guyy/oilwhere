@@ -22,6 +22,9 @@ function DoughnutChart({hashmap}){
         plugins: {
           legend: {
             position: 'top',
+            labels: {
+              color: '#cfd4e2'
+          },
           },
         },
       };

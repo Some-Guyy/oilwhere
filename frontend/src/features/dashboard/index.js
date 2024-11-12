@@ -17,6 +17,8 @@ import { useEffect, useState } from "react"
 import { getTransactionsContent } from '../transactions/transactionsSlice'
 import SearchBar from '../../components/Input/SearchBar'
 import SuspenseContent from '../../containers/SuspenseContent'
+import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon'
+
 
 
 function Dashboard(){
@@ -79,6 +81,16 @@ function Dashboard(){
         }
     ]
     : [];
+
+
+    const removeAppliedFilter = () => {
+        setTrans(transactions)
+        setSearchText("")
+        setDateValue({
+                startDate: null,
+                endDate: null,
+            });
+    }
 
  
 
@@ -193,10 +205,12 @@ function Dashboard(){
     return(
         <>
         {/** ------------------A---- Select Period Content ------------------------- */}
-        
-        <div className="grid grid-cols-1 sm:grid-cols-3">
-            <DashboardTopBar updateDashboardPeriod={updateDashboardPeriod}/>            
-            <SearchBar searchText={searchText} styleClass="mt-2" setSearchText={setSearchText} placeholderText="Search CId"/>
+        <div >
+            <div className="grid grid-cols-1 sm:grid-cols-3">
+                <DashboardTopBar updateDashboardPeriod={updateDashboardPeriod}/>            
+                <SearchBar searchText={searchText} styleClass="mt-2" setSearchText={setSearchText} placeholderText="Search CId"/>
+            </div>
+            <button onClick={() => removeAppliedFilter()} className="btn btn-xs mr-2 btn-active btn-ghost normal-case">Reset filters<XMarkIcon className="w-4 ml-2"/></button>
         </div>
 
         {trans.length==0?(<div>no such user</div>):(
