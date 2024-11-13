@@ -192,9 +192,15 @@ function Transactions(){
     const [currentpage,setcurrentPage] = useState(1)
 
     const totalPages = Math.ceil(trans.length / itemsPerPage);
+    console.log(totalPages)
 
     const handlePageChange = (value) => {
-        if(value == 1 || value == 2 || value == 0 ){
+        value = Number(value)
+        console.log(typeof(value))
+        if (value > totalPages || value < 1){
+            return
+        }
+        else if(value == 1 || value == 2 || value == 0 ){
             setlowerlimit(1)
             setupperlimit(5)
         }
@@ -207,9 +213,6 @@ function Transactions(){
             setlowerlimit(totalPages-4)
             setupperlimit(totalPages)
             }
-        }
-        else if (value > totalPages || value < 1){
-            return
         }
         else if (value - 3 >= 0 && upperlimit-2 < totalPages){
             setlowerlimit(value-2)
@@ -364,7 +367,7 @@ function Transactions(){
                         key={buttonNumber}
                         data-value={buttonNumber}
                         onClick={(e)=>handlePageChange(e.currentTarget.dataset.value)}
-                        className={currentpage==buttonNumber?"inline-flex items-center justify-center w-8 h-8 text-sm font-semibold border rounded shadow-md dark:border-gray-600  dark:border-violet-600":"inline-flex items-center justify-center w-8 h-8 text-sm font-semibold border rounded shadow-md dark:border-gray-600 "}
+                        className={Number(currentpage)==Number(buttonNumber)?"inline-flex items-center justify-center w-8 h-8 text-sm font-semibold border rounded shadow-md dark:border-violet-600":"inline-flex items-center justify-center w-8 h-8 text-sm font-semibold border rounded shadow-md dark:border-gray-600 "}
                     >
                         {buttonNumber}
                     </button> 
