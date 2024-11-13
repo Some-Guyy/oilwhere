@@ -56,7 +56,7 @@ function LeftSidebar(){
                 <li className='mt-auto'>            
                 <button   // Define this function to handle logout logic
                 onClick={logoutUser}
-                // className="w-full px-4 py-2 text-white bg-red-800 hover:bg-red-900 rounded-lg text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-red-400"
+                className="w-full px-4 py-2 text-white bg-red-800 hover:bg-red-900 rounded-lg text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-red-400"
                 >
                 Logout
             </button></li>
