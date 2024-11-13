@@ -14,10 +14,15 @@ function LeftSidebar(){
         document.getElementById('left-sidebar-drawer').click()
     }
 
+    function logoutUser(){
+        localStorage.clear();
+        window.location.href = '/'
+    }
+
     return(
         <div className="drawer-side  z-30  ">
             <label htmlFor="left-sidebar-drawer" className="drawer-overlay"></label> 
-            <ul className="menu  pt-2 w-80 bg-base-100 min-h-full   text-base-content">
+            <ul className="menu  pt-2 w-80 bg-base-100 min-h-full text-base-content flex-1">
             <button className="btn btn-ghost bg-base-300  btn-circle z-50 top-0 right-0 mt-4 mr-2 absolute lg:hidden" onClick={() => close()}>
             <XMarkIcon className="h-5 inline-block w-5"/>
             </button>
@@ -48,7 +53,13 @@ function LeftSidebar(){
                         )
                     })
                 }
-
+                <li className='mt-auto'>            
+                <button   // Define this function to handle logout logic
+                onClick={logoutUser}
+                // className="w-full px-4 py-2 text-white bg-red-800 hover:bg-red-900 rounded-lg text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-red-400"
+                >
+                Logout
+            </button></li>
             </ul>
         </div>
     )
