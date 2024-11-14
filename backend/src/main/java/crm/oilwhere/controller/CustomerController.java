@@ -59,7 +59,7 @@ public class CustomerController {
     // Returns the Customer objects of the customers where email was sent
     // Returns error 500 if unsuccessful
     @PostMapping("/send-email")
-    public ResponseEntity<List<Customer>> testRoute(@RequestBody EmailDTO emailDTO) {
+    public ResponseEntity<List<Customer>> sendNewsletter(@RequestBody EmailDTO emailDTO) {
         
         String segment = emailDTO.getSegment();
         String subject = emailDTO.getSubject();

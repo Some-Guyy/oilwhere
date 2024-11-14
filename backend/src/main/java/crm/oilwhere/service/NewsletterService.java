@@ -98,13 +98,14 @@ public class NewsletterService {
             String fromName = "Timperio";
             String fromAddr = System.getenv("SMTP_USERNAME");
             
+            if (body.contains("<name>")) {
+                body = body.replaceAll("<name>", custName);
+            }
+
             Email email = this.emailBuilderUtil.buildHtmlEmail(fromName, fromAddr, custName, custEmail, subject, body);
             this.mailer.sendMail(email);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-    
-
 }
