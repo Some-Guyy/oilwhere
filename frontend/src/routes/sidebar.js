@@ -22,28 +22,71 @@ import DocumentDuplicateIcon from '@heroicons/react/24/outline/DocumentDuplicate
 const iconClasses = `h-6 w-6`
 const submenuIconClasses = `h-5 w-5`
 
-const routes = [
+const TOKEN = JSON.parse(localStorage.getItem("token"))
+const username = TOKEN.username
+const role = TOKEN.role
 
+console.log(role)
+let routes = []
+
+{role == "ADMIN" ? routes = [
   {
-    path: '/app/dashboard',
-    icon: <Squares2X2Icon className={iconClasses}/>, 
-    name: 'Dashboard',
-  },
-  {
-    path: '/app/leads', // url
-    icon: <InboxArrowDownIcon className={iconClasses}/>, // icon component
-    name: 'Leads', // name that appear in Sidebar
+    path: '/app/Users', // url
+    icon: <UserIcon className={iconClasses}/>, // icon component
+    name: 'Users', // name that appear in Sidebar
   },
   {
     path: '/app/newsletter-list', // url
     icon: <InboxArrowDownIcon className={iconClasses}/>, // icon component
     name: 'Newsletter', // name that appear in Sidebar
   },
-  {
-    path: '/app/transactions', // url
-    icon: <CurrencyDollarIcon className={iconClasses}/>, // icon component
-    name: 'Transactions', // name that appear in Sidebar
-  },
+  ]:role == "SALES"? routes = [
+    {
+      path: '/app/dashboard',
+      icon: <Squares2X2Icon className={iconClasses}/>, 
+      name: 'Dashboard',
+    },
+    {
+      path: '/app/transactions', // url
+      icon: <CurrencyDollarIcon className={iconClasses}/>, // icon component
+      name: 'Transactions', // name that appear in Sidebar
+    },
+  ]: routes =[
+    {
+      path: '/app/transactions', // url
+      icon: <CurrencyDollarIcon className={iconClasses}/>, // icon component
+      name: 'Transactions', // name that appear in Sidebar
+    },
+    {
+      path: '/app/newsletter-list', // url
+      icon: <InboxArrowDownIcon className={iconClasses}/>, // icon component
+      name: 'Newsletter', // name that appear in Sidebar
+    },
+  ]}
+
+// const routes = [
+
+//   {
+//     path: '/app/dashboard',
+//     icon: <Squares2X2Icon className={iconClasses}/>, 
+//     name: 'Dashboard',
+//   },
+//   {
+//     path: '/app/Users', // url
+//     icon: <UserIcon className={iconClasses}/>, // icon component
+//     name: 'Users', // name that appear in Sidebar
+//   },
+//   {
+//     path: '/app/newsletter-list', // url
+//     icon: <InboxArrowDownIcon className={iconClasses}/>, // icon component
+//     name: 'Newsletter', // name that appear in Sidebar
+//   },
+//   {
+//     path: '/app/transactions', // url
+//     icon: <CurrencyDollarIcon className={iconClasses}/>, // icon component
+//     name: 'Transactions', // name that appear in Sidebar
+//   },
+//   ]
   // {
   //   path: '/app/charts', // url
   //   icon: <ChartBarIcon className={iconClasses}/>, // icon component
@@ -137,7 +180,7 @@ const routes = [
   //   ]
   // },
   
-]
+
 
 export default routes
 

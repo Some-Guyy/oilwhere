@@ -19,13 +19,15 @@ function Header(){
 
     useEffect(() => {
         themeChange(false)
-        if(currentTheme === null){
-            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ) {
-                setCurrentTheme("dark")
-            }else{
-                setCurrentTheme("light")
-            }
-        }
+        document.documentElement.setAttribute('data-set-theme', 'dark')
+        // setCurrentTheme("light")
+        // if(currentTheme === null){
+        //     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ) {
+        //         setCurrentTheme("dark")
+        //     }else{
+        //         setCurrentTheme("light")
+        //     }
+        // }
         // 👆 false parameter is required for react project
       }, [])
 

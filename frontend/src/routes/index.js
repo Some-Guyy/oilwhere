@@ -31,7 +31,7 @@ const routes = [
     component: Welcome, // view rendered
   },
   {
-    path: '/leads',
+    path: '/users',
     component: Leads,
   },
   {
