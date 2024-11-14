@@ -27,11 +27,15 @@ const Newsletter = () => {
     const { state } = location;
 
     if (state?.mode === "edit" && state?.templateData) {
+
+      const TOKEN = JSON.parse(localStorage.getItem("token"))
+
       console.log(state);
       setTemplateData(state.templateData);
       setIsEditing(true);
       // Fix the typo in templateName and add null checking
       setNewsletterName(state.templateName || "");
+      setSubject("Dear " + TOKEN.username + ", " + state.templateName || "");
     }
   }, [location]);
 

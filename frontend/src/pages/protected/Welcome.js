@@ -12,6 +12,8 @@ function InternalPage(){
         dispatch(setPageTitle({ title : ""}))
       }, [])
 
+      console.log(localStorage.getItem("token"));
+
     return(
       <div className="hero h-4/5 bg-base-200">
       <div className="hero-content">

@@ -48,7 +48,7 @@ function Login(){
             }
 
             // Assuming the API returns a token
-            localStorage.setItem("token", data.token || "DummyTokenHere");
+            localStorage.setItem("token", JSON.stringify(data));
             setLoading(false);
 
             // Redirect to welcome page after successful login

@@ -160,7 +160,6 @@ const NewsletterList = () => {
               <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Content Preview</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -169,11 +168,6 @@ const NewsletterList = () => {
                 <tr key={template.designId}>
                   <td>{template.designId}</td>
                   <td>{template.name}</td>
-                  <td>
-                    <div className="max-w-md overflow-hidden text-ellipsis whitespace-nowrap">
-                      {template.content}
-                    </div>
-                  </td>
                   <td className="flex gap-2">
                     <button
                       onClick={() => handleEdit(template)}
