@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import crm.oilwhere.dto.CustomerDTO;
 import crm.oilwhere.dto.EmailDTO;
 import crm.oilwhere.model.Customer;
-import crm.oilwhere.model.Filter;
+import crm.oilwhere.model.CustomerSpending;
 import crm.oilwhere.service.CustomerService;
-import crm.oilwhere.service.FilterService;
+import crm.oilwhere.service.CustomerSegmentService;
 import crm.oilwhere.service.NewsletterService;
 
 // The following is the endpoints used to access the customer table
@@ -36,12 +36,12 @@ import crm.oilwhere.service.NewsletterService;
 @CrossOrigin(origins = "http://localhost:3000")
 public class CustomerController {
     
-    private final FilterService filterService;
+    private final CustomerSegmentService filterService;
     private final CustomerService customerService;
     private final NewsletterService newsletterService;
 
 
-    public CustomerController(FilterService filterService, CustomerService customerService, NewsletterService newsletterService) {
+    public CustomerController(CustomerSegmentService filterService, CustomerService customerService, NewsletterService newsletterService) {
         this.filterService = filterService;
         this.customerService = customerService;
         this.newsletterService = newsletterService;
@@ -65,7 +65,7 @@ public class CustomerController {
         String subject = emailDTO.getSubject();
         String body = emailDTO.getBody();
         
-        List<Filter> filter = new ArrayList<>();
+        List<CustomerSpending> filter = new ArrayList<>();
         List<Long> customerIds = new ArrayList<>();
         List<Customer> customerList = new ArrayList<>();
         
@@ -89,7 +89,7 @@ public class CustomerController {
 
         // iterator to iterate through filter returned body
         // body consist of customerId and total spending
-        Iterator<Filter> segmentIter = filter.iterator();
+        Iterator<CustomerSpending> segmentIter = filter.iterator();
 
         // add customer ids to arraylist
         while (segmentIter.hasNext()) {

@@ -4,7 +4,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import crm.oilwhere.model.Filter;
+import crm.oilwhere.model.CustomerSpending;
+import crm.oilwhere.model.HighValueCustomerFilter;
+import crm.oilwhere.model.MediumValueCustomerFilter;
+import crm.oilwhere.model.LowValueCustomerFilter;
 import crm.oilwhere.repository.FilterRepository;
 
 // FilterService is the service layer connected to the FilterRepository. It contains all the business logic for customer_spending_ranked table. It utilises the JPA repository to query from the database.
@@ -16,63 +19,63 @@ import crm.oilwhere.repository.FilterRepository;
 // getLowValueCustomer() -- retrieve customers whose total spending is at bottom 20% 
 
 @Service
-public class FilterService {
+public class CustomerSegmentService {
 
     private final FilterRepository filterRepository;
+    private final HighValueCustomerFilter highValue;
+    private final MediumValueCustomerFilter mediumValue;
+    private final LowValueCustomerFilter lowValue;
 
     // constructor to create FilterService object
-    public FilterService(FilterRepository filterRepository) {
+    public CustomerSegmentService(FilterRepository filterRepository) {
         this.filterRepository = filterRepository;
+        this.highValue = new HighValueCustomerFilter();
+        this.mediumValue = new MediumValueCustomerFilter();
+        this.lowValue = new LowValueCustomerFilter();
     }
 
     // get all purchase from purchase history
     // Uses JPA repository findAll function to retrieve all Filter records
-    public List<Filter> getAllCustomerSpending() {
+    public List<CustomerSpending> getAllCustomerSpending() {
         return filterRepository.findAll();
     }
 
     // get high-value customer(top 10%)
     // Uses custome query method from JPA repository, findAllByOrderByTotalSpendingDesc, to retrieve all customer records that are top 10% in spending
-    public List<Filter> getHighValueCustomer() {
+    public List<CustomerSpending> getHighValueCustomer() {
 
         // get list of all customers sorted by total spending descending
-        List<Filter> customers = filterRepository.findAllByOrderByTotalSpendingDesc();
-
-        // find the length of top 10%
-        int topTenLength = (int)Math.ceil(customers.size() * 0.1);
+        List<CustomerSpending> customers = filterRepository.findAllByOrderByTotalSpendingDesc();
 
         // return sublist of top 10% only
-        return customers.subList(0, topTenLength);
+        List<CustomerSpending> topTen = highValue.applyFilter(customers);
+
+        return topTen;
     }
     
     // get medium-value customer(between 10% and 80%)
     // Uses custome query method from JPA repository, findAllByOrderByTotalSpendingDesc, to retrieve all customer records that are between top 10% and bottom 20% in spending
-    public List<Filter> getMediumValueCustomer() {
+    public List<CustomerSpending> getMediumValueCustomer() {
 
         // get list of all customers sorted by total spending ascending
-        List<Filter> customers = filterRepository.findAllByOrderByTotalSpending();
-
-        // find the length of bottom 20%
-        int bottomBoundary = (int)Math.ceil(customers.size() * 0.2);
-
-        // find the length of top 80%
-        int upperBoundary = (int)Math.ceil(customers.size() * 0.8);
+        List<CustomerSpending> customers = filterRepository.findAllByOrderByTotalSpending();
 
         // return sublist of between 20-80% only
-        return customers.subList(bottomBoundary, upperBoundary);
+        List<CustomerSpending> averageSpending = mediumValue.applyFilter(customers);
+
+        return averageSpending;
     }
 
     // get low-value customer(bottom 20%)
     // Uses custome query method from JPA repository, findAllByOrderByTotalSpendingDesc, to retrieve all customer records that are bottom 20% in spending
-    public List<Filter> getLowValueCustomer() {
+    public List<CustomerSpending> getLowValueCustomer() {
 
         // get list of all customers sorted by total spending ascending
-        List<Filter> customers = filterRepository.findAllByOrderByTotalSpending();
-
-        // find the length of bottom 20%
-        int bottomTwentyLength = (int)Math.ceil(customers.size() * 0.2);
+        List<CustomerSpending> customers = filterRepository.findAllByOrderByTotalSpending();
 
         // return sublist of bottom 20% only
-        return customers.subList(0, bottomTwentyLength);
+        List<CustomerSpending> bottomTwenty = lowValue.applyFilter(customers);
+
+        return bottomTwenty;
     }
 }

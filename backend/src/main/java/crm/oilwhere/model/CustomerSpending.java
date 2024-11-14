@@ -10,7 +10,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "customer_spending_ranked")
-public class Filter {
+public class CustomerSpending {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,9 +21,9 @@ public class Filter {
     private float totalSpending;
     
     // constructors
-    public Filter() {}
+    public CustomerSpending() {}
 
-    public Filter(Long customerId, float totalSpending) {
+    public CustomerSpending(Long customerId, float totalSpending) {
         this.customerId = customerId;
         this.totalSpending = totalSpending;
     }

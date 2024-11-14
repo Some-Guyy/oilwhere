@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import crm.oilwhere.model.Filter;
-import crm.oilwhere.service.FilterService;
+import crm.oilwhere.model.CustomerSpending;
+import crm.oilwhere.service.CustomerSegmentService;
 
 // The following is the endpoints used to access the customer_spending_ranked table
 // It includes the following results
@@ -21,11 +21,11 @@ import crm.oilwhere.service.FilterService;
 @RestController
 @RequestMapping("/api/filter")
 @CrossOrigin(origins = "http://localhost:3000")
-public class FilterController {
+public class CustomerSegmentFilterController {
     
-    private final FilterService filterService;
+    private final CustomerSegmentService filterService;
 
-    public FilterController(FilterService filterService) {
+    public CustomerSegmentFilterController(CustomerSegmentService filterService) {
         this.filterService = filterService;
     }
 
@@ -33,8 +33,8 @@ public class FilterController {
     // GET request
     // Returns list of Filter objects
     @GetMapping("/get-all")
-    public ResponseEntity<List<Filter>> getAllCustomerSpending() {
-        List<Filter> filter = filterService.getAllCustomerSpending();
+    public ResponseEntity<List<CustomerSpending>> getAllCustomerSpending() {
+        List<CustomerSpending> filter = filterService.getAllCustomerSpending();
         return ResponseEntity.ok(filter);
     }
 
@@ -42,8 +42,8 @@ public class FilterController {
     // GET request
     // Returns list of Filter objects that have totalSpending at top 10%
     @GetMapping("/get/highValue")
-    public ResponseEntity<List<Filter>> getHighValueCustomer() {
-        List<Filter> filter = filterService.getHighValueCustomer();
+    public ResponseEntity<List<CustomerSpending>> getHighValueCustomer() {
+        List<CustomerSpending> filter = filterService.getHighValueCustomer();
         return ResponseEntity.ok(filter);
     }
 
@@ -51,8 +51,8 @@ public class FilterController {
     // GET request
     // Returns list of Filter objects that have totalSpending between 10% and 80%
     @GetMapping("/get/mediumValue")
-    public ResponseEntity<List<Filter>> getMediumValueCustomer() {
-        List<Filter> filter = filterService.getMediumValueCustomer();
+    public ResponseEntity<List<CustomerSpending>> getMediumValueCustomer() {
+        List<CustomerSpending> filter = filterService.getMediumValueCustomer();
         return ResponseEntity.ok(filter);
     }
 
@@ -60,8 +60,8 @@ public class FilterController {
     // GET request
     // Returns list of Filter objects that have totalSpending at bottom 20%
     @GetMapping("/get/lowValue")
-    public ResponseEntity<List<Filter>> getLowValueCustomer() {
-        List<Filter> filter = filterService.getLowValueCustomer();
+    public ResponseEntity<List<CustomerSpending>> getLowValueCustomer() {
+        List<CustomerSpending> filter = filterService.getLowValueCustomer();
         return ResponseEntity.ok(filter);
     }
 
