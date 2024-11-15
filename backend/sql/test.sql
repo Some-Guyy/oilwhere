@@ -5,7 +5,7 @@ USE `oilwhere_test`;
 -- Creation of Customer table to hold details about customer, including their name and email address
 DROP TABLE IF EXISTS `customer`;
 CREATE TABLE IF NOT EXISTS `customer` (
-  `customer_id` INT NOT NULL AUTO_INCREMENT,
+  `customer_id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL,
   `email` varchar(255),
   PRIMARY KEY (`customer_id`)
@@ -14,11 +14,11 @@ CREATE TABLE IF NOT EXISTS `customer` (
 -- Creation of purchase_history table
 DROP TABLE IF EXISTS `purchase_history`;
 CREATE TABLE IF NOT EXISTS `purchase_history` (
-  `purchase_id` INT NOT NULL AUTO_INCREMENT,
+  `purchase_id` BIGINT NOT NULL AUTO_INCREMENT,
   `sale_date` date NOT NULL,
   `sale_type` varchar(255),
   `digital`  varchar(255),
-  `customer_id` int NOT NULL,
+  `customer_id` BIGINT NOT NULL,
   `zipcode` int(6),
   `shipping_method` varchar(255),
   `product` varchar(255),
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `purchase_history` (
 -- Creation of user table
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
-  `user_id` INT NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
   `role` varchar(32) NOT NULL,
   `password` varchar(32) NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Creation of NewsLetter table
 DROP TABLE IF EXISTS `newsletter`;
 CREATE TABLE IF NOT EXISTS `newsletter` (
-  `design_id` INT NOT NULL AUTO_INCREMENT,
+  `design_id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL,
   `content` text NOT NULL,
   PRIMARY KEY (`design_id`)
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `newsletter` (
 -- Create a new table to store the customer by total spending
 DROP TABLE IF EXISTS `customer_spending_ranked`;
 CREATE TABLE IF NOT EXISTS `customer_spending_ranked` (
-  `customer_id` INT NOT NULL,
+  `customer_id` BIGINT NOT NULL,
   `total_spending` DECIMAL(10, 2) NOT NULL,
   PRIMARY KEY (`customer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
