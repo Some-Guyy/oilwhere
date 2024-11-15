@@ -23,6 +23,13 @@ import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon'
 
 function Dashboard(){
     // const [isLoading, setisLoading] = useState(false);
+    useEffect(()=>{
+        const TOKEN = JSON.parse(localStorage.getItem("token"))
+        const role = TOKEN.role
+        if(role != "SALES"){
+            window.location.href = '/app/welcome'
+        }
+    },[])
 
 
     const dispatch = useDispatch()

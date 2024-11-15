@@ -138,6 +138,14 @@ function Transactions(){
     const isLoading = useSelector((state) => state.transaction.isLoading);
     const dispatch = useDispatch()
 
+    useEffect(()=>{
+        const TOKEN = JSON.parse(localStorage.getItem("token"))
+        const role = TOKEN.role
+        if(role != "SALES" && role != "MARKETING"){
+            window.location.href = '/app/welcome'
+        }
+    },[])
+
 
     const [trans, setTrans] = useState([]);
     useEffect(() => {

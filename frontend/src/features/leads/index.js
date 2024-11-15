@@ -27,9 +27,19 @@ function Leads(){
     const {leads } = useSelector(state => state.lead)
     const dispatch = useDispatch()
 
+    useEffect(()=>{
+        const TOKEN = JSON.parse(localStorage.getItem("token"))
+        const role = TOKEN.role
+        if(role != "ADMIN"){
+            window.location.href = '/app/welcome'
+        }
+    },[])
+
     useEffect(() => {
         dispatch(getLeadsContent())
     }, [])
+
+    
 
     // console.log(leads)
 
