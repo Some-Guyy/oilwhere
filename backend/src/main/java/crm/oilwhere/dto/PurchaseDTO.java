@@ -8,7 +8,7 @@ public class PurchaseDTO {
     private LocalDate saleDate;
     private String saleType;
     private String digital;
-    private Integer customerId;
+    private Long customerId;
     private Integer zipcode;
     private String shippingMethod;
     private String product;
@@ -45,11 +45,11 @@ public class PurchaseDTO {
         this.digital = digital;
     }
 
-    public Integer getCustomerId() {
+    public Long getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(Integer customerId) {
+    public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
 

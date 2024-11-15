@@ -38,7 +38,7 @@ public class Purchase {
     private String digital;
 
     @Column(name="customer_id", nullable = false)
-    private Integer customerId;
+    private Long customerId;
 
     @Column(name="zipcode", length = 6)
     private Integer zipcode;
@@ -65,7 +65,7 @@ public class Purchase {
     public Purchase() {}
 
     // Constructor with all fields
-    public Purchase(Long purchaseId, LocalDate saleDate, String saleType, String digital, Integer customerId, Integer zipcode, String shippingMethod, String product, Integer variant, Integer quantity, float price, float productPrice) {
+    public Purchase(Long purchaseId, LocalDate saleDate, String saleType, String digital, Long customerId, Integer zipcode, String shippingMethod, String product, Integer variant, Integer quantity, float price, float productPrice) {
         this.purchaseId = purchaseId;
         this.saleDate = saleDate;
         this.saleType = saleType;
@@ -116,11 +116,11 @@ public class Purchase {
         this.digital = digital;
     }
 
-    public Integer getCustomerId() {
+    public Long getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(Integer customerId) {
+    public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
 
