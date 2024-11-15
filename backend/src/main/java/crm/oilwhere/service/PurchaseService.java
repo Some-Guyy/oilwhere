@@ -7,7 +7,6 @@ import crm.oilwhere.model.Purchase;
 import crm.oilwhere.repository.PurchaseRepository;
 
 import java.util.List;
-import java.time.LocalDate;
 
 import java.util.Optional;
 
@@ -33,13 +32,6 @@ public class PurchaseService {
     // Uses JPA repository findAll function to retrieve all customer records
     public List<Purchase> getAllPurchases() {
         return purchaseRepository.findAll();
-    }
-
-    // get all purchase within start date and end date from purchase history
-    // Uses custome query method from JPA repository, findBySaleDateBetween, to retrieve all purchase records that fall between the start and end date.
-    // Both start and end date uses LocalDate input format
-    public List<Purchase> getPurchaseByDateRange(LocalDate startDate, LocalDate endDate) {
-        return purchaseRepository.findBySaleDateBetween(startDate, endDate);
     }
 
     // create new purchase record

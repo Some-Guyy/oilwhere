@@ -16,7 +16,6 @@ import crm.oilwhere.dto.PurchaseDTO;
 import crm.oilwhere.model.Purchase;
 
 import java.util.List;
-import java.time.LocalDate;
 
 // The following is the endpoints used to access the purchase history table
 // It includes the following results
@@ -43,15 +42,6 @@ public class PurchaseController {
     @GetMapping("/get-all")
     public ResponseEntity<List<Purchase>> getAllPurchases() {
         List<Purchase> purchases = purchaseService.getAllPurchases();
-        return ResponseEntity.ok(purchases);
-    }
-
-    // Get all purchase history by date range
-    // GET request
-    // Returns list of Purchase objects with dates between start and end date
-    @GetMapping("/{startDate}/{endDate}")
-    public ResponseEntity<List<Purchase>> getPurchaseByDateRange(@PathVariable LocalDate startDate, @PathVariable LocalDate endDate) {
-        List<Purchase> purchases = purchaseService.getPurchaseByDateRange(startDate, endDate);
         return ResponseEntity.ok(purchases);
     }
 

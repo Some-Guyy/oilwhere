@@ -5,8 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import crm.oilwhere.model.Purchase;
 
-import java.util.List;
-import java.time.LocalDate;
 
 // The following is the repository layer which interacts with the database
 // It helps the PurchaseService access the JPA repository and utilise functions provided by it. These include
@@ -20,8 +18,4 @@ import java.time.LocalDate;
 @Repository
 public interface PurchaseRepository extends JpaRepository<Purchase, Long>{
 
-    // startDate: is the start date, is a LocalDate data type in year, month, date. For example 2019-11-23
-    // endDate: is the end date, is a LocalDate data type in year, month, date. For example 2019-11-23
-    // Returns a list of Purchase objects
-    List<Purchase> findBySaleDateBetween(LocalDate startDate, LocalDate endDate);
 }
