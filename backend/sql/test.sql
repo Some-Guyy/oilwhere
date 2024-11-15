@@ -77,7 +77,7 @@ INSERT INTO `purchase_history` (`purchase_id`, `sale_date`, `sale_type`, `digita
 (1, '2019-11-22', 'Direct - B2B', 'Online - Website', 1, '437050', 'Standard Delivery', 'Chili oil', 100, 3, 5.9, 17.7),
 (2, '2019-11-22', 'Consignment', 'Online - Website', 2, '126793', 'Standard Delivery', 'Organic Bio/Olio', 500, 2, 16.9, 33.8),
 (3, '2019-11-22', 'Marketing', 'Online - Website', 2, '126793', 'Standard Delivery', 'Basil oil', 100, 1, 5.9, 5.9),
-(4, '2020-05-22', 'Direct - B2C', 'Online - Website', 65, '101080', 'Standard Delivery', 'Truffle oil', 100, 1, 7.9, 6.32),
+(4, '2019-11-23', 'Direct - B2C', 'Online - Website', 65, '101080', 'Standard Delivery', 'Truffle oil', 100, 1, 7.9, 6.32),
 (5, '2019-12-17', 'Direct - B2C', 'Online - Website', 36, '608531', 'Standard Delivery', 'Limited Edition Gift box 3x100ml', 2020, 2, 19.9, 39.8),
 (6, '2019-12-17', 'Direct - B2C', 'Online - Website', 3, '608531', 'Standard Delivery', 'Limited Edition Gift box 3x100ml', 2020, 2, 19.9, 39.8),
 (7, '2019-12-17', 'Direct - B2C', 'Online - Website', 4, '608531', 'Standard Delivery', 'Limited Edition Gift box 3x100ml', 2020, 2, 19.9, 39.8),
