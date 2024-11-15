@@ -55,12 +55,12 @@ public class UserController {
     // update user
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-    try {
-        User user = userService.updateUser(id, userDTO);
-        return ResponseEntity.ok(user);
-    } catch (RuntimeException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-    }
+        try {
+            User user = userService.updateUser(id, userDTO);
+            return ResponseEntity.ok(user);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     // login

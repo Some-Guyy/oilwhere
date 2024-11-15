@@ -3,6 +3,8 @@ package crm.oilwhere.controller;
 import crm.oilwhere.dto.NewsletterDTO;
 import crm.oilwhere.model.Newsletter;
 import crm.oilwhere.service.NewsletterService;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +32,7 @@ public class NewsletterController {
     // GET request
     // Returns list of newletter objects
     @GetMapping("/get-all")
-    public ResponseEntity<List<Newsletter>> getById() {
+    public ResponseEntity<List<Newsletter>> getAll() {
         List<Newsletter> newsletters = NewsletterService.getAll();
         return ResponseEntity.ok(newsletters);
     }
@@ -43,9 +45,13 @@ public class NewsletterController {
     // }
     // Returns updated newsletter object created
     @PutMapping("/{id}")
-    public ResponseEntity<Newsletter> updateTemplate(@PathVariable Long id, @RequestBody NewsletterDTO newsletterDTO) {
-        Newsletter newsletter = NewsletterService.updateTemplate(id, newsletterDTO);
-        return ResponseEntity.ok(newsletter);
+    public ResponseEntity<?> updateTemplate(@PathVariable Long id, @RequestBody NewsletterDTO newsletterDTO) {
+        try {
+            Newsletter newsletter = NewsletterService.updateTemplate(id, newsletterDTO);
+            return ResponseEntity.ok(newsletter);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
     
     // create new template
