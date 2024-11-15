@@ -171,34 +171,40 @@ function Dashboard(){
 
         }
         else{
-        trans.reverse().forEach(transaction =>{
-            if(transaction.product in productMap){
-                productMap[transaction.product] += 1
+            for (let i = trans.length - 1; i >= 0; i--) {
+                let transaction = trans[i];
+            
+                // Update productMap
+                if (transaction.product in productMap) {
+                    productMap[transaction.product] += 1;
+                } else {
+                    productMap[transaction.product] = 1;
+                }
+            
+                // Update saleTypeMap
+                if (transaction.saleType in saleTypeMap) {
+                    saleTypeMap[transaction.saleType] += 1;
+                } else {
+                    saleTypeMap[transaction.saleType] = 1;
+                }
+            
+                // Process sale date and update dateMapRevenue and dateMapSales
+                let transDate = new Date(transaction.saleDate);
+                let month = monthNames[transDate.getMonth()];
+                let year = transDate.getFullYear();
+                let keyName = `${month} ${year}`;
+            
+                if (keyName in dateMapRevenue) {
+                    dateMapRevenue[keyName] += transaction.productPrice;
+                    dateMapSales[keyName] += 1;
+                } else {
+                    dateMapRevenue[keyName] = transaction.productPrice;
+                    dateMapSales[keyName] = 1;
+                }
             }
-            else{
-                productMap[transaction.product] = 1
-            }
-            if (transaction.saleType in saleTypeMap){
-                saleTypeMap[transaction.saleType] += 1
-            }
-            else{
-                saleTypeMap[transaction.saleType] = 1
-            }
-            let transDate = new Date(transaction.saleDate)
-            let month = monthNames[transDate.getMonth()];
-            let year = transDate.getFullYear();
-            let keyName = (`${month} ${year}`)
-            if (keyName in dateMapRevenue){
-                dateMapRevenue[keyName] += transaction.productPrice
-                dateMapSales[keyName] += 1
-            }
-            else{
-                dateMapRevenue[keyName] = transaction.productPrice
-                dateMapSales[keyName] = 1
-            }
-        })
-        
         }
+        
+        
         labels = Object.keys(dateMapRevenue)
     }    
 
