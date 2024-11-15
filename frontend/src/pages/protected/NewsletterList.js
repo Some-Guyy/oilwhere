@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Pencil, Trash, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Toaster, toast } from "sonner";
+import { useDispatch } from 'react-redux'
+import { setPageTitle } from '../../features/common/headerSlice'
 
 const NewsletterList = () => {
   const [templates, setTemplates] = useState([]);
@@ -10,7 +12,10 @@ const NewsletterList = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(setPageTitle({ title : "Newsletter List"}))
+
     fetchTemplates();
   }, []);
 
