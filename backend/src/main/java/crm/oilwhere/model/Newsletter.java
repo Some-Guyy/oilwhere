@@ -44,7 +44,7 @@ public class Newsletter {
         return designId;
     }
 
-    public void setDesignId(Long designId) { //dont really think we need this method but still put cause "best practices"
+    public void setDesignId(Long designId) {
         this.designId = designId;
     }
 

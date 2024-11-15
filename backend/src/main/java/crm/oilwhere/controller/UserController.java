@@ -5,6 +5,8 @@ import crm.oilwhere.dto.LoginResponseDTO;
 import crm.oilwhere.dto.UserDTO;
 import crm.oilwhere.model.User;
 import crm.oilwhere.service.UserService;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,9 +54,13 @@ public class UserController {
 
     // update user
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+    try {
         User user = userService.updateUser(id, userDTO);
         return ResponseEntity.ok(user);
+    } catch (RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
     }
 
     // login
