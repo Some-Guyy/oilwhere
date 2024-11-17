@@ -9,7 +9,7 @@ function TemplatePointers(){
          <h1 className="text-2xl mt-8 font-bold">Hello {username}!</h1>
          <p className="py-2 mt-4">✓ <span className="font-semibold">Welcome to Timperio new CRM!</span></p>
          <p className="py-2">✓ <span className="font-semibold">Everything you need to manage and grow your business is right here</span></p>
-         <p className="py-2">✓ <span className="font-semibold">Get started by naviagating to a page on the left sidebar</span></p>
+         <p className="py-2">✓ <span className="font-semibold">Get started by navigating to a page on the left sidebar</span></p>
 
 
 
