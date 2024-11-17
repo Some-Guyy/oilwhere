@@ -98,9 +98,13 @@ public class NewsletterService {
         try {
             String fromName = "Timperio";
             String fromAddr = System.getenv("SMTP_USERNAME");
-            
-            if (body.contains("<name>")) {
-                body = body.replaceAll("<name>", custName);
+            System.out.println(subject);
+            if (body.contains("&lt;name&gt;")) {
+                body = body.replaceAll("&lt;name&gt;", custName);
+            }
+
+            if (subject.contains("<name>")) {
+                subject = subject.replaceAll("<name>", custName);
             }
 
             Email email = this.emailBuilderUtil.buildHtmlEmail(fromName, fromAddr, custName, custEmail, subject, body);

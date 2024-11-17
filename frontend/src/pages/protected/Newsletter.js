@@ -38,7 +38,7 @@ const Newsletter = () => {
       setIsEditing(true);
       // Fix the typo in templateName and add null checking
       setNewsletterName(state.templateName || "");
-      setSubject("Dear <user>, " + state.templateName || "");
+      setSubject("Dear <name>, " + state.templateName || "");
     }
   }, [location]);
 
