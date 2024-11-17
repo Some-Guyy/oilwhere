@@ -72,11 +72,11 @@ public class UserController {
             User user = authenticatedUser.get();
 
             // create responseDTO to create object to return to FE
-            LoginResponseDTO response = new LoginResponseDTO(user.getUsername(), user.getRole(), "Login successful");
+            LoginResponseDTO response = new LoginResponseDTO(user.getUsername(), user.getRole(), "Login successful", user.getUserId());
 
             return ResponseEntity.ok(response); 
         } else {
-            return ResponseEntity.status(401).body(new LoginResponseDTO(null, null, "Invalid username or password")); //create responseDTO to give null and messsage
+            return ResponseEntity.status(401).body(new LoginResponseDTO(null, null, "Invalid username or password", null)); //create responseDTO to give null and messsage
         }
     }
 

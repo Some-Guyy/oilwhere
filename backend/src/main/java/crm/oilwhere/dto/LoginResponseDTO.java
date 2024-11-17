@@ -6,12 +6,14 @@ public class LoginResponseDTO {
     private String username;
     private Role role;
     private String message;
+    private Long userId;
 
     // constructor
-    public LoginResponseDTO(String username, Role role, String message) {
+    public LoginResponseDTO(String username, Role role, String message, Long userId) {
         this.username = username;
         this.role = role;
         this.message = message;
+        this.userId = userId;
     }
 
     //getters and setters
@@ -37,5 +39,13 @@ public class LoginResponseDTO {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

@@ -72,6 +72,7 @@ public class NewsletterService {
         Newsletter newTemplate = new Newsletter();
         newTemplate.setName(newsletterDTO.getName());
         newTemplate.setContent(newsletterDTO.getContent());
+        newTemplate.setUserId(newsletterDTO.getUserId());
     
         // Save the new user to the database
         return newsletterRepository.save(newTemplate);

@@ -30,13 +30,17 @@ public class Newsletter {
     @Column(name="content", columnDefinition = "TEXT")
     private String content;
 
+    @Column(name="user_id", nullable=false)
+    private Long userId;
+
     // constructors
     public Newsletter() {}
 
-    public Newsletter(Long designId, String name, String content) {
+    public Newsletter(Long designId, String name, String content, Long userId) {
         this.designId = designId;
         this.name = name;
         this.content = content;
+        this.userId = userId;
     }
 
     // getters and Setters
@@ -62,6 +66,14 @@ public class Newsletter {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     @Override
