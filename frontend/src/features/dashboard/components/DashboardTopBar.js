@@ -4,7 +4,7 @@ import ShareIcon  from '@heroicons/react/24/outline/ShareIcon'
 import EnvelopeIcon  from '@heroicons/react/24/outline/EnvelopeIcon'
 import EllipsisVerticalIcon  from '@heroicons/react/24/outline/EllipsisVerticalIcon'
 import ArrowPathIcon  from '@heroicons/react/24/outline/ArrowPathIcon'
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import Datepicker from "react-tailwindcss-datepicker";
 import SearchBar from "../../../components/Input/SearchBar" 
 
@@ -25,11 +25,13 @@ function DashboardTopBar({updateDashboardPeriod,date}){
 
         const [searchText, setSearchText] = useState("")
 
+        useEffect(() => {
+            setDateValue(date);
+          }, [date]);
 
-        const [dateValue, setDateValue] = useState({ 
-            startDate: null, 
-            endDate: null 
-        }); 
+        const [dateValue, setDateValue] = useState(date); 
+
+        console.log(dateValue)
 
         
         const handleDatePickerValueChange = (newValue) => {

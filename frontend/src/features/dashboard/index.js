@@ -220,7 +220,7 @@ function Dashboard(){
         {/** ------------------A---- Select Period Content ------------------------- */}
         <div >
             <div className="grid grid-cols-1 sm:grid-cols-3">
-                <DashboardTopBar updateDashboardPeriod={updateDashboardPeriod}/>            
+                <DashboardTopBar updateDashboardPeriod={updateDashboardPeriod} date={dateValue}/>            
                 <SearchBar searchText={searchText} styleClass="mt-2" setSearchText={setSearchText} placeholderText="Search CId"/>
             </div>
             <button onClick={() => removeAppliedFilter()} className="btn btn-xs mr-2 btn-active btn-ghost normal-case">Reset filters<XMarkIcon className="w-4 ml-2"/></button>
