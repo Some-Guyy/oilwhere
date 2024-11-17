@@ -27,6 +27,8 @@ const Newsletter = () => {
   const username = TOKEN.username;
   const role = TOKEN.role;
 
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     const { state } = location;
 
@@ -90,6 +92,8 @@ const Newsletter = () => {
         return;
       }
 
+      setIsLoading(true); // Show spinner
+
       let htmlData = await new Promise((resolve, reject) => {
         emailEditorRef.current?.exportHtml((data) => {
           const { html } = data;
@@ -119,6 +123,8 @@ const Newsletter = () => {
     } catch (error) {
       console.error(error);
       toast("Failed to send email.");
+    } finally {
+      setIsLoading(false); // Hide spinner
     }
   };
 
@@ -220,22 +226,24 @@ const Newsletter = () => {
             required
           />
           <div className="flex flex-row-reverse gap-3 pb-5">
-          {role === "MARKETING" && (
-            <button
-              className="btn btn-primary"
-              onClick={() => document.getElementById("my_modal_1").showModal()}
-            >
-              Send Email
-            </button>
-          )}
-          {role === "ADMIN" && (
-            <button
-              className="btn btn-outline btn-secondary"
-              onClick={() => saveDesign()}
-            >
-              {isEditing ? "Update Template" : "Save Template"}
-            </button>
-          )}
+            {role === "MARKETING" && (
+              <button
+                className="btn btn-primary"
+                onClick={() =>
+                  document.getElementById("my_modal_1").showModal()
+                }
+              >
+                {isLoading ? "Sending..." : "Send Email"}
+              </button>
+            )}
+            {role === "ADMIN" && (
+              <button
+                className="btn btn-outline btn-secondary"
+                onClick={() => saveDesign()}
+              >
+                {isEditing ? "Update Template" : "Save Template"}
+              </button>
+            )}
             <button
               className="btn btn-outline"
               onClick={() => navigate("/app/newsletter-list")}
@@ -257,6 +265,15 @@ const Newsletter = () => {
           }}
         />
       </Container>
+
+      {isLoading && (
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+          <div className="flex flex-col items-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-500"></div>
+            <p className="mt-4 text-white text-lg">Sending...</p>
+          </div>
+        </div>
+      )}
     </>
   );
 };
