@@ -9,7 +9,11 @@ const userSourceData = [
 ]
 
 function UserChannels({hashmap}){
-    const labels = Object.keys(hashmap)
+    const sortedObj = Object.fromEntries(
+        Object.entries(hashmap) // Convert the object into an array of [key, value] pairs
+          .sort((a, b) => b[1] - a[1]) // Sort the pairs by value in descending order
+      );
+    const labels = Object.keys(sortedObj)
     return(
         <TitleCard title={"Products"}>
              {/** Table Data */}
