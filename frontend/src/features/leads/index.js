@@ -4,7 +4,7 @@ import TitleCard from "../../components/Cards/TitleCard"
 import { openModal } from "../common/modalSlice"
 import { getLeadsContent } from "./leadSlice"
 import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from '../../utils/globalConstantUtil'
-import { PencilIcon } from '@heroicons/react/24/outline'
+import { Pencil } from 'lucide-react'
 import { showNotification } from '../common/headerSlice'
 
 const TopSideButtons = () => {
@@ -79,7 +79,7 @@ function Leads(){
                                     </td>
                                     <td>{l.username}</td>
                                     <td>{l.role}</td>
-                                    {l.role!="ADMIN"?<td><button className="btn btn-square btn-ghost" onClick={() => EditCurrentUSer(l,k)}><PencilIcon className="h-6 w-6 text-gray-500" /></button></td>:<td></td>}
+                                    {l.role!="ADMIN"?<td><button className="btn btn-square btn-ghost" onClick={() => EditCurrentUSer(l,k)}><Pencil className="h-6 w-6 text-gray-500" /></button></td>:<td></td>}
                                     </tr>
                                 )
                             })
