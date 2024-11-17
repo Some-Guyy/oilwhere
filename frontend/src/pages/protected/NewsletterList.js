@@ -14,6 +14,10 @@ const NewsletterList = () => {
   const TOKEN = JSON.parse(localStorage.getItem("token"));
   const username = TOKEN.username;
   const role = TOKEN.role;
+  const userId = TOKEN.userId;
+
+  console.log("role", role);
+  console.log("userId", userId);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -57,19 +61,14 @@ const NewsletterList = () => {
         body: JSON.stringify({
           name: newsletterName,
           content: "",
+          userId: userId
         }),
       });
       const data = await response.json();
-      setTemplates(data);
+      // setTemplates(data);
       setIsLoading(false);
-      navigate("/app/newsletter", {
-        state: {
-          mode: "edit",
-          templateId: data.designId,
-          templateName: data.name,
-          templateData: data.content,
-        },
-      });
+      handleEdit(data);
+      
     } catch (err) {
       setError("Failed to create template");
       setIsLoading(false);
