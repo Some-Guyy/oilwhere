@@ -23,19 +23,20 @@ const Newsletter = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const TOKEN = JSON.parse(localStorage.getItem("token"));
+  const username = TOKEN.username;
+  const role = TOKEN.role;
+
   useEffect(() => {
     const { state } = location;
 
     if (state?.mode === "edit" && state?.templateData) {
-
-      const TOKEN = JSON.parse(localStorage.getItem("token"))
-
       console.log(state);
       setTemplateData(state.templateData);
       setIsEditing(true);
       // Fix the typo in templateName and add null checking
       setNewsletterName(state.templateName || "");
-      setSubject("Dear " + TOKEN.username + ", " + state.templateName || "");
+      setSubject("Dear <user>, " + state.templateName || "");
     }
   }, [location]);
 
@@ -46,12 +47,12 @@ const Newsletter = () => {
 
   const saveDesign = async () => {
     // const unlayer = emailEditorRef.current?.editor;
-    
+
     // unlayer?.saveDesign(async (design) => {
-      try {
-        let htmlData = await new Promise((resolve, reject) => {
-          emailEditorRef.current?.exportHtml((data) => {
-            const { html } = data;
+    try {
+      let htmlData = await new Promise((resolve, reject) => {
+        emailEditorRef.current?.exportHtml((data) => {
+          const { html } = data;
           if (html) {
             resolve(html);
           } else {
@@ -62,7 +63,6 @@ const Newsletter = () => {
 
       // Add your save API call here
       const { state } = location;
-
 
       const response = await fetch(`/api/newsletter/${state.templateId}`, {
         method: isEditing ? "PUT" : "POST",
@@ -196,14 +196,16 @@ const Newsletter = () => {
             </div>
           </div>
 
-          <div className="modal-action">
-            <form method="dialog">
-              <button className="btn btn-primary mr-2" onClick={sendEmail}>
-                Send Email
-              </button>
-              <button className="btn">Close</button>
-            </form>
-          </div>
+          {role === "MARKETING" && (
+            <div className="modal-action">
+              <form method="dialog">
+                <button className="btn btn-primary mr-2" onClick={sendEmail}>
+                  Send Email
+                </button>
+                <button className="btn">Close</button>
+              </form>
+            </div>
+          )}
         </div>
       </dialog>
 
@@ -218,18 +220,22 @@ const Newsletter = () => {
             required
           />
           <div className="flex flex-row-reverse gap-3 pb-5">
+          {role === "MARKETING" && (
             <button
               className="btn btn-primary"
               onClick={() => document.getElementById("my_modal_1").showModal()}
             >
               Send Email
             </button>
+          )}
+          {role === "ADMIN" && (
             <button
               className="btn btn-outline btn-secondary"
               onClick={() => saveDesign()}
             >
               {isEditing ? "Update Template" : "Save Template"}
             </button>
+          )}
             <button
               className="btn btn-outline"
               onClick={() => navigate("/app/newsletter-list")}

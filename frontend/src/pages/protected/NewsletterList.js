@@ -11,6 +11,9 @@ const NewsletterList = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const TOKEN = JSON.parse(localStorage.getItem("token"));
+  const username = TOKEN.username;
+  const role = TOKEN.role;
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -153,10 +156,12 @@ const NewsletterList = () => {
       <div className="p-4">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold">Email Templates</h2>
+          {role === "ADMIN" && (
           <button onClick={() => document.getElementById("createDialog").showModal()} className="btn btn-primary">
             <Plus className="w-4 h-4 mr-2" />
             Create Template
           </button>
+          )}
         </div>
 
         <div className="overflow-x-auto">
@@ -180,12 +185,14 @@ const NewsletterList = () => {
                     >
                       <Pencil className="w-4 h-4" />
                     </button>
+                    {role === "ADMIN" && (
                     <button
                       onClick={() => handleDelete(template)}
                       className="btn btn-sm btn-ghost text-error"
                     >
                       <Trash className="w-4 h-4" />
                     </button>
+                    )}
                   </td>
                 </tr>
               ))}
