@@ -200,11 +200,9 @@ function Transactions(){
     const [currentpage,setcurrentPage] = useState(1)
 
     const totalPages = Math.ceil(trans.length / itemsPerPage);
-    console.log(totalPages)
 
     const handlePageChange = (value) => {
         value = Number(value)
-        console.log(typeof(value))
         if (value > totalPages || value < 1){
             return
         }

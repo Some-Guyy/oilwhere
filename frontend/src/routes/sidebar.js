@@ -26,7 +26,6 @@ const TOKEN = JSON.parse(localStorage.getItem("token"))
 const username = TOKEN.username
 const role = TOKEN.role
 
-console.log(role)
 let routes = []
 
 {role == "ADMIN" ? routes = [
