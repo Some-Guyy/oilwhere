@@ -319,10 +319,10 @@ function Transactions(){
                         <th>Product</th>
                         <th>Quantity</th>
                         <th>Price</th>
-                        <th>Prodcut Price</th>
+                        <th>Product Price</th>
                         <th>Customer Id</th>
                         <th>Zipcode</th>
-                        <th>shipping Method</th>
+                        <th>Shipping Method</th>
                         <th>Variant</th>
                     </tr>
                     </thead>
