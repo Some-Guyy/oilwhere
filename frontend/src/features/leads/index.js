@@ -60,7 +60,7 @@ function Leads(){
                     <thead>
                     <tr>
                         <th>UserID</th>
-                        <th>Name</th>
+                        <th>Username</th>
                         <th>Role</th>
                         <th></th>
                     </tr>
