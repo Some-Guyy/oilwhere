@@ -53,6 +53,28 @@ const NewsletterList = () => {
   const handleCreate = async () => {
     // Navigate to Newsletter component for creation
     try {
+      const design = {
+        body: {
+          rows: [
+            {
+              cells: [1],
+              columns: [
+                {
+                  contents: [
+                    {
+                      type: "text",
+                      values: {
+                        text: "",
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      };
+
       const response = await fetch("/api/newsletter/create", {
         method: "POST",
         headers: {
@@ -60,7 +82,7 @@ const NewsletterList = () => {
         },
         body: JSON.stringify({
           name: newsletterName,
-          content: "",
+          content: JSON.stringify(design),
           userId: userId
         }),
       });

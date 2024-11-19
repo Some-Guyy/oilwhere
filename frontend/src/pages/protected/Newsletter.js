@@ -48,22 +48,18 @@ const Newsletter = () => {
   };
 
   const saveDesign = async () => {
-    // const unlayer = emailEditorRef.current?.editor;
-
-    // unlayer?.saveDesign(async (design) => {
     try {
-      let htmlData = await new Promise((resolve, reject) => {
+      // Use await to ensure json is properly initialized before use
+      const json = await new Promise((resolve, reject) => {
         emailEditorRef.current?.exportHtml((data) => {
-          const { html } = data;
-          if (html) {
-            resolve(html);
+          if (data.design) {
+            resolve(data.design);
           } else {
             reject("Failed to export HTML");
           }
         });
       });
 
-      // Add your save API call here
       const { state } = location;
 
       const response = await fetch(`/api/newsletter/${state.templateId}`, {
@@ -71,18 +67,16 @@ const Newsletter = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: newsletterName,
-          content: htmlData,
+          content: JSON.stringify(json),
         }),
       });
 
       console.log(response);
 
       toast.success("Template saved successfully");
-      // navigate("/app/newsletter-list"); // Navigate back to template list
     } catch (error) {
       toast.error("Failed to save template");
     }
-    // });
   };
 
   const sendEmail = async () => {
@@ -160,7 +154,8 @@ const Newsletter = () => {
         },
       };
 
-      editor.loadDesign(design);
+      var designData = JSON.parse(templateData.content);
+      editor.loadDesign(designData);
     }
   };
 
