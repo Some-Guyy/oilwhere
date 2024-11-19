@@ -46,13 +46,13 @@ product = NULLIF(@vproduct, '')
 ;
 
 -- load data from the temporary table, purchase_history_temp to customer table
--- Note that 2 of each customer segment has an email field at TemperioTesting@gmail.com
+-- Note that 2 of each customer segment has an email field at timptestingoop@gmail.com
 -- Please edit this to change the emails to the relevant email addresses
 INSERT INTO `customer` (`customer_id`, `name`, `email`)
 SELECT DISTINCT 
     `customer_id`, 
     'John' AS `name`, 
-    IF(`customer_id` IN (2, 219, 251, 281, 338, 477), 'TemperioTesting@gmail.com', NULL) AS `email`
+    IF(`customer_id` IN (2, 219, 251, 281, 338, 477), 'timptestingoop@gmail.com', NULL) AS `email`
 FROM `purchase_history_temp`;
 
 -- Creation of purchase_history table

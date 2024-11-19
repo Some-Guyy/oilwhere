@@ -62,16 +62,16 @@ CREATE TABLE IF NOT EXISTS `customer_spending_ranked` (
 -- Manually inserting customer details into customer table
 -- Please edit this to add or remove customer details
 INSERT INTO `customer` (`customer_id`, `name`, `email`) VALUES
-(1, 'John', 'TemperioTesting@gmail.com'),
-(2, 'John', 'TemperioTesting@gmail.com'),
-(3, 'John', 'TemperioTesting@gmail.com'),
-(4, 'John', 'TemperioTesting@gmail.com'),
-(5, 'John', 'TemperioTesting@gmail.com'),
-(6, 'John', 'TemperioTesting@gmail.com'),
-(7, 'John', 'TemperioTesting@gmail.com'),
-(8, 'John', 'TemperioTesting@gmail.com'),
-(36, 'John', 'TemperioTesting@gmail.com'),
-(65, 'John', 'TemperioTesting@gmail.com');
+(1, 'John', 'timptestingoop@gmail.com'),
+(2, 'John', 'timptestingoop@gmail.com'),
+(3, 'John', 'timptestingoop@gmail.com'),
+(4, 'John', 'timptestingoop@gmail.com'),
+(5, 'John', 'timptestingoop@gmail.com'),
+(6, 'John', 'timptestingoop@gmail.com'),
+(7, 'John', 'timptestingoop@gmail.com'),
+(8, 'John', 'timptestingoop@gmail.com'),
+(36, 'John', 'timptestingoop@gmail.com'),
+(65, 'John', 'timptestingoop@gmail.com');
 
 -- Manually inserting purchase history into purchase_history table
 -- Please edit this to add or remove purchase history details
