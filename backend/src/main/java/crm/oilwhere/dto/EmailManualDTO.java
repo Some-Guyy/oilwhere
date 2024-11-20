@@ -1,19 +1,18 @@
 package crm.oilwhere.dto;
-import java.util.ArrayList;
 
 public class EmailManualDTO {
 
-    private ArrayList<String> emailList;
+    private String emails;
     private String subject;
     private String body;
 
     // getters and setters
-    public ArrayList<String> getEmailList() {
-        return emailList;
+    public String getEmails() {
+        return emails;
     }
 
-    public void setEmailList(ArrayList<String> emailList) {
-        this.emailList = emailList;
+    public void setEmails(String emails) {
+        this.emails = emails;
     }
 
     public String getSubject() {

@@ -1,6 +1,5 @@
 package crm.oilwhere.controller;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -52,21 +51,25 @@ public class CustomerController {
     //POST request
     // Takes in an EmailManualDTO object, then sends all email addresses the newsletter
     @PostMapping("/send-manual")
-    public ResponseEntity<List<String>> sendManual(@RequestBody EmailManualDTO emailManualDTO) {
+    public ResponseEntity<String[]> sendManual(@RequestBody EmailManualDTO emailManualDTO) {
 
-        ArrayList<String> emailList = emailManualDTO.getEmailList();
+        String emails = emailManualDTO.getEmails();
         String subject = emailManualDTO.getSubject();
         String body = emailManualDTO.getBody();
 
+        // split emails if there are multiple inputted
+        String[] emailArr = emails.split(",");
+
         // loop through list of emails to send the newsletter to, name will be front part of email address, before the @ symbol
-        for (String email: emailList) {
+        for (String email: emailArr) {
+            email = email.trim();
             String[] splitEmail = email.split("@");
             String name = splitEmail[0];
             newsletterService.sendMail(name, email, subject, body);
         }
 
         // return list of customer objects to see which customers supposed to receive the email
-        return ResponseEntity.ok(emailList);
+        return ResponseEntity.ok(emailArr);
     }
 
     // Send email to relevant segment
