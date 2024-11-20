@@ -2,6 +2,7 @@ package crm.oilwhere.model;
 
 import java.util.List;
 
+// Filters customers based on monetary low segment
 public class LowValueCustomerFilter extends CustomerSegmentFilter {
     
     @Override

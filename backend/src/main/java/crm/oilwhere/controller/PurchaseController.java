@@ -47,20 +47,7 @@ public class PurchaseController {
 
     // create purchase history
     // POST request
-    // Takes in a PurchaseDTO object such as below
-    // {
-    //     "saleDate": "2023-08-15",
-    //     "saleType": "Wholesaler",
-    //     "digital": "Offline",
-    //     "customerId": 65,
-    //     "zipcode": 111100,
-    //     "shippingMethod": "Same Day Delivery",
-    //     "product": "Lemon oil",
-    //     "variant": 100,
-    //     "quantity": 6,
-    //     "price": 5.9,
-    //     "productPrice": 35.4
-    // }
+    // Takes in a PurchaseDTO object
     // Returns the Purchase object that was created
     @PostMapping("/create")
     public ResponseEntity<Purchase> createPurchase(@RequestBody PurchaseDTO purchaseDTO) {
@@ -81,20 +68,7 @@ public class PurchaseController {
 
     // Update purchase history
     // PUT request
-    // Takes in a purchaseId and a purchaseDTO object which overrides the record of the selected purchaseId with the PurchaseDTO object. Example of PurchaseDTO object as shown below
-    // {
-    //     "saleDate": "2023-08-10",
-    //     "saleType": "Wholesaler",
-    //     "digital": "Offline",
-    //     "customerId": 65,
-    //     "zipcode": 111100,
-    //     "shippingMethod": "Same Day Delivery",
-    //     "product": "Lemon oil",
-    //     "variant": 100,
-    //     "quantity": 6,
-    //     "price": 5.9,
-    //     "productPrice": 35.4
-    // }
+    // Takes in a purchaseId and a purchaseDTO object which overrides the record of the selected purchaseId with the PurchaseDTO object
     // Returns newly updated purchase object if successful
     // Returns error 500 if unsuccessful
     @PutMapping("/update/{purchaseId}")

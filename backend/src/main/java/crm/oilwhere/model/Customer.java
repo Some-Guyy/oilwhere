@@ -32,7 +32,7 @@ public class Customer {
         this.email = email;
     }
 
-    // getter and setter
+    // getters and setters
     public Long getCustomerId(){
         return customerId;
     }

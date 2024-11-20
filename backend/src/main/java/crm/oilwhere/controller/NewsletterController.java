@@ -39,10 +39,7 @@ public class NewsletterController {
     
     // update template
     // PUT request
-    // Takes in a id and newsletterDTO object which overrides the record of the selected designId with the newsletterDTO object. Example of the newsletter object as shown below
-    // {
-    //     "content" : "Dear [Customer Name],\n\nAs one of our most valued customers, we’re excited to present you with exclusive offers just for you! Based on your purchases, we’ve curated some exciting deals we think you’ll love.\n\nExciting Offers:\n1. [Product Name 1]\n   - Price: $[Product Price]\n   - Discount: [Discount Percentage]% off with code [Promo Code]\n2. [Product Name 2]\n   - Price: $[Product Price]\n   - Discount: Buy two, get one free\n\nThank you for being a loyal customer! Shop now and enjoy your VIP offers at Timperio.\n\nWarm regards,\nTimperio Marketing team"
-    // }
+    // Takes in a id and newsletterDTO object which overrides the record of the selected designId with the newsletterDTO object
     // Returns updated newsletter object created
     @PutMapping("/{id}")
     public ResponseEntity<?> updateTemplate(@PathVariable Long id, @RequestBody NewsletterDTO newsletterDTO) {
@@ -56,11 +53,7 @@ public class NewsletterController {
     
     // create new template
     // POST request
-    // Takes in a NewsletterDTO such as below
-    // {
-    //     "name" : "christmas",
-    //     "content" : "Dear [Customer Name],\n\nAs one of our most valued customers, we’re excited to present you with exclusive offers just for you! Based on your purchases, we’ve curated some exciting deals we think you’ll love.\n\nExciting Offers:\n1. [Product Name 1]\n   - Price: $[Product Price]\n   - Discount: [Discount Percentage]% off with code [Promo Code]\n2. [Product Name 2]\n   - Price: $[Product Price]\n   - Discount: Buy two, get one free\n\nThank you for being a loyal customer! Shop now and enjoy your VIP offers at Timperio.\n\nWarm regards,\nTimperio Marketing team"
-    // }
+    // Takes in a NewsletterDTO
     // Returns the Newsletter object created
     @PostMapping("/create")
     public ResponseEntity<Newsletter> createNewsletter(@RequestBody NewsletterDTO newsletterDTO) {

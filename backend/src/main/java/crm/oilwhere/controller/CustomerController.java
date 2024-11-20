@@ -51,6 +51,7 @@ public class CustomerController {
     // Send email to manual input list of emails
     //POST request
     // Takes in an EmailManualDTO object, then sends all email addresses the newsletter
+    // Returns the array of emails that was sent to
     @PostMapping("/send-manual")
     public ResponseEntity<String[]> sendManual(@RequestBody EmailManualDTO emailManualDTO) {
 
@@ -76,14 +77,7 @@ public class CustomerController {
     // Send email to relevant segment
     //POST request
     // Takes in an EmailSegmentDTO object, then finds all customers whose spending fall in the segment specified, then sends an email to these customers address
-    // Example of EmailSegmentDTO object below
-    // {
-    //     "segment": "low",
-    //     "subject": "a subject",
-    //     "body": "<strong>Hot bod</strong><br>fokokokokokok"
-    // }
     // Returns the Customer objects of the customers where email was sent
-    // Returns error 500 if unsuccessful
     @PostMapping("/send-monetary-segment")
     public ResponseEntity<List<Customer>> sendMonetarySegment(@RequestBody EmailSegmentDTO emailSegmentDTO) {
         
@@ -177,13 +171,7 @@ public class CustomerController {
 
     // create a new customer
     // POST request
-    // Takes in a CustomerDTO such as below
-    // {
-    //     "email": "ryan.ng.2022@scis.smu.edu.sg",
-    //     "name": "ryan",
-    //     "customerId": 11
-        
-    // }
+    // Takes in a CustomerDTO
     // Returns the Customer object created
     @PostMapping("/create")
     public ResponseEntity<Customer> createCustomer(@RequestBody CustomerDTO customerDTO) {
@@ -194,7 +182,7 @@ public class CustomerController {
     // delete customer by id
     // DELETE request
     // Takes in a customerId which is the numerical id of the customer record
-    // Returns messgae "Customer record successfully deleted" if success
+    // Returns message "Customer record successfully deleted" if success
     // Returns error 500 if unsuccessful
     @DeleteMapping("/delete/{customerId}")
     public ResponseEntity<String> deleteCustomer(@PathVariable Long customerId) {
@@ -204,12 +192,7 @@ public class CustomerController {
 
     // update customer
     // PUT request
-    // Takes in a customerId and a customerDTO object which overrides the record of the selected customerId with the CustomerDTO object. Example of the CustomerDTO object as shown below
-    //{
-    // "email": "NewEmail@gmail.com",
-    // "name": "New Name",
-    // "customerId": 65
-    // }
+    // Takes in a customerId and a customerDTO object which overrides the record of the selected customerId with the CustomerDTO object
     // Returns newly updated Customer object if successful
     // Returns error 500 if unsuccessful
     @PutMapping("/update/{customerId}")

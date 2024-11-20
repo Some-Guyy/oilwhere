@@ -17,7 +17,7 @@ public class PurchaseDTO {
     private float price;
     private float productPrice;
 
-    // Getters and setters
+    // getters and setters
     public LocalDate getSaleDate() {
         return saleDate;
     }

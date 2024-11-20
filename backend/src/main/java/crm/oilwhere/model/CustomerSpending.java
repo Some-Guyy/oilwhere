@@ -28,7 +28,7 @@ public class CustomerSpending {
         this.totalSpending = totalSpending;
     }
 
-    // getter and setter
+    // getters and setters
     public Long getCustomerId(){
         return customerId;
     }

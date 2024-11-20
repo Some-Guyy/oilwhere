@@ -23,6 +23,7 @@ public class MailerConfig {
     @Value("${mail.smtp.password}")
     private String smtpPassword;
 
+    // This @Bean and @Configuration above allows Spring to ensure this config for Mailer is reusable throughout the application without needing to explicitly import it. Also known as Inversion of Control and Constructor-based Dependency Injection
     @Bean
     public Mailer mailer() {
         return MailerBuilder

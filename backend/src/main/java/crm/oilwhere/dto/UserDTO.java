@@ -5,7 +5,7 @@ public class UserDTO {
     private String password;
     private String role;
 
-    // Getters and setters
+    // getters and setters
     public String getUsername() {
         return username;
     }
