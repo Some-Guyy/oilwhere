@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import crm.oilwhere.dto.CustomerDTO;
-import crm.oilwhere.dto.EmailDTO;
+import crm.oilwhere.dto.EmailManualDTO;
+import crm.oilwhere.dto.EmailSegmentDTO;
 import crm.oilwhere.model.Customer;
 import crm.oilwhere.model.CustomerSpending;
 import crm.oilwhere.service.CustomerService;
@@ -47,10 +48,31 @@ public class CustomerController {
         this.newsletterService = newsletterService;
     }
 
+    // Send email to manual input list of emails
+    //POST request
+    // Takes in an EmailManualDTO object, then sends all email addresses the newsletter
+    @PostMapping("/send-manual")
+    public ResponseEntity<List<String>> sendManual(@RequestBody EmailManualDTO emailManualDTO) {
+
+        ArrayList<String> emailList = emailManualDTO.getEmailList();
+        String subject = emailManualDTO.getSubject();
+        String body = emailManualDTO.getBody();
+
+        // loop through list of emails to send the newsletter to, name will be front part of email address, before the @ symbol
+        for (String email: emailList) {
+            String[] splitEmail = email.split("@");
+            String name = splitEmail[0];
+            newsletterService.sendMail(name, email, subject, body);
+        }
+
+        // return list of customer objects to see which customers supposed to receive the email
+        return ResponseEntity.ok(emailList);
+    }
+
     // Send email to relevant segment
     //POST request
-    // Takes in an EmailDTO object, then finds all customers whose spending fall in the segment specified, then sends an email to these customers address
-    // Example of EmailDTO object below
+    // Takes in an EmailSegmentDTO object, then finds all customers whose spending fall in the segment specified, then sends an email to these customers address
+    // Example of EmailSegmentDTO object below
     // {
     //     "segment": "low",
     //     "subject": "a subject",
@@ -58,12 +80,12 @@ public class CustomerController {
     // }
     // Returns the Customer objects of the customers where email was sent
     // Returns error 500 if unsuccessful
-    @PostMapping("/send-email")
-    public ResponseEntity<List<Customer>> sendNewsletter(@RequestBody EmailDTO emailDTO) {
+    @PostMapping("/send-monetary-segment")
+    public ResponseEntity<List<Customer>> sendMonetarySegment(@RequestBody EmailSegmentDTO emailSegmentDTO) {
         
-        String segment = emailDTO.getSegment();
-        String subject = emailDTO.getSubject();
-        String body = emailDTO.getBody();
+        String segment = emailSegmentDTO.getSegment();
+        String subject = emailSegmentDTO.getSubject();
+        String body = emailSegmentDTO.getBody();
         
         List<CustomerSpending> filter = new ArrayList<>();
         List<Long> customerIds = new ArrayList<>();

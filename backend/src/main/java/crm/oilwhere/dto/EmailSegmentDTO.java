@@ -1,6 +1,6 @@
 package crm.oilwhere.dto;
 
-public class EmailDTO {
+public class EmailSegmentDTO {
 
     private String segment;
     private String subject;
