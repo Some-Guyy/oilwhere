@@ -6,8 +6,13 @@ package crm.oilwhere.dto;
  */
 public class CustomerDTO {
 
+    /** The unique identifier of the customer. */
     private Long customerId;
+
+    /** The name of the customer. */
     private String name;
+
+    /** The email address of the customer. */
     private String email;
 
     /**

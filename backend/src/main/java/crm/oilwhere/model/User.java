@@ -11,20 +11,48 @@ import jakarta.persistence.*;
 @Table(name = "user")
 public class User {
 
+    /**
+     * The unique identifier for the user.
+     * <p>
+     * This field is the primary key and is automatically generated using the 
+     * identity generation strategy. It maps to the "user_id" column in the database.
+     * </p>
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="user_id")
+    @Column(name = "user_id")
     private Long userId;
 
-    @Column(name="username", nullable = false, unique = true, length = 191)
+    /**
+     * The username of the user.
+     * <p>
+     * This field is required, unique, and maps to the "username" column in the database.
+     * It has a maximum length of 191 characters.
+     * </p>
+     */
+    @Column(name = "username", nullable = false, unique = true, length = 191)
     private String username;
 
-    @Column(name="password", nullable = false)
+    /**
+     * The password for the user's account.
+     * <p>
+     * This field is required and maps to the "password" column in the database.
+     * </p>
+     */
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Enumerated(EnumType.STRING) 
-    @Column(name="role", nullable=false)
+    /**
+     * The role of the user in the system.
+     * <p>
+     * This field is required and maps to the "role" column in the database.
+     * It is stored as a string representation of the {@link Role} enum.
+     * </p>
+     */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
     private Role role;
+
 
     /**
      * Constructs a User with the specified ID, username, password, and role.

@@ -50,19 +50,6 @@ public class PurchaseController {
     }
 
     /**
-     * Retrieves all purchase records within a specified date range.
-     *
-     * @param startDate the start date of the date range
-     * @param endDate the end date of the date range
-     * @return a ResponseEntity containing a list of purchase records within the date range
-     */
-    @GetMapping("/{startDate}/{endDate}")
-    public ResponseEntity<List<Purchase>> getPurchaseByDateRange(@PathVariable LocalDate startDate, @PathVariable LocalDate endDate) {
-        List<Purchase> purchases = purchaseService.getPurchaseByDateRange(startDate, endDate);
-        return ResponseEntity.ok(purchases);
-    }
-
-    /**
      * Creates a new purchase record and adds it to the purchase history.
      *
      * @param purchaseDTO the data transfer object containing purchase details

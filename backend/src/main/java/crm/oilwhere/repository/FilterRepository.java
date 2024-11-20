@@ -3,7 +3,7 @@ package crm.oilwhere.repository;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import crm.oilwhere.model.Filter;
+import crm.oilwhere.model.CustomerSpending;
 
 /**
  * Repository interface for managing filter entities in the database.
@@ -18,20 +18,20 @@ import crm.oilwhere.model.Filter;
  * </ul>
  */
 @Repository
-public interface FilterRepository extends JpaRepository<Filter, Long> {
+public interface FilterRepository extends JpaRepository<CustomerSpending, Long> {
 
     /**
      * Retrieves a list of all Filter records, sorted by total spending in descending order.
      *
      * @return a list of Filter records ordered from highest to lowest totalSpending
      */
-    List<Filter> findAllByOrderByTotalSpendingDesc();
+    List<CustomerSpending> findAllByOrderByTotalSpendingDesc();
 
     /**
      * Retrieves a list of all Filter records, sorted by total spending in ascending order.
      *
      * @return a list of Filter records ordered from lowest to highest totalSpending
      */
-    List<Filter> findAllByOrderByTotalSpending();
+    List<CustomerSpending> findAllByOrderByTotalSpending();
 
 }

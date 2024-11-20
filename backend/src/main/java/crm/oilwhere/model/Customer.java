@@ -11,14 +11,34 @@ import jakarta.persistence.*;
 @Table(name = "customer")
 public class Customer {
 
+    /** 
+     * The unique identifier for the customer.
+     * <p>
+     * This is a primary key and is automatically generated using the 
+     * identity generation strategy.
+     * </p>
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="customer_id")
     private Long customerId;
 
+
+    /** 
+     * The name of the customer.
+     * <p>
+     * This field is non-nullable and maps to the "name" column in the database.
+     * </p>
+     */
     @Column(name="name", nullable = false)
     private String name;
 
+    /** 
+     * The email address of the customer.
+     * <p>
+     * This field is non-nullable and maps to the "email" column in the database.
+     * </p>
+     */
     @Column(name="email", nullable = false)
     private String email;
 

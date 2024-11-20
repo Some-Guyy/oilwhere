@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import crm.oilwhere.dto.CustomerDTO;
-import crm.oilwhere.dto.EmailDTO;
+import crm.oilwhere.dto.EmailManualDTO;
+import crm.oilwhere.dto.EmailSegmentDTO;
 import crm.oilwhere.model.Customer;
-import crm.oilwhere.model.Filter;
+import crm.oilwhere.model.CustomerSpending;
 import crm.oilwhere.service.CustomerService;
-import crm.oilwhere.service.FilterService;
+import crm.oilwhere.service.CustomerSegmentService;
 import crm.oilwhere.service.NewsletterService;
 
 /**
@@ -32,7 +33,7 @@ import crm.oilwhere.service.NewsletterService;
 @CrossOrigin(origins = "http://localhost:3000")
 public class CustomerController {
     
-    private final FilterService filterService;
+    private final CustomerSegmentService filterService;
     private final CustomerService customerService;
     private final NewsletterService newsletterService;
 
@@ -43,7 +44,7 @@ public class CustomerController {
      * @param customerService the service for managing customer records
      * @param newsletterService the service for sending newsletters
      */
-    public CustomerController(FilterService filterService, CustomerService customerService, NewsletterService newsletterService) {
+    public CustomerController(CustomerSegmentService filterService, CustomerService customerService, NewsletterService newsletterService) {
         this.filterService = filterService;
         this.customerService = customerService;
         this.newsletterService = newsletterService;
@@ -52,17 +53,17 @@ public class CustomerController {
     /**
      * Sends marketing emails to a specified customer segment based on spending.
      *
-     * @param emailDTO the email details, including the segment, subject, and body
+     * @param emailSegmentDTO the data transfer object containing the email details, including the segment, subject, and body
      * @return a ResponseEntity containing a list of Customer objects representing customers who received the email
      */
     @PostMapping("/send-email")
-    public ResponseEntity<List<Customer>> testRoute(@RequestBody EmailDTO emailDTO) {
+    public ResponseEntity<List<Customer>> sendMonetarySegment(@RequestBody EmailSegmentDTO emailSegmentDTO) {
         
-        String segment = emailDTO.getSegment();
-        String subject = emailDTO.getSubject();
-        String body = emailDTO.getBody();
+        String segment = emailSegmentDTO.getSegment();
+        String subject = emailSegmentDTO.getSubject();
+        String body = emailSegmentDTO.getBody();
         
-        List<Filter> filter = new ArrayList<>();
+        List<CustomerSpending> filter = new ArrayList<>();
         List<Long> customerIds = new ArrayList<>();
         List<Customer> customerList = new ArrayList<>();
         
@@ -82,7 +83,7 @@ public class CustomerController {
         }
 
         // Add customer IDs from the filter to the customerIds list
-        Iterator<Filter> segmentIter = filter.iterator();
+        Iterator<CustomerSpending> segmentIter = filter.iterator();
         while (segmentIter.hasNext()) {
             customerIds.add(segmentIter.next().getCustomerId());           
         }
@@ -115,6 +116,42 @@ public class CustomerController {
         // Return list of customer objects to see which customers received the email
         return ResponseEntity.ok(customerList);
     }
+
+    /**
+     * Sends a manual email to a list of recipients based on the provided {@link EmailManualDTO}.
+     *
+     * @param emailManualDTO the data transfer object containing the email details, including the 
+     *                       recipient emails, subject, and body content.
+     * @return a {@link ResponseEntity} containing an array of email addresses to which the 
+     *         newsletter was sent.
+     *
+     * @apiNote This method splits the input emails (comma-separated), trims whitespace, 
+     *          extracts the recipient's name (based on the part of the email address before 
+     *          the '@' symbol), and sends the email to each recipient using the 
+     *          {@code newsletterService}.
+     */
+    @PostMapping("/send-manual")
+    public ResponseEntity<String[]> sendManual(@RequestBody EmailManualDTO emailManualDTO) {
+
+        String emails = emailManualDTO.getEmails();
+        String subject = emailManualDTO.getSubject();
+        String body = emailManualDTO.getBody();
+
+        // split emails if there are multiple inputted
+        String[] emailArr = emails.split(",");
+
+        // loop through list of emails to send the newsletter to, name will be front part of email address, before the @ symbol
+        for (String email: emailArr) {
+            email = email.trim();
+            String[] splitEmail = email.split("@");
+            String name = splitEmail[0];
+            newsletterService.sendMail(name, email, subject, body);
+        }
+
+        // return list of customer objects to see which customers supposed to receive the email
+        return ResponseEntity.ok(emailArr);
+    }
+
 
     /**
      * Retrieves all customer records from the customer table.

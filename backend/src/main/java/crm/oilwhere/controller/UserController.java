@@ -94,9 +94,24 @@ public class UserController {
 
     /**
      * Authenticates a user based on the provided login credentials.
+     * <p>
+     * This endpoint verifies the username and password provided in the {@link LoginRequest}.
+     * If authentication is successful, it returns a {@link LoginResponseDTO} containing the
+     * user's details and a success message. Otherwise, it responds with an HTTP 401 status
+     * and an appropriate error message.
+     * </p>
      *
      * @param loginRequest the data transfer object containing the username and password
-     * @return a ResponseEntity containing the LoginResponseDTO with authentication status
+     *                     for authentication
+     * @return a {@link ResponseEntity} containing:
+     *         <ul>
+     *           <li>A {@link LoginResponseDTO} with the user's username, role, and a success
+     *               message if authentication succeeds.</li>
+     *           <li>A {@link LoginResponseDTO} with a null username and role, and an error
+     *               message if authentication fails.</li>
+     *         </ul>
+     * @apiNote The method returns HTTP 200 status for successful authentication and HTTP 401
+     *          status for authentication failure.
      */
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequest loginRequest) {
@@ -104,10 +119,10 @@ public class UserController {
 
         if (authenticatedUser.isPresent()) {
             User user = authenticatedUser.get();
-            LoginResponseDTO response = new LoginResponseDTO(user.getUsername(), user.getRole(), "Login successful");
+            LoginResponseDTO response = new LoginResponseDTO(user.getUsername(), user.getRole(), "Login successful", user.getUserId());
             return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.status(401).body(new LoginResponseDTO(null, null, "Invalid username or password"));
+            return ResponseEntity.status(401).body(new LoginResponseDTO(null, null, "Invalid username or password", null));
         }
     }
 }

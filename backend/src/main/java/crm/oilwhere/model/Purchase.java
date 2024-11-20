@@ -12,43 +12,117 @@ import jakarta.persistence.*;
 @Table(name = "purchase_history")
 public class Purchase {
 
+    /**
+     * The unique identifier for the purchase.
+     * <p>
+     * This field is the primary key and is automatically generated using the 
+     * identity generation strategy. It maps to the "purchase_id" column in the database.
+     * </p>
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="purchase_id")
+    @Column(name = "purchase_id")
     private Long purchaseId;
 
-    @Column(name="sale_date", nullable = false)
+    /**
+     * The date of the sale.
+     * <p>
+     * This field is non-nullable and maps to the "sale_date" column in the database.
+     * </p>
+     */
+    @Column(name = "sale_date", nullable = false)
     private LocalDate saleDate;
 
-    @Column(name="sale_type", length = 255)
+    /**
+     * The type of sale (e.g., online or in-store).
+     * <p>
+     * This field maps to the "sale_type" column in the database and has a maximum length of 255 characters.
+     * </p>
+     */
+    @Column(name = "sale_type", length = 255)
     private String saleType;
 
-    @Column(name="digital", length = 255)
+    /**
+     * Indicates whether the purchase was digital or physical.
+     * <p>
+     * This field maps to the "digital" column in the database and has a maximum length of 255 characters.
+     * </p>
+     */
+    @Column(name = "digital", length = 255)
     private String digital;
 
-    @Column(name="customer_id", nullable = false)
-    private Integer customerId;
+    /**
+     * The unique identifier of the customer associated with the purchase.
+     * <p>
+     * This field is non-nullable and maps to the "customer_id" column in the database.
+     * </p>
+     */
+    @Column(name = "customer_id", nullable = false)
+    private Long customerId;
 
-    @Column(name="zipcode", length = 6)
+    /**
+     * The zip code of the customer's address.
+     * <p>
+     * This field maps to the "zipcode" column in the database and has a maximum length of 6 digits.
+     * </p>
+     */
+    @Column(name = "zipcode", length = 6)
     private Integer zipcode;
 
-    @Column(name="shipping_method", length = 255)
+    /**
+     * The shipping method used for the purchase (e.g., standard or express).
+     * <p>
+     * This field maps to the "shipping_method" column in the database and has a maximum length of 255 characters.
+     * </p>
+     */
+    @Column(name = "shipping_method", length = 255)
     private String shippingMethod;
 
-    @Column(name="product", length = 255)
+    /**
+     * The name or description of the purchased product.
+     * <p>
+     * This field maps to the "product" column in the database and has a maximum length of 255 characters.
+     * </p>
+     */
+    @Column(name = "product", length = 255)
     private String product;
 
-    @Column(name="variant", nullable = false)
+    /**
+     * The variant of the purchased product (e.g., color or size).
+     * <p>
+     * This field is non-nullable and maps to the "variant" column in the database.
+     * </p>
+     */
+    @Column(name = "variant", nullable = false)
     private Integer variant;
 
-    @Column(name="quantity", nullable = false)
+    /**
+     * The quantity of the product purchased.
+     * <p>
+     * This field is non-nullable and maps to the "quantity" column in the database.
+     * </p>
+     */
+    @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
-    @Column(name="price", nullable = false)
+    /**
+     * The total price paid for the purchase.
+     * <p>
+     * This field is non-nullable and maps to the "price" column in the database.
+     * </p>
+     */
+    @Column(name = "price", nullable = false)
     private float price;
 
-    @Column(name="product_price", nullable = false)
+    /**
+     * The price of a single unit of the purchased product.
+     * <p>
+     * This field is non-nullable and maps to the "product_price" column in the database.
+     * </p>
+     */
+    @Column(name = "product_price", nullable = false)
     private float productPrice;
+
 
     /**
      * Default constructor for Purchase.
@@ -71,7 +145,7 @@ public class Purchase {
      * @param price the unit price of the product
      * @param productPrice the total price for the quantity of products purchased
      */
-    public Purchase(Long purchaseId, LocalDate saleDate, String saleType, String digital, Integer customerId, Integer zipcode, String shippingMethod, String product, Integer variant, Integer quantity, float price, float productPrice) {
+    public Purchase(Long purchaseId, LocalDate saleDate, String saleType, String digital, Long customerId, Integer zipcode, String shippingMethod, String product, Integer variant, Integer quantity, float price, float productPrice) {
         this.purchaseId = purchaseId;
         this.saleDate = saleDate;
         this.saleType = saleType;
@@ -166,7 +240,7 @@ public class Purchase {
      *
      * @return the customer ID
      */
-    public Integer getCustomerId() {
+    public Long getCustomerId() {
         return customerId;
     }
 
@@ -175,7 +249,7 @@ public class Purchase {
      *
      * @param customerId the customer ID to set
      */
-    public void setCustomerId(Integer customerId) {
+    public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
 

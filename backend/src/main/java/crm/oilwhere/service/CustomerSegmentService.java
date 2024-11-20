@@ -2,7 +2,7 @@ package crm.oilwhere.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
-import crm.oilwhere.model.Filter;
+import crm.oilwhere.model.CustomerSpending;
 import crm.oilwhere.repository.FilterRepository;
 
 /**
@@ -11,7 +11,7 @@ import crm.oilwhere.repository.FilterRepository;
  * Utilizes the FilterRepository to perform database queries.
  */
 @Service
-public class FilterService {
+public class CustomerSegmentService {
 
     private final FilterRepository filterRepository;
 
@@ -20,7 +20,7 @@ public class FilterService {
      *
      * @param filterRepository the repository used to interact with the customer spending data in the database
      */
-    public FilterService(FilterRepository filterRepository) {
+    public CustomerSegmentService(FilterRepository filterRepository) {
         this.filterRepository = filterRepository;
     }
 
@@ -30,7 +30,7 @@ public class FilterService {
      *
      * @return a list of all Filter records representing customer spending
      */
-    public List<Filter> getAllCustomerSpending() {
+    public List<CustomerSpending> getAllCustomerSpending() {
         return filterRepository.findAll();
     }
 
@@ -39,10 +39,10 @@ public class FilterService {
      * Uses a custom query method to retrieve all customer records ordered by total spending in descending order,
      * then returns only the top 10%.
      *
-     * @return a list of Filter records representing the top 10% of customers by spending
+     * @return a list of CustomerSpending records representing the top 10% of customers by spending
      */
-    public List<Filter> getHighValueCustomer() {
-        List<Filter> customers = filterRepository.findAllByOrderByTotalSpendingDesc();
+    public List<CustomerSpending> getHighValueCustomer() {
+        List<CustomerSpending> customers = filterRepository.findAllByOrderByTotalSpendingDesc();
         int topTenLength = (int) Math.ceil(customers.size() * 0.1);
         return customers.subList(0, topTenLength);
     }
@@ -52,10 +52,10 @@ public class FilterService {
      * Uses a custom query method to retrieve all customer records ordered by total spending in ascending order,
      * then returns only those between the 10% and 80% range.
      *
-     * @return a list of Filter records representing customers with spending between 10% and 80%
+     * @return a list of CustomerSpending records representing customers with spending between 10% and 80%
      */
-    public List<Filter> getMediumValueCustomer() {
-        List<Filter> customers = filterRepository.findAllByOrderByTotalSpending();
+    public List<CustomerSpending> getMediumValueCustomer() {
+        List<CustomerSpending> customers = filterRepository.findAllByOrderByTotalSpending();
         int bottomBoundary = (int) Math.ceil(customers.size() * 0.2);
         int upperBoundary = (int) Math.ceil(customers.size() * 0.8);
         return customers.subList(bottomBoundary, upperBoundary);
@@ -66,10 +66,10 @@ public class FilterService {
      * Uses a custom query method to retrieve all customer records ordered by total spending in ascending order,
      * then returns only the bottom 20%.
      *
-     * @return a list of Filter records representing the bottom 20% of customers by spending
+     * @return a list of CustomerSpending records representing the bottom 20% of customers by spending
      */
-    public List<Filter> getLowValueCustomer() {
-        List<Filter> customers = filterRepository.findAllByOrderByTotalSpending();
+    public List<CustomerSpending> getLowValueCustomer() {
+        List<CustomerSpending> customers = filterRepository.findAllByOrderByTotalSpending();
         int bottomTwentyLength = (int) Math.ceil(customers.size() * 0.2);
         return customers.subList(0, bottomTwentyLength);
     }

@@ -9,16 +9,38 @@ import java.time.LocalDate;
  */
 public class PurchaseDTO {
 
+
+    /** The date when the sale occurred. */
     private LocalDate saleDate;
+
+    /** The type of sale, e.g., online or in-store. */
     private String saleType;
+
+    /** Indicates if the purchase was digital (e.g., a download) or physical. */
     private String digital;
-    private Integer customerId;
+
+    /** The unique identifier of the customer who made the purchase. */
+    private Long customerId;
+
+    /** The zip code of the customer's shipping address. */
     private Integer zipcode;
+
+    /** The method used for shipping the purchased product, e.g., standard or express. */
     private String shippingMethod;
+
+    /** The name or description of the product purchased. */
     private String product;
+
+    /** The specific variant of the product purchased, such as color or size. */
     private Integer variant;
+
+    /** The quantity of the product purchased. */
     private Integer quantity;
+
+    /** The total price paid for the purchase, including all items and charges. */
     private float price;
+
+    /** The price of a single unit of the product. */
     private float productPrice;
 
     /**
@@ -83,7 +105,7 @@ public class PurchaseDTO {
      *
      * @return the customer ID
      */
-    public Integer getCustomerId() {
+    public Long getCustomerId() {
         return customerId;
     }
 
@@ -92,7 +114,7 @@ public class PurchaseDTO {
      *
      * @param customerId the customer ID to set
      */
-    public void setCustomerId(Integer customerId) {
+    public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
 

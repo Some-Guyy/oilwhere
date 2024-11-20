@@ -1,13 +1,18 @@
 package crm.oilwhere.dto;
 
 /**
- * Data Transfer Object for email details.
+ * Data Transfer Object for email segment details.
  * Contains the segment, subject, and body of an email.
  */
-public class EmailDTO {
+public class EmailSegmentDTO {
 
+    /** The segment of the audience targeted, e.g., monetary segments */
     private String segment;
+
+    /** The subject of the email or message. */
     private String subject;
+
+    /** The body content of the email or message. */
     private String body;
 
     /**

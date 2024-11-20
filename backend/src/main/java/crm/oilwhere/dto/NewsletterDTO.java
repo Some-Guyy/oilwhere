@@ -2,12 +2,21 @@ package crm.oilwhere.dto;
 
 /**
  * Data Transfer Object for newsletter template details.
- * Contains the design ID, name, and content of a newsletter template.
+ * Contains the design ID, name, content, and user ID of a newsletter template.
  */
 public class NewsletterDTO {
+
+    /** The unique identifier for the design of the newsletter template. */
     private Long designId;
+
+    /** The name of the newsletter template. */
     private String name;
+
+    /** The content of the newsletter template. */
     private String content;
+
+    /** The unique identifier of the user associated with the newsletter template. */
+    private Long userId;
 
     /**
      * Retrieves the unique design ID of the newsletter template.
@@ -61,5 +70,23 @@ public class NewsletterDTO {
      */
     public void setContent(String content) {
         this.content = content;
+    }
+
+    /**
+     * Retrieves the unique identifier of the user associated with the newsletter template.
+     *
+     * @return the user ID
+     */
+    public Long getUserId() {
+        return userId;
+    }
+
+    /**
+     * Sets the unique identifier of the user associated with the newsletter template.
+     *
+     * @param userId the user ID to set
+     */
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

@@ -17,17 +17,40 @@ import jakarta.persistence.Table;
 @Table(name = "newsletter")
 public class Newsletter {
 
+    /**
+     * The unique identifier for the newsletter design.
+     * <p>
+     * This field is the primary key and is automatically generated using the 
+     * identity generation strategy. It maps to the "design_id" column in the database.
+     * </p>
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="design_id")
+    @Column(name = "design_id")
     private Long designId;
 
-    @Column(name="name")
+    /**
+     * The name of the newsletter design.
+     * <p>
+     * This field maps to the "name" column in the database and represents the title
+     * or identifier for the design.
+     * </p>
+     */
+    @Column(name = "name")
     private String name;
 
+    /**
+     * The content of the newsletter design.
+     * <p>
+     * This field stores the content of the newsletter in text format. It is a 
+     * large object (LOB) and maps to the "content" column in the database with
+     * a column definition of "TEXT".
+     * </p>
+     */
     @Lob
-    @Column(name="content", columnDefinition = "TEXT")
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
+
 
     /**
      * Default constructor for Newsletter.
