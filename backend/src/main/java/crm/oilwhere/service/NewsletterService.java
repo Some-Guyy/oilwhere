@@ -98,7 +98,7 @@ public class NewsletterService {
         try {
             String fromName = "Timperio";
             String fromAddr = System.getenv("SMTP_USERNAME");
-            System.out.println(subject);
+
             if (body.contains("&lt;name&gt;")) {
                 body = body.replaceAll("&lt;name&gt;", custName);
             }
