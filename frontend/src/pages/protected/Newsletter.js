@@ -16,6 +16,8 @@ const Newsletter = () => {
   const [newsletterName, setNewsletterName] = useState("");
   const [segment, setSegment] = useState("");
   const [subject, setSubject] = useState("");
+  const [email, setEmail] = useState("");
+  const [sendBySegment, setSendBySegment] = useState(true);
 
   const [isEditing, setIsEditing] = useState(false);
   const [templateData, setTemplateData] = useState(null);
@@ -81,38 +83,70 @@ const Newsletter = () => {
 
   const sendEmail = async () => {
     try {
-      if (!segment) {
-        toast("Please select a segment level.");
-        return;
-      }
+      //if segment is selected, send email to segment
+      if (sendBySegment) {
+        if (!segment) {
+          toast("Please select a segment level.");
+          return;
+        }
 
-      setIsLoading(true); // Show spinner
+        setIsLoading(true); // Show spinner
 
-      let htmlData = await new Promise((resolve, reject) => {
-        emailEditorRef.current?.exportHtml((data) => {
-          const { html } = data;
-          if (html) {
-            resolve(html);
-          } else {
-            reject("Failed to export HTML");
-          }
+        let htmlData = await new Promise((resolve, reject) => {
+          emailEditorRef.current?.exportHtml((data) => {
+            const { html } = data;
+            if (html) {
+              resolve(html);
+            } else {
+              reject("Failed to export HTML");
+            }
+          });
         });
-      });
 
-      await fetch("/api/customer/send-email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          segment: segment,
-          subject: subject,
-          body: htmlData,
-        }),
-      }).then((r) => r.json());
+        await fetch("/api/customer/send-monetary-segment", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            segment: segment,
+            subject: subject,
+            body: htmlData,
+          }),
+        }).then((r) => r.json());
 
-      toast(`Email sent to ${segment} segment`);
+        toast(`Email sent to ${segment} segment`);
+      } else {
+
+        setIsLoading(true); // Show spinner
+
+        let htmlData = await new Promise((resolve, reject) => {
+          emailEditorRef.current?.exportHtml((data) => {
+            const { html } = data;
+            if (html) {
+              resolve(html); // Resolve the promise with the HTML content
+            } else {
+              reject("Failed to export HTML");
+            }
+          });
+        });
+
+        await fetch("/api/customer/send-manual", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            emails: email,
+            subject: subject,
+            body: htmlData,
+          }),
+        }).then((r) => r.json());
+
+        toast(`Email sent to ${email}`);
+      }
       setSubject("");
+      setEmail("");
       document.getElementById("my_modal_1").close();
     } catch (error) {
       console.error(error);
@@ -179,22 +213,51 @@ const Newsletter = () => {
               </label>
             </div>
 
-            <div>
-              <label className="input-group input-group-vertical w-full">
-                <span className="font-semibold">Segment</span>
-                <select
-                  className="select select-bordered w-full mt-1"
-                  onChange={(e) => setSegment(e.target.value)}
-                >
-                  <option disabled selected>
-                    Select Segment
-                  </option>
-                  <option value="high">High</option>
-                  <option value="medium">Medium</option>
-                  <option value="low">Low</option>
-                </select>
+            <div className="form-control w-52">
+              <label className="label cursor-pointer">
+                <span className="font-semibold">Send by segment</span>
+                <input
+                  type="checkbox"
+                  className="toggle toggle-primary"
+                  checked={sendBySegment}
+                  onChange={(e) => setSendBySegment(e.target.checked)}
+                />
               </label>
             </div>
+
+            {!sendBySegment && (
+              <div>
+                <label className="input-group input-group-vertical w-full">
+                  <span className="font-semibold">Email</span>
+                  <textarea
+                    class="textarea w-full"
+                    placeholder="Input emails separated by commas"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  ></textarea>
+                </label>
+              </div>
+            )}
+
+            {sendBySegment && (
+              <div>
+                <label className="input-group input-group-vertical w-full">
+                  <span className="font-semibold">Segment</span>
+                  <select
+                    className="select select-bordered w-full mt-1"
+                    value={segment}
+                    onChange={(e) => setSegment(e.target.value)}
+                  >
+                    <option disabled value="">
+                      Select Segment
+                    </option>
+                    <option value="high">High</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                  </select>
+                </label>
+              </div>
+            )}
           </div>
 
           {role === "MARKETING" && (
