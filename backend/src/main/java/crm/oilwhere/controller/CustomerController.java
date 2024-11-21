@@ -125,10 +125,6 @@ public class CustomerController {
      * @return a {@link ResponseEntity} containing an array of email addresses to which the 
      *         newsletter was sent.
      *
-     * @apiNote This method splits the input emails (comma-separated), trims whitespace, 
-     *          extracts the recipient's name (based on the part of the email address before 
-     *          the '@' symbol), and sends the email to each recipient using the 
-     *          {@code newsletterService}.
      */
     @PostMapping("/send-manual")
     public ResponseEntity<String[]> sendManual(@RequestBody EmailManualDTO emailManualDTO) {

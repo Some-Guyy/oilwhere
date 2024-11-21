@@ -110,8 +110,6 @@ public class UserController {
      *           <li>A {@link LoginResponseDTO} with a null username and role, and an error
      *               message if authentication fails.</li>
      *         </ul>
-     * @apiNote The method returns HTTP 200 status for successful authentication and HTTP 401
-     *          status for authentication failure.
      */
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequest loginRequest) {
