@@ -40,13 +40,9 @@ A web application for Timperio to manage and analyse their customer data, as wel
 
     `~/oilwhere/frontend$ npm install`
 
-1. Build the frontend React app.
-
-    `~/oilwhere/frontend$ npm run build`
-
 1. Run the frontend server. It will be on http://localhost:3000 by default.
 
-    `~/oilwhere/frontend$ npm start`
+    `~/oilwhere/frontend$ npm run start`
 
 ### Cleaning up:
 - To clean up the compiled content for the backend, use the maven wrapper in the backend directory:
